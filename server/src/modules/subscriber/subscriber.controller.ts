@@ -7,6 +7,7 @@ import { ZodError } from "zod";
 interface ErrorResponse {
   success: false;
   message: string;
+  
   code: string;
   details?: Record<string, any>;
 }
@@ -19,10 +20,7 @@ interface SuccessResponse {
 
 export const subscribeUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    console.log("[SUBSCRIBE] Request received from:", req.headers.origin);
-    console.log("[SUBSCRIBE] Request body:", req.body);
-    
-    // Check rate limit first
+    // Check rate limit
     const rateLimit = checkRateLimit(req);
     
     if (!rateLimit.allowed) {
