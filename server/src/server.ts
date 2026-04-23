@@ -1,21 +1,75 @@
-import dotenv from "dotenv";
+import express, { Request, Response, NextFunction } from "express";
+import cors from "cors";
+import subscriberRoutes from "./modules/subscriber/subscriber.routes";
 
-// Load environment variables FIRST, before importing anything else
-dotenv.config();
+export const app = express();
 
-import { app } from "./app";
-import { connectDB } from "./config/db";
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:3001",
+  "https://chatcv-gamma.vercel.app",
+];
 
-const start = async () => {
-  await connectDB();
+if (process.env.CORS_ORIGIN) {
+  const envOrigins = process.env.CORS_ORIGIN.split(",").map((o) => o.trim());
+  allowedOrigins.push(...envOrigins);
+}
 
-  const PORT = process.env.PORT || 5001;
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
+const corsOptions: cors.CorsOptions = {
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, curl, Postman)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.warn(`[CORS] Blocked origin: ${origin}`);
+      callback(new Error(`CORS policy: origin ${origin} not allowed`));
+    }
+  },
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+  optionsSuccessStatus: 204, // ✅ Some browsers need 204 for preflight
 };
 
-start().catch((err) => {
-  console.error("[ERROR] Failed to start server:", err);
-  process.exit(1);
+// ✅ Handle ALL preflight requests globally FIRST
+app.options("*", cors(corsOptions));
+
+// ✅ Then apply CORS to all other routes
+app.use(cors(corsOptions));
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+if (process.env.NODE_ENV !== "production") {
+  console.log("[CORS] Allowed origins:", allowedOrigins);
+}
+
+app.use("/api", subscriberRoutes);
+
+app.get("/health", (req: Request, res: Response) => {
+  res.status(200).json({ status: "healthy", timestamp: new Date().toISOString() });
+});
+
+app.use((req: Request, res: Response) => {
+  res.status(404).json({
+    success: false,
+    message: "Route not found",
+    code: "NOT_FOUND",
+    path: req.path,
+  });
+});
+
+app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
+  console.error("[ERROR]", error);
+  res.status(500).json({
+    success: false,
+    message: "Internal server error",
+    code: "INTERNAL_SERVER_ERROR",
+    details:
+      process.env.NODE_ENV === "development"
+        ? { error: error.message }
+        : undefined,
+  });
 });
