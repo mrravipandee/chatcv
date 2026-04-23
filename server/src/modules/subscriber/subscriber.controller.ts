@@ -19,6 +19,9 @@ interface SuccessResponse {
 
 export const subscribeUser = async (req: Request, res: Response): Promise<void> => {
   try {
+    console.log("[SUBSCRIBE] Request received from:", req.headers.origin);
+    console.log("[SUBSCRIBE] Request body:", req.body);
+    
     // Check rate limit first
     const rateLimit = checkRateLimit(req);
     

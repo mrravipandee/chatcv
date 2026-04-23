@@ -5,13 +5,17 @@ import subscriberRoutes from "./modules/subscriber/subscriber.routes";
 export const app = express();
 
 // Middleware
-const allowedOrigins = process.env.CORS_ORIGIN
-  ? process.env.CORS_ORIGIN.split(",").map((origin) => origin.trim())
-  : [
-      "http://localhost:3000",
-      "http://localhost:3001",
-      "https://chatcv-gamma.vercel.app",
-    ];
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:3001",
+  "https://chatcv-gamma.vercel.app",
+];
+
+// Add additional origins from env if provided
+if (process.env.CORS_ORIGIN) {
+  const envOrigins = process.env.CORS_ORIGIN.split(",").map((origin) => origin.trim());
+  allowedOrigins.push(...envOrigins);
+}
 
 app.use(
   cors({
@@ -23,6 +27,11 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Log CORS info in development
+if (process.env.NODE_ENV !== "production") {
+  console.log("[CORS] Allowed origins:", allowedOrigins);
+}
 
 // Routes
 app.use("/api", subscriberRoutes);
