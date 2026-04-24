@@ -1,11 +1,15 @@
+import Hero from "@/components/Hero";
+import HowItWorks from "@/components/HowItWorks";
+import Features from "@/components/Features";
+import CTA from "@/components/CTA";
+
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1 className="text-4xl font-bold">Welcome to ChatCV!</h1>
-      <p className="mt-4 text-lg text-gray-600">
-        Revolutionize your resume with AI-powered insights and personalized
-        recommendations.
-      </p>
+    <main className="bg-black min-h-screen">
+      <Hero />
+      <HowItWorks />
+      <Features />
+      <CTA />
     </main>
   );
 }

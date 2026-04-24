@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageSquare, Rocket, AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
+import { MessageSquare, Rocket, AlertCircle, CheckCircle2, Loader2, ArrowLeft } from "lucide-react";
+// Ensure this path matches your project structure
 import { subscribeToNewsletter } from "@/lib/api";
 
 type SubmissionState = "idle" | "loading" | "success" | "error";
@@ -36,7 +37,8 @@ export default function ChatCVWaitlist() {
         setSubmissionState("success");
         setSuccessMessage(response.message);
         setEmail("");
-        // Reset form after 5 seconds
+        
+        // Auto-reset after 5 seconds to allow for UX recovery
         setTimeout(() => {
           setSubmissionState("idle");
           setSuccessMessage("");
@@ -60,23 +62,24 @@ export default function ChatCVWaitlist() {
   const isLoading = submissionState === "loading";
 
   return (
-    <main className="relative min-h-screen w-full flex items-center justify-center bg-[#050505] text-white overflow-hidden p-6 play-font">
-      {/* Animated Background Blobs */}
-      <div className="absolute inset-0 z-0">
+    <main className="relative min-h-screen w-full flex items-center justify-center bg-[#050505] text-white overflow-hidden p-6 pt-36 pb-20 font-sans">
+      
+      {/* Dynamic Animated Background Blobs */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
         <motion.div
           animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3],
+            scale: isLoading ? [1, 1.05, 1] : [1, 1.2, 1],
+            opacity: isLoading ? 0.4 : [0.3, 0.5, 0.3],
           }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: isLoading ? 2 : 8, repeat: Infinity, ease: "easeInOut" }}
           className="absolute top-1/4 -left-20 w-96 h-96 bg-[#00ff9c]/10 rounded-full blur-[120px]"
         />
         <motion.div
           animate={{
-            scale: [1.2, 1, 1.2],
-            opacity: [0.2, 0.4, 0.2],
+            scale: isLoading ? [1.05, 1, 1.05] : [1.2, 1, 1.2],
+            opacity: isLoading ? 0.3 : [0.2, 0.4, 0.2],
           }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: isLoading ? 2 : 10, repeat: Infinity, ease: "easeInOut" }}
           className="absolute bottom-1/4 -right-20 w-96 h-96 bg-[#c1ff23]/10 rounded-full blur-[120px]"
         />
       </div>
@@ -88,68 +91,82 @@ export default function ChatCVWaitlist() {
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         className="relative z-10 w-full max-w-lg"
       >
-        <div className="bg-zinc-900/40 backdrop-blur-2xl border border-zinc-800 p-8 md:p-12 rounded-[2.5rem] shadow-2xl text-center">
+        <div className="bg-zinc-900/40 backdrop-blur-3xl border border-white/5 p-8 md:p-12 rounded-[2.5rem] shadow-[0_0_50px_-12px_rgba(0,0,0,0.5)] text-center relative overflow-hidden">
+          
+          {/* Subtle Inner Glow */}
+          <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-transparent via-[#00ff9c]/20 to-transparent" />
+
           <AnimatePresence mode="wait">
             {submissionState === "success" ? (
               <motion.div
                 key="success"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                className="py-8"
+                initial={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
+                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="py-6"
               >
-                <div className="mb-8 inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-[#00ff9c] to-[#c1ff23] p-px">
-                  <div className="w-full h-full bg-[#050505] rounded-[15px] flex items-center justify-center">
-                    <CheckCircle2 className="w-8 h-8 text-[#00ff9c]" />
+                <div className="mb-8 inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-linear-to-br from-[#00ff9c] to-[#c1ff23] p-px shadow-[0_0_30px_rgba(0,255,156,0.2)]">
+                  <div className="w-full h-full bg-[#050505] rounded-[23px] flex items-center justify-center">
+                    <CheckCircle2 className="w-10 h-10 text-[#00ff9c]" />
                   </div>
                 </div>
 
-                <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-white">
-                  You&apos;re on the list! 🎉
+                <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-4 text-white">
+                  You&apos;re on the list!
                 </h2>
 
-                <p className="text-zinc-400 text-lg mb-6 leading-relaxed">
-                  {successMessage}
+                <p className="text-zinc-400 text-lg mb-8 leading-relaxed max-w-xs mx-auto">
+                  {successMessage || "We've reserved your spot in the future of career building."}
                 </p>
 
-                <p className="text-zinc-500 text-sm">
-                  We&apos;ll send you updates when ChatCV launches. Stay tuned!
-                </p>
+                <button 
+                  onClick={() => setSubmissionState("idle")}
+                  className="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-[#00ff9c] transition-colors"
+                >
+                  <ArrowLeft size={14} /> Back to form
+                </button>
               </motion.div>
             ) : (
-              <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                {/* Branding / Icon */}
-                <div className="mb-8 inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-[#00ff9c] to-[#c1ff23] p-px">
-                  <div className="w-full h-full bg-[#050505] rounded-[15px] flex items-center justify-center">
-                    <MessageSquare className="w-6 h-6" />
+              <motion.div 
+                key="form" 
+                initial={{ opacity: 0 }} 
+                animate={{ opacity: 1 }} 
+                exit={{ opacity: 0 }}
+              >
+                {/* Branding Icon */}
+                <div className="mb-8 inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-linear-to-br from-[#00ff9c] to-[#c1ff23] p-px">
+                  <div className="w-full h-full bg-[#050505] rounded-[15px] flex items-center justify-center group">
+                    <MessageSquare className="w-6 h-6 text-white group-hover:text-[#00ff9c] transition-colors" />
                   </div>
                 </div>
 
-                <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 bg-gradient-to-b from-white to-zinc-400 bg-clip-text text-transparent">
-                  Build Your Resume by Chatting
+                <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-4 bg-linear-to-b from-white to-zinc-500 bg-clip-text text-transparent leading-tight">
+                  Build Your Resume <br /> by Chatting
                 </h1>
 
                 <p className="text-zinc-400 text-lg mb-10 leading-relaxed">
-                  Join early users and get access to ChatCV <br className="hidden md:block" /> when we launch.
+                  Join early users and get exclusive access <br className="hidden md:block" /> to ChatCV when we launch.
                 </p>
 
-                {/* Error Message */}
+                {/* Error Logic */}
                 <AnimatePresence>
                   {errorState && (
                     <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="mb-6 p-4 rounded-xl bg-red-950/30 border border-red-800/50 flex items-start gap-3"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="mb-6 overflow-hidden"
                     >
-                      <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-                      <div className="text-left">
-                        <p className="text-red-200 text-sm font-medium">{errorState.message}</p>
-                        {errorState.code === "RATE_LIMIT_EXCEEDED" && (
-                          <p className="text-red-300/70 text-xs mt-1">
-                            You can subscribe 5 times per 24 hours from this device.
-                          </p>
-                        )}
+                      <div className="p-4 rounded-2xl bg-red-500/5 border border-red-500/20 flex items-start gap-3 text-left">
+                        <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                        <div>
+                          <p className="text-red-200 text-sm font-semibold">{errorState.message}</p>
+                          {errorState.code === "RATE_LIMIT_EXCEEDED" && (
+                            <p className="text-red-400/60 text-[11px] mt-1">
+                              Security limit: 5 attempts per 24 hours.
+                            </p>
+                          )}
+                        </div>
                       </div>
                     </motion.div>
                   )}
@@ -167,42 +184,45 @@ export default function ChatCVWaitlist() {
                         setErrorState(null);
                       }}
                       disabled={isLoading}
-                      className="w-full bg-zinc-950 border border-zinc-800 rounded-2xl px-6 py-4 outline-none transition-all duration-300 focus:border-[#00ff9c] focus:ring-1 focus:ring-[#00ff9c]/50 placeholder:text-zinc-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full bg-zinc-950/50 border border-zinc-800 rounded-2xl px-6 py-4 outline-none transition-all duration-300 focus:border-[#00ff9c] focus:ring-1 focus:ring-[#00ff9c]/50 placeholder:text-zinc-700 disabled:opacity-50"
                     />
                   </div>
 
                   <motion.button
-                    whileHover={{ scale: isLoading ? 1 : 1.02, boxShadow: isLoading ? "none" : "0 0 25px rgba(0, 255, 156, 0.3)" }}
-                    whileTap={{ scale: isLoading ? 1 : 0.98 }}
+                    whileHover={isLoading ? {} : { scale: 1.02, boxShadow: "0 0 30px rgba(0, 255, 156, 0.2)" }}
+                    whileTap={isLoading ? {} : { scale: 0.98 }}
                     type="submit"
                     disabled={isLoading}
-                    className="w-full py-4 rounded-2xl font-bold text-black bg-gradient-to-r from-[#00ff9c] to-[#c1ff23] transition-all duration-300 shadow-[0_0_15px_rgba(0,255,156,0.1)] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    className="w-full py-4 rounded-2xl font-black text-black bg-linear-to-r from-[#00ff9c] to-[#c1ff23] transition-all duration-500 disabled:opacity-50 flex items-center justify-center gap-3"
                   >
                     {isLoading ? (
                       <>
                         <Loader2 className="w-5 h-5 animate-spin" />
-                        <span>Joining...</span>
+                        <span>Reserving Spot...</span>
                       </>
                     ) : (
                       <>
                         <span>Join Waitlist</span>
-                        <Rocket className="w-5 h-5" />
+                        <Rocket className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                       </>
                     )}
                   </motion.button>
                 </form>
 
-                <p className="mt-6 text-zinc-500 text-sm">No spam. Only important updates.</p>
+                <p className="mt-8 text-zinc-600 text-xs font-medium tracking-wide">
+                  NO SPAM • EARLY BIRD ACCESS • ZERO STRESS
+                </p>
               </motion.div>
             )}
           </AnimatePresence>
         </div>
       </motion.div>
 
-      {/* Subtle Footer */}
-      <div className="absolute bottom-8 left-0 right-0 text-center z-10">
-        <p className="text-zinc-700 text-xs tracking-widest uppercase font-medium">
-          Powered by ChatCV AI
+      {/* Footer Branding */}
+      <div className="absolute bottom-8 left-0 right-0 flex flex-col items-center gap-2 z-10">
+        <div className="h-px w-12 bg-zinc-800 mb-2" />
+        <p className="text-zinc-600 text-[10px] tracking-[0.2em] uppercase font-bold">
+          Powered by ChatCV Engine
         </p>
       </div>
     </main>
