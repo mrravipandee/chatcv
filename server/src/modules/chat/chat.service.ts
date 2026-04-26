@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { User } from "../auth/models/user.model";
 import { Resume } from "../resume/models/resume.model";
@@ -9,7 +10,8 @@ const genAI = new GoogleGenerativeAI(
 
 export const sendChatMessageService = async (
   userId: string,
-  message: string
+  message: string,
+  resumeId?: string
 ) => {
   const user = await User.findById(userId);
 
@@ -19,36 +21,56 @@ export const sendChatMessageService = async (
     user.membership === "free" &&
     user.freeChatUsed === true
   ) {
-    throw new Error("Free chat limit used. Upgrade to premium.");
+    throw new Error("Free chat used. Upgrade to premium.");
+  }
+
+  let existingResume = null;
+
+  if (resumeId) {
+    if (!mongoose.Types.ObjectId.isValid(resumeId)) {
+      throw new Error("Invalid resume id");
+    }
+
+    existingResume = await Resume.findOne({
+      _id: resumeId,
+      userId,
+    });
+
+    if (!existingResume) {
+      throw new Error("Resume not found");
+    }
   }
 
   const model = genAI.getGenerativeModel({
     model: "gemini-3.1-pro-preview",
   });
 
-  const prompt = buildResumePrompt(message);
+  const prompt = buildResumePrompt(
+    message,
+    existingResume?.data
+  );
 
   const result = await model.generateContent(prompt);
 
   const text = result.response.text();
 
-  let parsed;
+  let parsed = JSON.parse(text);
 
-  try {
-    parsed = JSON.parse(text);
-  } catch {
-    throw new Error("AI parsing failed");
+  let resume;
+
+  if (existingResume) {
+    existingResume.data = parsed.resumeData;
+    await existingResume.save();
+    resume = existingResume;
+  } else {
+    resume = await Resume.create({
+      userId,
+      title:
+        parsed.resumeData.role || "My Resume",
+      data: parsed.resumeData,
+    });
   }
 
-  // Save Resume
-  const resume = await Resume.create({
-    userId,
-    title:
-      parsed.resumeData?.role || "My Resume",
-    data: parsed.resumeData,
-  });
-
-  // consume free chat
   if (
     user.membership === "free" &&
     user.freeChatUsed === false
