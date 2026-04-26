@@ -3,6 +3,7 @@ import cors from "cors";
 import subscriberRoutes from "./modules/subscriber/subscriber.routes";
 import authRoutes from "./modules/auth/auth.routes";
 import chatRoutes from "./modules/chat/chat.routes";
+import resumeRoutes from "./modules/resume/resume.routes";
 
 export const app = express();
 
@@ -45,6 +46,7 @@ if (process.env.NODE_ENV !== "production") {
 app.use("/api", subscriberRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/chat", chatRoutes);
+app.use("/api/resume", resumeRoutes);
 
 app.get("/health", (req: Request, res: Response) => {
   res.status(200).json({
