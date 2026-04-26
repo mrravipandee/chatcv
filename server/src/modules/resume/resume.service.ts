@@ -1,5 +1,6 @@
 import { Resume } from "./models/resume.model";
 import mongoose from "mongoose";
+import { UpdateResumeInput } from "./resume.validation";
 
 export const getMyResumesService = async (
   userId: string
@@ -29,4 +30,33 @@ export const getResumeByIdService = async (
   }
 
   return resume;
+};
+
+export const updateResumeService = async (
+  userId: string,
+  resumeId: string,
+  payload: UpdateResumeInput
+) => {
+  if (!mongoose.Types.ObjectId.isValid(resumeId)) {
+    throw new Error("Invalid resume id");
+  }
+
+  const updated = await Resume.findOneAndUpdate(
+    {
+      _id: resumeId,
+      userId,
+    },
+    {
+      $set: payload,
+    },
+    {
+      new: true,
+    }
+  );
+
+  if (!updated) {
+    throw new Error("Resume not found");
+  }
+
+  return updated;
 };
