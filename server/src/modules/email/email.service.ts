@@ -131,3 +131,22 @@ export const sendWelcomeEmail = async (to: string) => {
         throw error;
     }
 };
+
+export const sendEmail = async (to: string, subject: string, html: string) => {
+    try {
+        console.log(`[EMAIL] Attempting to send email to: ${to}`);
+        console.log(`[EMAIL] Using sender: ${process.env.EMAIL_USER}`);
+
+        const result = await transporter.sendMail({
+            from: `"ChatCV Team 🚀" <${process.env.EMAIL_USER}>`,
+            to,
+            subject,
+            html,
+        });
+
+        console.log(`[EMAIL] ✅ Email sent successfully to ${to}`, result.messageId);
+    } catch (error) {
+        console.error(`[EMAIL] ❌ Failed to send email to ${to}:`, error);
+        throw error;
+    }
+};
