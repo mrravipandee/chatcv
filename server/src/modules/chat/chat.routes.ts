@@ -1,14 +1,9 @@
 import { Router } from "express";
 import { authMiddleware } from "../../middlewares/auth.middleware";
+import { sendChatController } from "./chat.controller";
 
 const router = Router();
 
-router.post("/message", authMiddleware, (req: any, res) => {
-  res.status(200).json({
-    success: true,
-    message: "Chat route protected successfully",
-    user: req.user,
-  });
-});
+router.post("/message", authMiddleware, sendChatController);
 
 export default router;
