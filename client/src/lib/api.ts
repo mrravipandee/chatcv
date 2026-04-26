@@ -92,10 +92,61 @@ export interface CurrentUser {
 export async function getCurrentUser(
   token: string
 ): Promise<ApiResponse<CurrentUser>> {
-  return fetchApi<CurrentUser>("/api/v1/auth/me", {
+  return fetchApi<CurrentUser>("/api/auth/me", {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
+}
+
+export interface RegisterPayload {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
+export interface VerifyOtpPayload {
+  email: string;
+  otp: string;
+}
+
+export interface LoginPayload {
+  email: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  token: string;
+}
+
+export async function registerUser(
+  payload: RegisterPayload
+) {
+  return fetchApi("/api/auth/register", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function verifyOtp(
+  payload: VerifyOtpPayload
+) {
+  return fetchApi("/api/auth/verify-otp", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function loginUser(
+  payload: LoginPayload
+) {
+  return fetchApi<LoginResponse>(
+    "/api/auth/login",
+    {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }
+  );
 }
