@@ -80,3 +80,22 @@ export async function subscribeToNewsletter(
     body: JSON.stringify({ email }),
   });
 }
+
+export interface CurrentUser {
+  _id: string;
+  name?: string;
+  email: string;
+  membership: "free" | "premium";
+  freeChatUsed: boolean;
+}
+
+export async function getCurrentUser(
+  token: string
+): Promise<ApiResponse<CurrentUser>> {
+  return fetchApi<CurrentUser>("/api/v1/auth/me", {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
