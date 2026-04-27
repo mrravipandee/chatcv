@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
-import Sidebar from "@/components/dashboard/Sidebar";
+import { getCurrentUser } from "@/lib/api";
 
 export default function DashboardLayout({
   children,
@@ -11,46 +10,43 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
+  const [checking, setChecking] = useState(true);
 
-  const [checking, setChecking] =
-    useState(true);
-
-  // Protect Route
   useEffect(() => {
-    const token =
-      localStorage.getItem("token");
+    const validateSession = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        router.replace("/login");
+        return;
+      }
 
-    if (!token) {
-      router.replace("/login");
-      return;
-    }
+      const res = await getCurrentUser(token);
+      if (!res.success) {
+        localStorage.removeItem("token");
+        router.replace("/login");
+        return;
+      }
 
-    setChecking(false);
+      setChecking(false);
+    };
+
+    validateSession();
   }, [router]);
 
-  // Loading Screen
-  if (checking) {
-    return (
-      <main className="flex min-h-screen items-center justify-center bg-black text-white">
-        <div className="text-center">
-          <div className="mx-auto mb-4 h-10 w-10 animate-spin rounded-full border-2 border-[#00ff9c] border-t-transparent" />
-
-          <p className="text-sm text-gray-400">
-            Checking session...
-          </p>
-        </div>
-      </main>
-    );
-  }
-
-  // Protected Layout
   return (
-    <main className="flex min-h-screen bg-black text-white">
-      <Sidebar />
+    <main className="relative min-h-screen bg-black text-white">
+      {/* ✅ children always rendered — state is never destroyed */}
+      {children}
 
-      <section className="flex-1 overflow-hidden">
-        {children}
-      </section>
+      {/* ✅ Overlay spinner on top while checking, then disappears */}
+      {checking && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black">
+          <div className="text-center">
+            <div className="mx-auto mb-4 h-10 w-10 animate-spin rounded-full border-2 border-[#00ff9c] border-t-transparent" />
+            <p className="text-sm text-gray-400">Checking session...</p>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
