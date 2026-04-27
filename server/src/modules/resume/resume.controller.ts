@@ -1,9 +1,31 @@
 import { Response } from "express";
 import { AuthRequest } from "../../middlewares/auth.middleware";
-import { getMyResumesService } from "./resume.service";
+import { createResumeService, getMyResumesService } from "./resume.service";
 import { getResumeByIdService } from "./resume.service";
 import { updateResumeSchema } from "./resume.validation";
 import { updateResumeService } from "./resume.service";
+
+export const createResumeController = async (
+  req: AuthRequest,
+  res: Response
+) => {
+  try {
+    const resume = await createResumeService(
+      req.user.id
+    );
+
+    return res.status(201).json({
+      success: true,
+      message: "Resume created successfully",
+      data: resume,
+    });
+  } catch (error: any) {
+    return res.status(400).json({
+      success: false,
+      message: "Failed to create resume",
+    });
+  }
+};
 
 export const getMyResumesController = async (
   req: AuthRequest,

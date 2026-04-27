@@ -123,19 +123,33 @@ export const sendChatMessageService = async (
   // -----------------------------
   let resume;
 
+  // Create / Update Resume
   if (existingResume) {
-    existingResume.data = parsed.resumeData;
+    // ✅ Spread merge — only override fields Gemini actually returned
+    const existingData = (existingResume.data as Record<string, any>) || {};
+    const newData = parsed.resumeData as Record<string, any>;
 
-    if (
-      parsed.resumeData?.role &&
-      existingResume.title === "My Resume"
-    ) {
-      existingResume.title =
-        parsed.resumeData.role;
+    existingResume.data = {
+      ...existingData,
+      ...newData,
+      // For arrays: append new items, don't replace
+      skills: newData.skills?.length
+        ? [...new Set([...(existingData.skills || []), ...newData.skills])]
+        : existingData.skills || [],
+      experience: newData.experience?.length
+        ? newData.experience
+        : existingData.experience || [],
+      projects: newData.projects?.length
+        ? newData.projects
+        : existingData.projects || [],
+    };
+
+    if (parsed.resumeData?.role && existingResume.title === "My Resume") {
+      existingResume.title = parsed.resumeData.role;
     }
 
+    existingResume.markModified("data"); // ← needed for Mongoose nested object changes
     await existingResume.save();
-
     resume = existingResume;
   } else {
     resume = await Resume.create({

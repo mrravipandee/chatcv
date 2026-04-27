@@ -2,6 +2,28 @@ import { Resume } from "./models/resume.model";
 import mongoose from "mongoose";
 import { UpdateResumeInput } from "./resume.validation";
 
+export const createResumeService = async (
+  userId: string
+) => {
+  const resume = await Resume.create({
+    userId,
+    title: "My Resume",
+    data: {
+      name: "",
+      role: "",
+      email: "",
+      phone: "",
+      location: "",
+      summary: "",
+      skills: [],
+      experience: [],
+      projects: [],
+    },
+  });
+
+  return resume;
+};
+
 export const getMyResumesService = async (
   userId: string
 ) => {
