@@ -294,7 +294,7 @@ export default function DashboardPage() {
                     <ChatPanel messages={messages} loading={loading} onSend={handleSendMessage} />
                 </div>
                 <div className="min-w-0 overflow-hidden">
-                    <ResumePreview resumeData={resumeData} />
+                    <ResumePreview resumeData={resumeData} resumeId={resumeId} />
                 </div>
             </div>
         </>
