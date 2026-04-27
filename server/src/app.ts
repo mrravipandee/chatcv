@@ -4,6 +4,7 @@ import subscriberRoutes from "./modules/subscriber/subscriber.routes";
 import authRoutes from "./modules/auth/auth.routes";
 import chatRoutes from "./modules/chat/chat.routes";
 import resumeRoutes from "./modules/resume/resume.routes";
+import latexRoutes from "./latex/latex.routes"; // ← ADD
 
 export const app = express();
 
@@ -47,12 +48,10 @@ app.use("/api", subscriberRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/resume", resumeRoutes);
+app.use("/api/latex", latexRoutes); // ← ADD
 
 app.get("/health", (req: Request, res: Response) => {
-  res.status(200).json({
-    status: "healthy",
-    timestamp: new Date().toISOString(),
-  });
+  res.status(200).json({ status: "healthy", timestamp: new Date().toISOString() });
 });
 
 app.use((req: Request, res: Response) => {
