@@ -50,30 +50,63 @@ export default function LoginPage() {
 
     setError("");
 
-    setLoading(true);
-
-    const res =
-      await loginUser(form);
-
-    setLoading(false);
-
-    if (!res.success) {
+    if (
+      !form.email ||
+      !form.password
+    ) {
       setError(
-        res.message ||
-          "Login failed."
+        "Please fill all fields."
       );
       return;
     }
 
-    // Save Token
-    localStorage.setItem(
-      "token",
-      res.data?.token || ""
-    );
+    try {
+      setLoading(true);
 
-    router.push(
-      "/dashboard"
-    );
+      const res: any =
+        await loginUser(form);
+
+      // login failed
+      if (!res.success) {
+        setError(
+          res.message ||
+            "Login failed."
+        );
+        return;
+      }
+
+      // ===============================
+      // Save token (supports both formats)
+      // ===============================
+      const token =
+        res.token ||
+        res.data?.token ||
+        "";
+
+      if (!token) {
+        setError(
+          "Token not found."
+        );
+        return;
+      }
+
+      localStorage.setItem(
+        "token",
+        token
+      );
+
+      // Redirect
+      router.push(
+        "/dashboard"
+      );
+    } catch (err: any) {
+      setError(
+        err.message ||
+          "Something went wrong."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
