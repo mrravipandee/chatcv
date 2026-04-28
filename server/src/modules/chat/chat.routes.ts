@@ -1,10 +1,10 @@
-import { Router } from "express";
-import { authMiddleware } from "../../middlewares/auth.middleware";
-import { getChatHistoryController, sendChatController } from "./chat.controller";
+import { Router } from 'express';
+import { authMiddleware } from '../../middlewares/auth.middleware';
+import { getChatHistoryController, sendChatController } from './chat.controller';
 
 const router = Router();
 
-router.get("/:resumeId/history", authMiddleware, getChatHistoryController);
-router.post("/message", authMiddleware, sendChatController);
+router.get('/:resumeId/history', authMiddleware, getChatHistoryController);
+router.post('/message', authMiddleware, sendChatController);
 
 export default router;
