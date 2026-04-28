@@ -12,6 +12,11 @@ export interface IProject {
   description: string;
 }
 
+export interface ILink {
+  name: string;   // e.g., "GitHub", "LinkedIn", "Portfolio"
+  url: string;    // full URL
+}
+
 export interface IResumeData {
   name: string;
   role: string;
@@ -22,6 +27,7 @@ export interface IResumeData {
   skills: string[];
   experience: IExperience[];
   projects: IProject[];
+  links: ILink[];
 }
 
 export interface IResume extends Document {
@@ -44,6 +50,11 @@ const ProjectSchema = new Schema<IProject>({
   description: { type: String, default: '' },
 });
 
+const LinkSchema = new Schema<ILink>({
+  name: { type: String, default: '' },
+  url: { type: String, default: '' },
+});
+
 const ResumeDataSchema = new Schema<IResumeData>({
   name: { type: String, default: '' },
   role: { type: String, default: '' },
@@ -54,6 +65,7 @@ const ResumeDataSchema = new Schema<IResumeData>({
   skills: { type: [String], default: [] },
   experience: { type: [ExperienceSchema], default: [] },
   projects: { type: [ProjectSchema], default: [] },
+  links: { type: [LinkSchema], default: [] },
 });
 
 const ResumeSchema = new Schema<IResume>(

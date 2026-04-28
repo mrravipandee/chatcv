@@ -1,29 +1,48 @@
 function escape(text: string): string {
-    if (!text) return "";
-    return text
-        .replace(/\\/g, "\\textbackslash{}")
-        .replace(/&/g, "\\&")
-        .replace(/%/g, "\\%")
-        .replace(/\$/g, "\\$")
-        .replace(/#/g, "\\#")
-        .replace(/_/g, "\\_")
-        .replace(/\{/g, "\\{")
-        .replace(/\}/g, "\\}")
-        .replace(/~/g, "\\textasciitilde{}")
-        .replace(/\^/g, "\\textasciicircum{}");
+  if (!text) return "";
+  return text
+    .replace(/\\/g, "\\textbackslash{}")
+    .replace(/&/g, "\\&")
+    .replace(/%/g, "\\%")
+    .replace(/\$/g, "\\$")
+    .replace(/#/g, "\\#")
+    .replace(/_/g, "\\_")
+    .replace(/\{/g, "\\{")
+    .replace(/\}/g, "\\}")
+    .replace(/~/g, "\\textasciitilde{}")
+    .replace(/\^/g, "\\textasciicircum{}");
 }
 
 function e(val: any): string {
-    if (val === null || val === undefined) return "";
-    return escape(String(val));
+  if (val === null || val === undefined) return "";
+  return escape(String(val));
 }
 
 // ─── Section builders ────────────────────────────────────────────────────────
 
+function buildLinksSection(links: Array<{ name: string; url: string }>): string {
+  if (!links || links.length === 0) return "";
+
+  const linkItems = links
+    .map((link) => {
+      const name = e(link.name);
+      const url = e(link.url);
+      // Ensure URL has protocol (add https:// if missing)
+      const fullUrl = url.match(/^https?:\/\//) ? url : `https://${url}`;
+      return `    \\resumeItem{\\href{${fullUrl}}{\\underline{${name}}}}`;
+    })
+    .join("\n");
+
+  return `\\section{Links}
+  \\resumeItemListStart
+${linkItems}
+  \\resumeItemListEnd`;
+}
+
 function buildSkillsSection(skills: string[]): string {
-    if (!skills || skills.length === 0) return "";
-    const skillList = skills.map((s) => e(s)).join(", ");
-    return `\\section{Technical Skills}
+  if (!skills || skills.length === 0) return "";
+  const skillList = skills.map((s) => e(s)).join(", ");
+  return `\\section{Technical Skills}
   \\begin{itemize}[leftmargin=0.15in, label={}]
     \\small{\\item{
       \\textbf{Skills}{: ${skillList}}
@@ -32,70 +51,69 @@ function buildSkillsSection(skills: string[]): string {
 }
 
 function buildExperienceSection(
-    experience: Array<{
-        title?: string;
-        company?: string;
-        year?: string;
-        description?: string;
-    }>
+  experience: Array<{
+    title?: string;
+    company?: string;
+    year?: string;
+    description?: string;
+  }>
 ): string {
-    if (!experience || experience.length === 0) return "";
+  if (!experience || experience.length === 0) return "";
 
-    const items = experience.map((exp) => {
-        const company = e(exp.company || "");
-        const title = e(exp.title || "");
-        const year = e(exp.year || "");
+  const items = experience.map((exp) => {
+    const company = e(exp.company || "");
+    const title = e(exp.title || "");
+    const year = e(exp.year || "");
 
-        // Convert description into bullet points (split by ". " or newlines)
-        const rawDesc = exp.description || "";
-        const bullets = rawDesc
-            .split(/\.\s+|\n/)
-            .map((b) => b.trim())
-            .filter((b) => b.length > 0);
+    const rawDesc = exp.description || "";
+    const bullets = rawDesc
+      .split(/\.\s+|\n/)
+      .map((b) => b.trim())
+      .filter((b) => b.length > 0);
 
-        const bulletItems =
-            bullets.length > 0
-                ? `
+    const bulletItems =
+      bullets.length > 0
+        ? `
       \\resumeItemListStart
 ${bullets.map((b) => `        \\resumeItem{${e(b)}}`).join("\n")}
       \\resumeItemListEnd`
-                : "";
+        : "";
 
-        return `    \\resumeSubheading
+    return `    \\resumeSubheading
       {${company}}{${year}}
       {${title}}{}${bulletItems}`;
-    });
+  });
 
-    return `\\section{Experience}
+  return `\\section{Experience}
   \\resumeSubHeadingListStart
 ${items.join("\n")}
   \\resumeSubHeadingListEnd`;
 }
 
 function buildProjectsSection(
-    projects: Array<{
-        name?: string;
-        description?: string;
-    }>
+  projects: Array<{
+    name?: string;
+    description?: string;
+  }>
 ): string {
-    if (!projects || projects.length === 0) return "";
+  if (!projects || projects.length === 0) return "";
 
-    const items = projects.map((proj) => {
-        const name = e(proj.name || "Project");
-        const desc = e(proj.description || "");
+  const items = projects.map((proj) => {
+    const name = e(proj.name || "Project");
+    const desc = e(proj.description || "");
 
-        const descBlock = desc
-            ? `
+    const descBlock = desc
+      ? `
       \\resumeItemListStart
         \\resumeItem{${desc}}
       \\resumeItemListEnd`
-            : "";
+      : "";
 
-        return `    \\resumeProjectHeading
+    return `    \\resumeProjectHeading
       {\\textbf{${name}}}{}${descBlock}`;
-    });
+  });
 
-    return `\\section{Projects}
+  return `\\section{Projects}
   \\vspace{-5pt}
   \\resumeSubHeadingListStart
 ${items.join("\n")}
@@ -105,43 +123,44 @@ ${items.join("\n")}
 // ─── Main builder ────────────────────────────────────────────────────────────
 
 export function buildLatex(resumeData: Record<string, any>): string {
-    const name = e(resumeData.name || "Your Name");
-    const role = e(resumeData.role || "");
-    const email = resumeData.email || "";
-    const phone = e(resumeData.phone || "");
-    const location = e(resumeData.location || "");
-    const summary = e(resumeData.summary || "");
+  const name = e(resumeData.name || "Your Name");
+  const role = e(resumeData.role || "");
+  const email = resumeData.email || "";
+  const phone = e(resumeData.phone || "");
+  const location = e(resumeData.location || "");
+  const summary = e(resumeData.summary || "");
 
-    // Contact line
-    const contactParts: string[] = [];
-    if (phone) contactParts.push(phone);
-    if (email)
-        contactParts.push(
-            `\\href{mailto:${email}}{\\underline{${e(email)}}}`
-        );
-    if (location) contactParts.push(location);
-    const contactLine = contactParts.join(" $|$ ");
+  // Contact line
+  const contactParts: string[] = [];
+  if (phone) contactParts.push(phone);
+  if (email)
+    contactParts.push(`\\href{mailto:${email}}{\\underline{${e(email)}}}`);
+  if (location) contactParts.push(location);
+  const contactLine = contactParts.join(" $|$ ");
 
-    // Sections
-    const sections: string[] = [];
+  // Sections (in desired order)
+  const sections: string[] = [];
 
-    if (summary) {
-        sections.push(`\\section{Summary}
+  if (summary) {
+    sections.push(`\\section{Summary}
   \\small{${summary}}`);
-    }
+  }
 
-    const expSection = buildExperienceSection(resumeData.experience || []);
-    if (expSection) sections.push(expSection);
+  const expSection = buildExperienceSection(resumeData.experience || []);
+  if (expSection) sections.push(expSection);
 
-    const projSection = buildProjectsSection(resumeData.projects || []);
-    if (projSection) sections.push(projSection);
+  const projSection = buildProjectsSection(resumeData.projects || []);
+  if (projSection) sections.push(projSection);
 
-    const skillsSection = buildSkillsSection(resumeData.skills || []);
-    if (skillsSection) sections.push(skillsSection);
+  const skillsSection = buildSkillsSection(resumeData.skills || []);
+  if (skillsSection) sections.push(skillsSection);
 
-    const sectionsStr = sections.join("\n\n");
+  const linksSection = buildLinksSection(resumeData.links || []);
+  if (linksSection) sections.push(linksSection);
 
-    return `\\documentclass[letterpaper,11pt]{article}
+  const sectionsStr = sections.join("\n\n");
+
+  return `\\documentclass[letterpaper,11pt]{article}
 
 \\usepackage{latexsym}
 \\usepackage[empty]{fullpage}

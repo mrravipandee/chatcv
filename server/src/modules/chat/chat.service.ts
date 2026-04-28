@@ -21,6 +21,7 @@ const EMPTY_RESUME: IResumeData = {
   skills: [],
   experience: [],
   projects: [],
+  links: [],
 };
 
 function isValidString(value: unknown): value is string {
@@ -78,6 +79,7 @@ function mergeResumeData(
     projects: incoming.projects
       ? mergeArrays(oldData.projects, incoming.projects, replaceArrays)
       : oldData.projects,
+    links: incoming.links ? mergeArrays(oldData.links, incoming.links, replaceArrays) : oldData.links,
   };
 }
 
