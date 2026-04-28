@@ -1,5 +1,7 @@
+import { ResumeData, Resume, ChatMessage, Experience, Project } from '@/types/resume';
+
 // ==============================
-// Shared Types
+// Shared API Types
 // ==============================
 
 export interface ApiError {
@@ -51,33 +53,6 @@ export interface LoginResponse {
   token: string;
 }
 
-// Resume Data Structure (matching frontend preview)
-export interface ResumeExperience {
-  title?: string;
-  company?: string;
-  year?: string;
-  description?: string;
-}
-
-export interface ResumeProject {
-  name?: string;
-  description?: string;
-}
-
-export interface ResumeData {
-  name?: string;
-  fullName?: string;
-  role?: string;
-  title?: string;
-  email?: string;
-  phone?: string;
-  location?: string;
-  summary?: string;
-  skills?: (string | { name: string })[];
-  experience?: ResumeExperience[];
-  projects?: ResumeProject[];
-}
-
 export interface ChatPayload {
   message: string;
   resumeId?: string;
@@ -87,14 +62,6 @@ export interface ChatResponse {
   reply: string;
   resumeId: string;
   resumeData: ResumeData;
-}
-
-export interface Resume {
-  _id: string;
-  title: string;
-  data: ResumeData;
-  createdAt: string;
-  updatedAt: string;
 }
 
 // ==============================
@@ -117,7 +84,7 @@ async function fetchApi<T>(
       const url = `${API_BASE_URL}${endpoint}`;
       const response = await fetch(url, {
         ...options,
-        signal: withTimeout(30000), // 30 seconds timeout
+        signal: withTimeout(30000),
         headers: {
           "Content-Type": "application/json",
           ...options.headers,
@@ -126,13 +93,12 @@ async function fetchApi<T>(
 
       const data = (await response.json()) as ApiResponse<T>;
       return data;
-
     } catch (error) {
       const isTimeout = error instanceof DOMException && error.name === "TimeoutError";
 
       if (isTimeout && attempt === 1) {
         console.warn("[API] Request timed out, retrying...");
-        await new Promise((r) => setTimeout(r, 5000)); // wait 2s then retry
+        await new Promise((r) => setTimeout(r, 2000));
         continue;
       }
 
@@ -154,7 +120,6 @@ async function fetchApi<T>(
     }
   }
 
-  // Fallback (TypeScript requires this)
   return { success: false, message: "Unknown error", code: "UNKNOWN" };
 }
 
@@ -248,3 +213,6 @@ export async function createResume(
     body: JSON.stringify({}),
   });
 }
+
+// Re‑export types from @/types/resume for convenience
+export type { ResumeData, Resume, ChatMessage, Experience, Project };

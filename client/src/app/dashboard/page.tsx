@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import Sidebar from "@/components/dashboard/Sidebar";
-import Topbar from "@/components/dashboard/Topbar";
-import ChatPanel from "@/components/dashboard/ChatPanel";
-import ResumePreview from "@/components/dashboard/ResumePreview";
+import { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Sidebar from '@/components/dashboard/Sidebar';
+import Topbar from '@/components/dashboard/Topbar';
+import ChatPanel from '@/components/dashboard/ChatPanel';
+import ResumePreview from '@/components/dashboard/ResumePreview';
 import {
     getCurrentUser,
     sendChatMessage,
@@ -13,86 +13,72 @@ import {
     createResume,
     type Resume,
     type ResumeData,
-} from "@/lib/api";
+} from '@/lib/api';
 
 interface Message {
-    role: "user" | "assistant";
+    role: 'user' | 'assistant';
     message: string;
 }
 
-function mergeResumeData(
-    existing: ResumeData | null,
-    update: Partial<ResumeData>
-): ResumeData {
-    const existingData = existing || {};
-
-    // Normalize skills to always be string[]
-    const normalizeSkills = (
-        skills?: (string | { name: string })[]
-    ): string[] =>
-        (skills || []).map((s) => (typeof s === "string" ? s : s.name)).filter(Boolean);
-
-    return {
-        ...existingData,
-        ...update,
-        skills:
-            update.skills && update.skills.length > 0
-                ? normalizeSkills(update.skills)
-                : normalizeSkills(existingData.skills),
-        experience:
-            update.experience && update.experience.length > 0
-                ? update.experience
-                : existingData.experience || [],
-        projects:
-            update.projects && update.projects.length > 0
-                ? update.projects
-                : existingData.projects || [],
-    };
-}
+const EMPTY_RESUME: ResumeData = {
+    name: '',
+    role: '',
+    email: '',
+    phone: '',
+    location: '',
+    summary: '',
+    skills: [],
+    experience: [],
+    projects: [],
+    links: [],
+};
 
 export default function DashboardPage() {
     const router = useRouter();
-    const [user, setUser] = useState({ name: "User", plan: "Free Plan" });
+    const [user, setUser] = useState({ name: 'User', plan: 'Free Plan' });
     const [messages, setMessages] = useState<Message[]>([]);
     const [resumeData, setResumeData] = useState<ResumeData | null>(null);
-    const [resumeId, setResumeId] = useState("");
+    const [resumeId, setResumeId] = useState('');
     const [loading, setLoading] = useState(false);
     const [resumes, setResumes] = useState<Resume[]>([]);
     const [loadingResumes, setLoadingResumes] = useState(false);
     const [selectingResume, setSelectingResume] = useState(false);
+    const [authChecking, setAuthChecking] = useState(true); // ← prevent flash redirects
 
-    // Add inside the useEffect init block, after loading user
+    const resumeIdRef = useRef('');
+
+    const updateResumeId = (id: string) => {
+        setResumeId(id);
+        resumeIdRef.current = id;
+        if (id) localStorage.setItem('resumeId', id);
+        else localStorage.removeItem('resumeId');
+    };
+
+    // Keep-alive ping
     useEffect(() => {
-        const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001";
-
-        // Ping every 14 minutes to prevent Render cold start
+        const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
+        fetch(`${API_BASE}/health`).catch(() => { });
         const keepAlive = setInterval(() => {
             fetch(`${API_BASE}/health`).catch(() => { });
         }, 14 * 60 * 1000);
-
-        // Also ping immediately on load to wake server early
-        fetch(`${API_BASE}/health`).catch(() => { });
-
         return () => clearInterval(keepAlive);
     }, []);
 
-    // Helper to load messages for a specific resume
-    const loadMessagesForResume = (id: string): Message[] | null => {
-        const saved = localStorage.getItem(`messages_${id}`);
-        return saved ? (JSON.parse(saved) as Message[]) : null;
-    };
-
-    // Helper to save messages for current resume
-    const saveMessages = (msgs: Message[]) => {
-        if (resumeId) {
-            localStorage.setItem(`messages_${resumeId}`, JSON.stringify(msgs));
+    const saveMessages = (msgs: Message[], idOverride?: string) => {
+        const id = idOverride ?? resumeIdRef.current;
+        if (id) {
+            localStorage.setItem(`messages_${id}`, JSON.stringify(msgs));
         } else {
-            localStorage.setItem("messages_temp", JSON.stringify(msgs));
+            localStorage.setItem('messages_temp', JSON.stringify(msgs));
         }
         setMessages(msgs);
     };
 
-    // Load resumes from API
+    const loadMessagesForResume = (id: string): Message[] | null => {
+        const saved = localStorage.getItem(`messages_${id}`);
+        return saved ? JSON.parse(saved) : null;
+    };
+
     const loadResumes = async (token: string) => {
         setLoadingResumes(true);
         try {
@@ -102,187 +88,195 @@ export default function DashboardPage() {
                 return res.data;
             }
             return [];
-        } catch (error) {
-            console.error("Error loading resumes:", error);
+        } catch {
             return [];
         } finally {
             setLoadingResumes(false);
         }
     };
 
-    // Initialize dashboard
+    // Initialize dashboard with robust auth
     useEffect(() => {
         const init = async () => {
-            const token = localStorage.getItem("token");
-            if (!token) return;
+            const token = localStorage.getItem('token');
+            console.log('[Dashboard] Token found:', !!token);
 
-            // Get user info
-            const userRes = await getCurrentUser(token);
-            if (userRes.success && userRes.data) {
-                setUser({
-                    name: userRes.data.name || "User",
-                    plan: userRes.data.membership === "premium" ? "Premium Plan" : "Free Plan",
-                });
+            if (!token) {
+                console.log('[Dashboard] No token, redirecting to login');
+                router.replace('/login');
+                return;
             }
 
-            // Load all resumes
+            // Verify token with backend
+            const userRes = await getCurrentUser(token);
+            console.log('[Dashboard] getCurrentUser response:', userRes);
+
+            if (!userRes.success) {
+                console.error('[Dashboard] Auth failed:', userRes.message);
+                localStorage.removeItem('token');
+                localStorage.removeItem('resumeId');
+                router.replace('/login');
+                return;
+            }
+
+            // Token is valid
+            setUser({
+                name: userRes.data?.name || 'User',
+                plan: userRes.data?.membership === 'premium' ? 'Premium Plan' : 'Free Plan',
+            });
+
+            // Load resumes
             const loadedResumes = await loadResumes(token);
 
-            // Check if there's a selected resume in localStorage
-            const savedResumeId = localStorage.getItem("resumeId");
+            // Restore last used resume or start fresh
+            const savedResumeId = localStorage.getItem('resumeId');
             if (savedResumeId) {
                 const found = loadedResumes.find((r) => r._id === savedResumeId);
                 if (found) {
-                    setResumeId(savedResumeId);
+                    updateResumeId(savedResumeId);
                     setResumeData(found.data);
                     const msgs = loadMessagesForResume(savedResumeId);
                     setMessages(
                         msgs || [
                             {
-                                role: "assistant",
+                                role: 'assistant',
                                 message: `📄 Welcome back to "${found.title}". What would you like to update?`,
                             },
                         ]
                     );
+                    setAuthChecking(false);
                     return;
                 }
             }
 
-            // No resume selected – start fresh
-            localStorage.removeItem("resumeId");
-            setResumeId("");
+            // No valid resume – start fresh
+            updateResumeId('');
             setResumeData(null);
-            const tempMessages = localStorage.getItem("messages_temp");
-            if (tempMessages) {
-                setMessages(JSON.parse(tempMessages));
-            } else {
-                setMessages([
-                    {
-                        role: "assistant",
-                        message: `👋 Hi ${user.name}, tell me about yourself.`,
-                    },
-                ]);
-            }
+            const tempMessages = localStorage.getItem('messages_temp');
+            setMessages(
+                tempMessages
+                    ? JSON.parse(tempMessages)
+                    : [{ role: 'assistant', message: '👋 Hi, tell me about yourself to get started.' }]
+            );
+            setAuthChecking(false);
         };
 
         init();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []); // Only once
+    }, [router]);
+
+    // Show a loading spinner while checking auth
+    if (authChecking) {
+        return (
+            <div className="flex h-screen items-center justify-center bg-black">
+                <div className="text-center">
+                    <div className="mx-auto mb-4 h-10 w-10 animate-spin rounded-full border-2 border-[#00ff9c] border-t-transparent" />
+                    <p className="text-sm text-gray-400">Authenticating...</p>
+                </div>
+            </div>
+        );
+    }
 
     // Send chat message
     const handleSendMessage = async (text: string) => {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem('token');
         if (!token) return;
 
-        const userMessage: Message = { role: "user", message: text };
+        const userMessage: Message = { role: 'user', message: text };
         const updatedMessages = [...messages, userMessage];
         saveMessages(updatedMessages);
         setLoading(true);
 
         try {
             const res = await sendChatMessage(
-                { message: text, resumeId: resumeId || undefined },
+                { message: text, resumeId: resumeIdRef.current || undefined },
                 token
             );
 
             if (res.success && res.data) {
                 const { reply, resumeId: newResumeId, resumeData: newResumeData } = res.data;
+                const aiMessage: Message = { role: 'assistant', message: reply };
 
-                // AI reply
-                const aiMessage: Message = { role: "assistant", message: reply };
-                const finalMessages = [...updatedMessages, aiMessage];
-                saveMessages(finalMessages);
+                if (newResumeId && newResumeId !== resumeIdRef.current) {
+                    updateResumeId(newResumeId);
+                    const finalMessages = [...updatedMessages, aiMessage];
+                    saveMessages(finalMessages, newResumeId);
+                    localStorage.removeItem('messages_temp');
+                    await loadResumes(token);
+                } else {
+                    const finalMessages = [...updatedMessages, aiMessage];
+                    saveMessages(finalMessages);
+                }
 
-                // ✅ Merge resume data (preserve old fields, override only provided ones)
                 if (newResumeData) {
-                    setResumeData((prev) => {
-                        const merged = mergeResumeData(prev, newResumeData);
-                        localStorage.setItem("resumeData", JSON.stringify(merged));
-                        return merged;
+                    setResumeData(newResumeData);
+                    setResumes((prev) => {
+                        const index = prev.findIndex((r) => r._id === newResumeId);
+                        if (index !== -1) {
+                            const updated = [...prev];
+                            updated[index] = { ...updated[index], data: newResumeData };
+                            return updated;
+                        }
+                        return prev;
                     });
                 }
-
-                // Handle new resume ID (first message creates a resume)
-                if (newResumeId && newResumeId !== resumeId) {
-                    setResumeId(newResumeId);
-                    localStorage.setItem("resumeId", newResumeId);
-                    // Refresh resume list to include the new one
-                    await loadResumes(token);
-                    // Move temporary messages to the new resume ID
-                    const temp = localStorage.getItem("messages_temp");
-                    if (temp && newResumeId) {
-                        localStorage.setItem(`messages_${newResumeId}`, temp);
-                        localStorage.removeItem("messages_temp");
-                    }
-                }
             } else {
+                const apiErr = res as { code?: string; message?: string };
                 const errorMsg: Message = {
-                    role: "assistant",
-                    message: res.success === false && (res as { code?: string }).code === "TIMEOUT"
-                        ? "⏳ Server is waking up (cold start). Please send your message again in a moment!"
-                        : "Sorry, something went wrong. Please try again.",
+                    role: 'assistant',
+                    message:
+                        apiErr.code === 'TIMEOUT'
+                            ? '⏳ Server is waking up. Please send your message again!'
+                            : apiErr.message || 'Something went wrong. Please try again.',
                 };
                 saveMessages([...updatedMessages, errorMsg]);
             }
-        } catch (error) {
-            console.error(error);
-            const errorMsg: Message = {
-                role: "assistant",
-                message: "Network error. Please check your connection.",
-            };
-            saveMessages([...updatedMessages, errorMsg]);
+        } catch (err) {
+            console.error(err);
+            saveMessages([
+                ...updatedMessages,
+                { role: 'assistant', message: 'Network error. Please check your connection.' },
+            ]);
         } finally {
             setLoading(false);
         }
     };
 
-    // Create new resume
     const handleCreateResume = async () => {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem('token');
         if (!token) return;
 
         setLoadingResumes(true);
         try {
             const res = await createResume(token);
             if (res.success && res.data) {
-                setResumes([res.data, ...resumes]);
-                setResumeId(res.data._id);
-                localStorage.setItem("resumeId", res.data._id);
-                setResumeData(null);
-                const freshMessages: Message[] = [
-                    {
-                        role: "assistant",
-                        message: `✨ New resume created! Tell me what you'd like to add.`,
-                    },
-                ];
-                saveMessages(freshMessages);
-                localStorage.removeItem("resumeData");
-                localStorage.removeItem(`messages_${res.data._id}`);
+                setResumes((prev) => [res.data!, ...prev]);
+                updateResumeId(res.data._id);
+                setResumeData(EMPTY_RESUME);
+                saveMessages(
+                    [{ role: 'assistant', message: '✨ New resume created! Tell me what you would like to add.' }],
+                    res.data._id
+                );
             }
         } catch (error) {
-            console.error("Error creating resume:", error);
+            console.error('Error creating resume', error);
         } finally {
             setLoadingResumes(false);
         }
     };
 
-    // Select existing resume
-    const handleSelectResume = async (selectedId: string) => {
+    const handleSelectResume = (selectedId: string) => {
         if (selectingResume) return;
         setSelectingResume(true);
 
         const selected = resumes.find((r) => r._id === selectedId);
         if (selected) {
-            setResumeId(selectedId);
-            localStorage.setItem("resumeId", selectedId);
+            updateResumeId(selectedId);
             setResumeData(selected.data);
-            localStorage.setItem("resumeData", JSON.stringify(selected.data));
-
             const msgs = loadMessagesForResume(selectedId);
             setMessages(
                 msgs || [
                     {
-                        role: "assistant",
+                        role: 'assistant',
                         message: `📄 Resuming "${selected.title}". What would you like to edit?`,
                     },
                 ]

@@ -6,32 +6,7 @@ import {
   FileDown, Loader2, CheckCircle, XCircle,
   Code, Copy, Check, X,
 } from "lucide-react";
-
-interface Experience {
-  title?: string;
-  company?: string;
-  year?: string;
-  description?: string;
-}
-
-interface Project {
-  name?: string;
-  description?: string;
-}
-
-export interface ResumeData {
-  name?: string;
-  fullName?: string;
-  role?: string;
-  title?: string;
-  email?: string;
-  phone?: string;
-  location?: string;
-  summary?: string;
-  skills?: (string | { name: string })[];
-  experience?: Experience[];
-  projects?: Project[];
-}
+import { ResumeData } from "@/types/resume";
 
 interface ResumePreviewProps {
   resumeData: ResumeData | null;
@@ -47,7 +22,7 @@ type PdfStatus =
   | { stage: "done"; pdfUrl: string }
   | { stage: "error"; message: string };
 
-// ── Client-side LaTeX preview builder (no API call) ───────────────────────────
+// ── Client‑side LaTeX preview builder (no API call) ───────────────────────────
 function buildLatexPreview(resumeData: ResumeData): string {
   const esc = (v: unknown) =>
     String(v ?? "")
@@ -63,7 +38,15 @@ function buildLatexPreview(resumeData: ResumeData): string {
       .replace(/\^/g, "\\textasciicircum{}");
 
   const skills = Array.isArray(resumeData.skills)
-    ? resumeData.skills.map((s) => (typeof s === "string" ? s : s.name)).filter(Boolean)
+    ? resumeData.skills
+      .map((s) =>
+        typeof s === "string"
+          ? s
+          : typeof s === "object" && s && "name" in s
+            ? String((s as { name?: unknown }).name ?? "")
+            : ""
+      )
+      .filter(Boolean)
     : [];
 
   const contactParts = [
@@ -132,31 +115,27 @@ function buildLatexPreview(resumeData: ResumeData): string {
 \\begin{document}
 
 \\begin{center}
-    {\\Huge \\scshape ${esc(resumeData.name || resumeData.fullName || "Your Name")}} \\\\ \\vspace{4pt}
+    {\\Huge \\scshape ${esc(resumeData.name || "Your Name")}} \\\\ \\vspace{4pt}
     ${resumeData.role ? `{\\large ${esc(resumeData.role)}} \\\\ \\vspace{4pt}` : ""}
     \\small ${contactParts}
 \\end{center}
 
-${
-  resumeData.summary
-    ? `\\section{Summary}\n  ${esc(resumeData.summary)}\n`
-    : ""
-}
-${
-  expSection
-    ? `\\section{Experience}\n  \\resumeSubHeadingListStart\n${expSection}\n  \\resumeSubHeadingListEnd`
-    : ""
-}
-${
-  projSection
-    ? `\\section{Projects}\n  \\resumeSubHeadingListStart\n${projSection}\n  \\resumeSubHeadingListEnd`
-    : ""
-}
-${
-  skills.length
-    ? `\\section{Technical Skills}\n  \\textbf{Skills}: ${skills.map(esc).join(", ")}`
-    : ""
-}
+${resumeData.summary
+      ? `\\section{Summary}\n  ${esc(resumeData.summary)}\n`
+      : ""
+    }
+${expSection
+      ? `\\section{Experience}\n  \\resumeSubHeadingListStart\n${expSection}\n  \\resumeSubHeadingListEnd`
+      : ""
+    }
+${projSection
+      ? `\\section{Projects}\n  \\resumeSubHeadingListStart\n${projSection}\n  \\resumeSubHeadingListEnd`
+      : ""
+    }
+${skills.length
+      ? `\\section{Technical Skills}\n  \\textbf{Skills}: ${skills.map(esc).join(", ")}`
+      : ""
+    }
 
 \\end{document}`;
 }
@@ -168,9 +147,29 @@ export default function ResumePreview({ resumeData, resumeId }: ResumePreviewPro
   const [showLatexModal, setShowLatexModal] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const data = resumeData ?? {};
+  const data: ResumeData = resumeData ?? {
+    name: "",
+    role: "",
+    email: "",
+    phone: "",
+    location: "",
+    summary: "",
+    skills: [],
+    experience: [],
+    projects: [],
+    links: [],
+  };
+
   const skills = Array.isArray(data.skills)
-    ? data.skills.map((s) => (typeof s === "string" ? s : s.name)).filter(Boolean)
+    ? data.skills
+      .map((s) =>
+        typeof s === "string"
+          ? s
+          : typeof s === "object" && s && "name" in s
+            ? String((s as { name?: unknown }).name ?? "")
+            : ""
+      )
+      .filter(Boolean)
     : [];
   const experience = Array.isArray(data.experience) ? data.experience : [];
   const projects = Array.isArray(data.projects) ? data.projects : [];
@@ -180,7 +179,9 @@ export default function ResumePreview({ resumeData, resumeId }: ResumePreviewPro
 
   // Cleanup WS on unmount
   useEffect(() => {
-    return () => { wsRef.current?.close(); };
+    return () => {
+      wsRef.current?.close();
+    };
   }, []);
 
   // Close modal on Escape
@@ -225,7 +226,7 @@ export default function ResumePreview({ resumeData, resumeId }: ResumePreviewPro
           body: JSON.stringify({ resumeId }),
         });
         if (!res.ok) {
-          const err = await res.json() as { message?: string };
+          const err = (await res.json()) as { message?: string };
           setPdfStatus({ stage: "error", message: err.message ?? "Failed to start generation" });
           ws.close();
         }
@@ -245,9 +246,6 @@ export default function ResumePreview({ resumeData, resumeId }: ResumePreviewPro
         };
         if (msg.type !== "status") return;
 
-        // ✅ Declare fullUrl outside switch — fixes TS lexical declaration error
-        let fullUrl = "";
-
         switch (msg.step) {
           case "fetching":
           case "building_latex":
@@ -261,7 +259,7 @@ export default function ResumePreview({ resumeData, resumeId }: ResumePreviewPro
           case "done":
             setPdfStatus({ stage: "done", pdfUrl: msg.pdfUrl ?? "" });
             ws.close();
-            fullUrl = `${API_BASE}${msg.pdfUrl ?? ""}`;
+            const fullUrl = `${API_BASE}${msg.pdfUrl ?? ""}`;
             fetch(fullUrl, { headers: { Authorization: `Bearer ${token}` } })
               .then((r) => r.blob())
               .then((blob) => {
@@ -288,7 +286,9 @@ export default function ResumePreview({ resumeData, resumeId }: ResumePreviewPro
       setPdfStatus({ stage: "error", message: "WebSocket connection failed." });
     };
 
-    ws.onclose = () => { wsRef.current = null; };
+    ws.onclose = () => {
+      wsRef.current = null;
+    };
   }, [resumeId]);
 
   const isGenerating =
@@ -298,12 +298,17 @@ export default function ResumePreview({ resumeData, resumeId }: ResumePreviewPro
     pdfStatus.stage === "compiling_pdf";
 
   const statusMessage =
-    pdfStatus.stage === "connecting" ? "Connecting..."
-    : pdfStatus.stage === "fetching" || pdfStatus.stage === "building_latex" || pdfStatus.stage === "compiling_pdf"
-    ? pdfStatus.message
-    : pdfStatus.stage === "done" ? "Downloaded!"
-    : pdfStatus.stage === "error" ? "Error — retry?"
-    : null;
+    pdfStatus.stage === "connecting"
+      ? "Connecting..."
+      : pdfStatus.stage === "fetching" ||
+        pdfStatus.stage === "building_latex" ||
+        pdfStatus.stage === "compiling_pdf"
+        ? pdfStatus.message
+        : pdfStatus.stage === "done"
+          ? "Downloaded!"
+          : pdfStatus.stage === "error"
+            ? "Error — retry?"
+            : null;
 
   return (
     <>
@@ -350,11 +355,14 @@ export default function ResumePreview({ resumeData, resumeId }: ResumePreviewPro
             </div>
 
             {statusMessage && (
-              <p className={`text-xs font-medium ${
-                pdfStatus.stage === "error" ? "text-red-400"
-                : pdfStatus.stage === "done" ? "text-[#00ff9c]"
-                : "text-gray-400"
-              }`}>
+              <p
+                className={`text-xs font-medium ${pdfStatus.stage === "error"
+                  ? "text-red-400"
+                  : pdfStatus.stage === "done"
+                    ? "text-[#00ff9c]"
+                    : "text-gray-400"
+                  }`}
+              >
                 {statusMessage}
               </p>
             )}
@@ -381,13 +389,16 @@ export default function ResumePreview({ resumeData, resumeId }: ResumePreviewPro
               </p>
             </div>
           ) : (
-            <div ref={previewRef} className="mx-auto max-w-2xl rounded-xl bg-white p-8 text-black shadow-2xl border border-gray-200">
+            <div
+              ref={previewRef}
+              className="mx-auto max-w-2xl rounded-xl bg-white p-8 text-black shadow-2xl border border-gray-200"
+            >
               <div className="border-b-2 border-gray-200 pb-6">
                 <h1 className="text-4xl font-bold tracking-tight text-gray-900">
-                  {data.name || data.fullName || "Your Name"}
+                  {data.name || "Your Name"}
                 </h1>
                 <p className="mt-2 text-base font-semibold text-[#00aa6c]">
-                  {data.role || data.title || "Your Role"}
+                  {data.role || "Your Role"}
                 </p>
                 <div className="mt-4 flex flex-wrap gap-4 text-sm text-gray-600">
                   {data.email && <span>📧 {data.email}</span>}
@@ -396,13 +407,34 @@ export default function ResumePreview({ resumeData, resumeId }: ResumePreviewPro
                 </div>
               </div>
 
+              {/* Links section */}
+              {data.links && data.links.length > 0 && (
+                <div className="mt-4 flex flex-wrap gap-3">
+                  {data.links.map((link, i) => (
+                    <a
+                      key={i}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-sm text-[#00aa6c] hover:underline"
+                    >
+                      🔗 {link.name}
+                    </a>
+                  ))}
+                </div>
+              )}
+
               {data.summary && (
                 <div className="mt-8">
                   <div className="mb-3 flex items-center gap-2">
                     <User size={16} className="text-[#00aa6c]" />
-                    <h2 className="text-sm font-bold uppercase tracking-widest text-gray-700">Summary</h2>
+                    <h2 className="text-sm font-bold uppercase tracking-widest text-gray-700">
+                      Summary
+                    </h2>
                   </div>
-                  <p className="text-sm leading-8 text-gray-700 whitespace-pre-line">{data.summary}</p>
+                  <p className="text-sm leading-8 text-gray-700 whitespace-pre-line">
+                    {data.summary}
+                  </p>
                 </div>
               )}
 
@@ -410,11 +442,16 @@ export default function ResumePreview({ resumeData, resumeId }: ResumePreviewPro
                 <div className="mt-8">
                   <div className="mb-4 flex items-center gap-2">
                     <Zap size={16} className="text-[#00aa6c]" />
-                    <h2 className="text-sm font-bold uppercase tracking-widest text-gray-700">Skills</h2>
+                    <h2 className="text-sm font-bold uppercase tracking-widest text-gray-700">
+                      Skills
+                    </h2>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {skills.map((skill, i) => (
-                      <span key={i} className="rounded-lg bg-[#00aa6c]/10 px-3 py-1.5 text-sm font-medium text-[#00aa6c] border border-[#00aa6c]/30">
+                      <span
+                        key={i}
+                        className="rounded-lg bg-[#00aa6c]/10 px-3 py-1.5 text-sm font-medium text-[#00aa6c] border border-[#00aa6c]/30"
+                      >
                         {skill}
                       </span>
                     ))}
@@ -426,7 +463,9 @@ export default function ResumePreview({ resumeData, resumeId }: ResumePreviewPro
                 <div className="mt-8">
                   <div className="mb-4 flex items-center gap-2">
                     <Briefcase size={16} className="text-[#00aa6c]" />
-                    <h2 className="text-sm font-bold uppercase tracking-widest text-gray-700">Experience</h2>
+                    <h2 className="text-sm font-bold uppercase tracking-widest text-gray-700">
+                      Experience
+                    </h2>
                   </div>
                   <div className="space-y-6">
                     {experience.map((item, i) => (
@@ -443,7 +482,9 @@ export default function ResumePreview({ resumeData, resumeId }: ResumePreviewPro
                           )}
                         </div>
                         {item.description && (
-                          <p className="mt-3 text-sm leading-7 text-gray-700 whitespace-pre-line">{item.description}</p>
+                          <p className="mt-3 text-sm leading-7 text-gray-700 whitespace-pre-line">
+                            {item.description}
+                          </p>
                         )}
                       </div>
                     ))}
@@ -455,14 +496,18 @@ export default function ResumePreview({ resumeData, resumeId }: ResumePreviewPro
                 <div className="mt-8">
                   <div className="mb-4 flex items-center gap-2">
                     <FolderOpen size={16} className="text-[#00aa6c]" />
-                    <h2 className="text-sm font-bold uppercase tracking-widest text-gray-700">Projects</h2>
+                    <h2 className="text-sm font-bold uppercase tracking-widest text-gray-700">
+                      Projects
+                    </h2>
                   </div>
                   <div className="space-y-5">
                     {projects.map((item, i) => (
                       <div key={i} className="border-l-4 border-[#00aa6c] pl-5">
                         <p className="text-base font-bold text-gray-900">{item.name}</p>
                         {item.description && (
-                          <p className="mt-2 text-sm leading-7 text-gray-700 whitespace-pre-line">{item.description}</p>
+                          <p className="mt-2 text-sm leading-7 text-gray-700 whitespace-pre-line">
+                            {item.description}
+                          </p>
                         )}
                       </div>
                     ))}
