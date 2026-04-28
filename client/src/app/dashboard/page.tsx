@@ -21,33 +21,33 @@ interface Message {
 }
 
 function mergeResumeData(
-  existing: ResumeData | null,
-  update: Partial<ResumeData>
+    existing: ResumeData | null,
+    update: Partial<ResumeData>
 ): ResumeData {
-  const existingData = existing || {};
+    const existingData = existing || {};
 
-  // Normalize skills to always be string[]
-  const normalizeSkills = (
-    skills?: (string | { name: string })[]
-  ): string[] =>
-    (skills || []).map((s) => (typeof s === "string" ? s : s.name)).filter(Boolean);
+    // Normalize skills to always be string[]
+    const normalizeSkills = (
+        skills?: (string | { name: string })[]
+    ): string[] =>
+        (skills || []).map((s) => (typeof s === "string" ? s : s.name)).filter(Boolean);
 
-  return {
-    ...existingData,
-    ...update,
-    skills:
-      update.skills && update.skills.length > 0
-        ? normalizeSkills(update.skills)
-        : normalizeSkills(existingData.skills),
-    experience:
-      update.experience && update.experience.length > 0
-        ? update.experience
-        : existingData.experience || [],
-    projects:
-      update.projects && update.projects.length > 0
-        ? update.projects
-        : existingData.projects || [],
-  };
+    return {
+        ...existingData,
+        ...update,
+        skills:
+            update.skills && update.skills.length > 0
+                ? normalizeSkills(update.skills)
+                : normalizeSkills(existingData.skills),
+        experience:
+            update.experience && update.experience.length > 0
+                ? update.experience
+                : existingData.experience || [],
+        projects:
+            update.projects && update.projects.length > 0
+                ? update.projects
+                : existingData.projects || [],
+    };
 }
 
 export default function DashboardPage() {
@@ -60,6 +60,21 @@ export default function DashboardPage() {
     const [resumes, setResumes] = useState<Resume[]>([]);
     const [loadingResumes, setLoadingResumes] = useState(false);
     const [selectingResume, setSelectingResume] = useState(false);
+
+    // Add inside the useEffect init block, after loading user
+    useEffect(() => {
+        const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001";
+
+        // Ping every 14 minutes to prevent Render cold start
+        const keepAlive = setInterval(() => {
+            fetch(`${API_BASE}/health`).catch(() => { });
+        }, 14 * 60 * 1000);
+
+        // Also ping immediately on load to wake server early
+        fetch(`${API_BASE}/health`).catch(() => { });
+
+        return () => clearInterval(keepAlive);
+    }, []);
 
     // Helper to load messages for a specific resume
     const loadMessagesForResume = (id: string): Message[] | null => {

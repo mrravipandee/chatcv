@@ -132,7 +132,7 @@ async function fetchApi<T>(
 
       if (isTimeout && attempt === 1) {
         console.warn("[API] Request timed out, retrying...");
-        await new Promise((r) => setTimeout(r, 2000)); // wait 2s then retry
+        await new Promise((r) => setTimeout(r, 5000)); // wait 2s then retry
         continue;
       }
 
