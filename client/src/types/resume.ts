@@ -1,32 +1,75 @@
-export interface Experience {
-  title: string;
-  company: string;
-  year: string;
-  description: string;
-}
-
-export interface Project {
-  name: string;
-  description: string;
-}
+// ─── Contact / Links ──────────────────────────────────────────────────────────
 
 export interface Link {
-  name: string;
+  label: string; // "GitHub", "LinkedIn", "Portfolio"
   url: string;
 }
 
+// ─── Skills ───────────────────────────────────────────────────────────────────
+
+export interface SkillGroup {
+  category: string; // "Frontend", "Backend", "Soft Skills"
+  items: string[];
+}
+
+// ─── Experience ───────────────────────────────────────────────────────────────
+
+export interface Experience {
+  role: string;
+  company: string;
+  location: string;
+  startDate: string;
+  endDate: string;
+  isCurrent: boolean;
+  bullets: string[];
+}
+
+// ─── Projects ─────────────────────────────────────────────────────────────────
+
+export interface Project {
+  name: string;
+  tags: string[];    // tech stack tags
+  bullets: string[]; // description points
+  liveUrl?: string;
+  githubUrl?: string;
+}
+
+// ─── Education ────────────────────────────────────────────────────────────────
+
+export interface Education {
+  degree: string;
+  institution: string;
+  location: string;
+  startYear: string;
+  endYear: string;
+  grade?: string;
+}
+
+// ─── Achievement ──────────────────────────────────────────────────────────────
+
+export interface Achievement {
+  title: string;
+  description?: string;
+}
+
+// ─── Full Resume Data (mirrors server IResumeData exactly) ───────────────────
+
 export interface ResumeData {
-  name: string;       // not "fullName"
-  role: string;       // not "title"
+  name: string;
+  role: string;
   email: string;
   phone: string;
   location: string;
-  summary: string;
-  skills: string[];
+  summary?: string;
+  links: Link[];
+  skills: SkillGroup[];
   experience: Experience[];
   projects: Project[];
-  links: Link[];  
+  education: Education[];
+  achievements: Achievement[];
 }
+
+// ─── Chat & Resume ────────────────────────────────────────────────────────────
 
 export interface ChatMessage {
   role: 'user' | 'assistant';

@@ -5,12 +5,13 @@ import { PendingUser } from "./models/pending-user.model";
 import { RegisterInput, VerifyOtpInput } from "./auth.validation";
 import { sendEmail } from "../email/email.service";
 import { LoginInput } from "./auth.validation";
+import { syncTokensToRedis } from "../../config/redis.client";
 
 const generateOtp = (): string =>
   Math.floor(100000 + Math.random() * 900000).toString();
 
 export const registerUserService = async (payload: RegisterInput) => {
-  const { email, password } = payload;
+  const { name, email, password } = payload;
 
   const existingUser = await User.findOne({ email });
 
@@ -30,32 +31,38 @@ export const registerUserService = async (payload: RegisterInput) => {
     passwordHash,
     otp,
     expiresAt: new Date(Date.now() + 10 * 60 * 1000),
+    // Store name temporarily in pending user
+    name: name.trim(),
   });
 
-  // ✅ your nodemailer function
   await sendEmail(
     email,
     "Verify your ChatCV account 🔐",
     `
-      <div style="font-family:Arial,sans-serif;padding:20px;">
-        <h2>Welcome to ChatCV 🚀</h2>
-        <p>Use the OTP below to verify your account:</p>
+      <div style="font-family:Arial,sans-serif;padding:20px;background:#0a0a0a;color:#fff;border-radius:12px;">
+        <h2 style="color:#00ff9c;">Welcome to ChatCV 🚀</h2>
+        <p>Hi ${name.trim()}, use the OTP below to verify your account:</p>
 
         <div style="
-          font-size:32px;
+          font-size:36px;
           font-weight:bold;
-          letter-spacing:6px;
+          letter-spacing:8px;
           color:#00ff9c;
-          margin:20px 0;
+          margin:24px 0;
+          padding:16px;
+          background:#111;
+          border-radius:8px;
+          text-align:center;
+          border:1px solid #00ff9c33;
         ">
           ${otp}
         </div>
 
         <p>This OTP expires in <b>10 minutes</b>.</p>
-        <p>If you didn’t request this, ignore this email.</p>
+        <p>If you didn't request this, ignore this email.</p>
 
         <br/>
-        <p>Team ChatCV 💚</p>
+        <p style="color:#00ff9c;">Team ChatCV 💚</p>
       </div>
     `
   );
@@ -79,14 +86,19 @@ export const verifyOtpService = async (payload: VerifyOtpInput) => {
     throw new Error("Invalid OTP");
   }
 
-  await User.create({
+  const newUser = await User.create({
+    name: (pendingUser as any).name || "",
     email: pendingUser.email,
     passwordHash: pendingUser.passwordHash,
     provider: "email",
     isVerified: true,
     membership: "free",
-    freeChatUsed: false,
+    chatTokensUsed: 0,
+    chatTokensLimit: 5,
   });
+
+  // Sync initial token count to Redis (non-blocking)
+  syncTokensToRedis(newUser._id.toString(), 0).catch(() => {});
 
   await PendingUser.deleteOne({ email });
 
@@ -118,6 +130,9 @@ export const loginUserService = async (payload: LoginInput) => {
     throw new Error("Invalid email or password");
   }
 
+  // Sync DB token count to Redis (non-blocking)
+  syncTokensToRedis(user._id.toString(), user.chatTokensUsed).catch(() => {});
+
   const jwtSecret = process.env.JWT_SECRET as Secret;
   const jwtExpiresIn = (process.env.JWT_EXPIRES || "7d") as SignOptions["expiresIn"];
 
@@ -139,9 +154,11 @@ export const loginUserService = async (payload: LoginInput) => {
     token,
     user: {
       id: user._id,
+      name: user.name,
       email: user.email,
       membership: user.membership,
-      freeChatUsed: user.freeChatUsed,
+      chatTokensUsed: user.chatTokensUsed,
+      chatTokensLimit: user.chatTokensLimit,
     },
   };
 };

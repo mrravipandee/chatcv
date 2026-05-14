@@ -79,11 +79,22 @@ export const getMeController = async (
   try {
     const userId = req.user.id;
 
-    const user = await User.findById(userId).select("-passwordHash");
+    const user = await User.findById(userId).select("-passwordHash").lean();
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
 
     return res.status(200).json({
       success: true,
-      user,
+      data: {
+        _id: user._id,
+        name: user.name || "",
+        email: user.email,
+        membership: user.membership,
+        chatTokensUsed: user.chatTokensUsed ?? 0,
+        chatTokensLimit: user.chatTokensLimit ?? 5,
+      },
     });
   } catch (error) {
     return res.status(400).json({

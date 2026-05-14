@@ -1,6 +1,7 @@
 import { Schema, model, Document } from "mongoose";
 
 export interface IPendingUser extends Document {
+  name: string;
   email: string;
   passwordHash: string;
   otp: string;
@@ -10,6 +11,12 @@ export interface IPendingUser extends Document {
 
 const pendingUserSchema = new Schema<IPendingUser>(
   {
+    name: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
     email: {
       type: String,
       required: true,
@@ -32,7 +39,7 @@ const pendingUserSchema = new Schema<IPendingUser>(
     expiresAt: {
       type: Date,
       required: true,
-      index: { expires: 0 }, 
+      index: { expires: 0 },
     },
   },
   { timestamps: true }

@@ -2,6 +2,12 @@ import { z } from "zod";
 
 export const registerSchema = z
   .object({
+    name: z
+      .string()
+      .trim()
+      .min(2, "Name must be at least 2 characters")
+      .max(60, "Name too long"),
+
     email: z.string().trim().toLowerCase().email("Invalid email address"),
 
     password: z
@@ -27,7 +33,6 @@ export const loginSchema = z.object({
   email: z.string().trim().toLowerCase().email("Invalid email"),
   password: z.string().min(1, "Password is required"),
 });
-
 
 export type RegisterInput = z.infer<typeof registerSchema>;
 export type VerifyOtpInput = z.infer<typeof verifyOtpSchema>;

@@ -1,4 +1,14 @@
-import { ResumeData, Resume, ChatMessage, Experience, Project } from '@/types/resume';
+import {
+  ResumeData,
+  Resume,
+  ChatMessage,
+  Experience,
+  Project,
+  SkillGroup,
+  Education,
+  Achievement,
+  Link,
+} from '@/types/resume';
 
 // ==============================
 // Shared API Types
@@ -26,10 +36,11 @@ export interface SubscribeResponse {
 
 export interface CurrentUser {
   _id: string;
-  name?: string;
+  name: string;
   email: string;
-  membership: "free" | "premium";
-  freeChatUsed: boolean;
+  membership: 'free' | 'premium';
+  chatTokensUsed: number;
+  chatTokensLimit: number;
 }
 
 export interface RegisterPayload {
@@ -51,6 +62,14 @@ export interface LoginPayload {
 
 export interface LoginResponse {
   token: string;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    membership: 'free' | 'premium';
+    chatTokensUsed: number;
+    chatTokensLimit: number;
+  };
 }
 
 export interface ChatPayload {
@@ -62,13 +81,49 @@ export interface ChatResponse {
   reply: string;
   resumeId: string;
   resumeData: ResumeData;
+  tokensUsed: number;
+  tokensLimit: number;
+}
+
+// ── Payment Types ─────────────────────────────────────────────────────────────
+
+export interface PaymentPlan {
+  id: string;
+  label: string;
+  tokens: number;
+  price: string;
+}
+
+export interface CreateOrderResponse {
+  checkoutUrl: string;   // Dodo redirect URL
+  sessionId: string;
+  planLabel: string;
+  tokens: number;
+  amount: string;
+}
+
+export interface VerifyPaymentPayload {
+  sessionId: string;
+}
+
+export interface VerifyPaymentResponse {
+  tokensAdded: number;
+  newLimit: number;
+  newUsed: number;
+}
+
+// ── Upload Types ──────────────────────────────────────────────────────────────
+
+export interface UploadResumeResponse {
+  resumeId: string;
+  resumeData: ResumeData;
 }
 
 // ==============================
 // API Client
 // ==============================
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
 
 function withTimeout(ms: number): AbortSignal {
   return AbortSignal.timeout(ms);
@@ -78,7 +133,6 @@ async function fetchApi<T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<ApiResponse<T>> {
-  // Retry once on timeout
   for (let attempt = 1; attempt <= 2; attempt++) {
     try {
       const url = `${API_BASE_URL}${endpoint}`;
@@ -86,7 +140,7 @@ async function fetchApi<T>(
         ...options,
         signal: withTimeout(30000),
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           ...options.headers,
         },
       });
@@ -94,33 +148,58 @@ async function fetchApi<T>(
       const data = (await response.json()) as ApiResponse<T>;
       return data;
     } catch (error) {
-      const isTimeout = error instanceof DOMException && error.name === "TimeoutError";
+      const isTimeout = error instanceof DOMException && error.name === 'TimeoutError';
 
       if (isTimeout && attempt === 1) {
-        console.warn("[API] Request timed out, retrying...");
+        console.warn('[API] Request timed out, retrying...');
         await new Promise((r) => setTimeout(r, 2000));
         continue;
       }
 
-      console.error("[API] Fetch error:", error);
+      console.error('[API] Fetch error:', error);
 
       if (isTimeout) {
         return {
           success: false,
-          message: "Server is taking too long to respond. Please try again.",
-          code: "TIMEOUT",
+          message: 'Server is taking too long to respond. Please try again.',
+          code: 'TIMEOUT',
         };
       }
 
       return {
         success: false,
-        message: error instanceof Error ? error.message : "Failed to connect to server",
-        code: "NETWORK_ERROR",
+        message: error instanceof Error ? error.message : 'Failed to connect to server',
+        code: 'NETWORK_ERROR',
       };
     }
   }
 
-  return { success: false, message: "Unknown error", code: "UNKNOWN" };
+  return { success: false, message: 'Unknown error', code: 'UNKNOWN' };
+}
+
+// ── Multipart fetch (for file uploads) ───────────────────────────────────────
+
+async function fetchMultipart<T>(
+  endpoint: string,
+  formData: FormData,
+  token: string
+): Promise<ApiResponse<T>> {
+  try {
+    const url = `${API_BASE_URL}${endpoint}`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      body: formData,
+      signal: AbortSignal.timeout(60000),
+    });
+    return (await response.json()) as ApiResponse<T>;
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : 'Upload failed',
+      code: 'UPLOAD_ERROR',
+    };
+  }
 }
 
 // ==============================
@@ -130,8 +209,8 @@ async function fetchApi<T>(
 export async function subscribeToNewsletter(
   email: string
 ): Promise<ApiResponse<SubscribeResponse>> {
-  return fetchApi<SubscribeResponse>("/api/subscribe", {
-    method: "POST",
+  return fetchApi<SubscribeResponse>('/api/subscribe', {
+    method: 'POST',
     body: JSON.stringify({ email }),
   });
 }
@@ -139,8 +218,8 @@ export async function subscribeToNewsletter(
 export async function registerUser(
   payload: RegisterPayload
 ): Promise<ApiResponse<unknown>> {
-  return fetchApi("/api/auth/register", {
-    method: "POST",
+  return fetchApi('/api/auth/register', {
+    method: 'POST',
     body: JSON.stringify(payload),
   });
 }
@@ -148,8 +227,8 @@ export async function registerUser(
 export async function verifyOtp(
   payload: VerifyOtpPayload
 ): Promise<ApiResponse<unknown>> {
-  return fetchApi("/api/auth/verify-otp", {
-    method: "POST",
+  return fetchApi('/api/auth/verify-otp', {
+    method: 'POST',
     body: JSON.stringify(payload),
   });
 }
@@ -157,8 +236,8 @@ export async function verifyOtp(
 export async function loginUser(
   payload: LoginPayload
 ): Promise<ApiResponse<LoginResponse>> {
-  return fetchApi<LoginResponse>("/api/auth/login", {
-    method: "POST",
+  return fetchApi<LoginResponse>('/api/auth/login', {
+    method: 'POST',
     body: JSON.stringify(payload),
   });
 }
@@ -170,11 +249,9 @@ export async function loginUser(
 export async function getCurrentUser(
   token: string
 ): Promise<ApiResponse<CurrentUser>> {
-  return fetchApi<CurrentUser>("/api/auth/me", {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+  return fetchApi<CurrentUser>('/api/auth/me', {
+    method: 'GET',
+    headers: { Authorization: `Bearer ${token}` },
   });
 }
 
@@ -182,11 +259,9 @@ export async function sendChatMessage(
   payload: ChatPayload,
   token: string
 ): Promise<ApiResponse<ChatResponse>> {
-  return fetchApi<ChatResponse>("/api/chat/message", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+  return fetchApi<ChatResponse>('/api/chat/message', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
     body: JSON.stringify(payload),
   });
 }
@@ -194,25 +269,68 @@ export async function sendChatMessage(
 export async function getResumes(
   token: string
 ): Promise<ApiResponse<Resume[]>> {
-  return fetchApi<Resume[]>("/api/resume/my", {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+  return fetchApi<Resume[]>('/api/resume/my', {
+    method: 'GET',
+    headers: { Authorization: `Bearer ${token}` },
   });
 }
 
 export async function createResume(
   token: string
 ): Promise<ApiResponse<Resume>> {
-  return fetchApi<Resume>("/api/resume/create", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+  return fetchApi<Resume>('/api/resume/create', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
     body: JSON.stringify({}),
   });
 }
 
-// Re‑export types from @/types/resume for convenience
-export type { ResumeData, Resume, ChatMessage, Experience, Project };
+export async function uploadResume(
+  file: File,
+  token: string
+): Promise<ApiResponse<UploadResumeResponse>> {
+  const formData = new FormData();
+  formData.append('resume', file);
+  return fetchMultipart<UploadResumeResponse>('/api/resume/upload', formData, token);
+}
+
+// ── Payment ───────────────────────────────────────────────────────────────────
+
+export async function getPaymentPlans(): Promise<ApiResponse<PaymentPlan[]>> {
+  return fetchApi<PaymentPlan[]>('/api/payment/plans');
+}
+
+export async function createPaymentOrder(
+  planId: string,
+  token: string
+): Promise<ApiResponse<CreateOrderResponse>> {
+  return fetchApi<CreateOrderResponse>('/api/payment/create-order', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ planId }),
+  });
+}
+
+export async function verifyPayment(
+  payload: VerifyPaymentPayload,
+  token: string
+): Promise<ApiResponse<VerifyPaymentResponse>> {
+  return fetchApi<VerifyPaymentResponse>('/api/payment/verify', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify(payload),
+  });
+}
+
+// Re-export types
+export type {
+  ResumeData,
+  Resume,
+  ChatMessage,
+  Experience,
+  Project,
+  SkillGroup,
+  Education,
+  Achievement,
+  Link,
+};

@@ -1,6 +1,8 @@
+// ─── Escape helper ────────────────────────────────────────────────────────────
+
 function escape(text: string): string {
   if (!text) return "";
-  return text
+  return String(text)
     .replace(/\\/g, "\\textbackslash{}")
     .replace(/&/g, "\\&")
     .replace(/%/g, "\\%")
@@ -13,23 +15,31 @@ function escape(text: string): string {
     .replace(/\^/g, "\\textasciicircum{}");
 }
 
-function e(val: any): string {
+function e(val: unknown): string {
   if (val === null || val === undefined) return "";
+  if (typeof val === "object") return ""; // never stringify objects
   return escape(String(val));
 }
 
 // ─── Section builders ────────────────────────────────────────────────────────
 
-function buildLinksSection(links: Array<{ name: string; url: string }>): string {
+// Links — schema: { label: string; url: string }[]
+function buildLinksSection(links: Array<{ label?: string; name?: string; url?: string }>): string {
   if (!links || links.length === 0) return "";
 
-  const linkItems = links
+  const valid = links.filter(
+    (l) => typeof l === "object" && (l.label || l.name) && l.url
+  );
+  if (valid.length === 0) return "";
+
+  const linkItems = valid
     .map((link) => {
-      const name = e(link.name);
-      const url = e(link.url);
-      // Ensure URL has protocol (add https:// if missing)
-      const fullUrl = url.match(/^https?:\/\//) ? url : `https://${url}`;
-      return `    \\resumeItem{\\href{${fullUrl}}{\\underline{${name}}}}`;
+      const label = e(link.label || link.name || "");
+      const rawUrl = String(link.url || "").trim();
+      // Strip LaTeX escapes to keep the actual URL valid for \href
+      const cleanUrl = rawUrl.replace(/\\/g, "");
+      const fullUrl = /^https?:\/\//.test(cleanUrl) ? cleanUrl : `https://${cleanUrl}`;
+      return `    \\resumeItem{\\href{${fullUrl}}{\\underline{${label}}}}`;
     })
     .join("\n");
 
@@ -39,50 +49,107 @@ ${linkItems}
   \\resumeItemListEnd`;
 }
 
-function buildSkillsSection(skills: string[]): string {
+// Skills — schema: { category: string; items: string[] }[]  OR  string[]
+function buildSkillsSection(
+  skills: Array<{ category?: string; items?: string[] } | string>
+): string {
   if (!skills || skills.length === 0) return "";
-  const skillList = skills.map((s) => e(s)).join(", ");
+
+  let rows: string[] = [];
+
+  // Detect if it's the rich SkillGroup[] format or flat string[]
+  if (typeof skills[0] === "object" && skills[0] !== null && !Array.isArray(skills[0])) {
+    // Rich format: SkillGroup[]
+    rows = (skills as Array<{ category?: string; items?: string[] }>)
+      .filter((sg) => sg && typeof sg === "object" && sg.category && Array.isArray(sg.items) && sg.items.length > 0)
+      .map((sg) => {
+        const cat = e(sg.category!);
+        const items = sg.items!.map((i) => e(i)).join(", ");
+        return `      \\textbf{${cat}}{: ${items}}`;
+      });
+  } else {
+    // Flat string[]
+    const items = (skills as string[]).map((s) => e(s)).join(", ");
+    if (!items) return "";
+    rows = [`      \\textbf{Skills}{: ${items}}`];
+  }
+
+  if (rows.length === 0) return "";
+
   return `\\section{Technical Skills}
   \\begin{itemize}[leftmargin=0.15in, label={}]
     \\small{\\item{
-      \\textbf{Skills}{: ${skillList}}
+${rows.join(" \\\\\n")}
     }}
   \\end{itemize}`;
 }
 
+// Experience — schema: { role, company, location, startDate, endDate, isCurrent, bullets[] }
 function buildExperienceSection(
   experience: Array<{
-    title?: string;
+    // New schema
+    role?: string;
     company?: string;
+    location?: string;
+    startDate?: string;
+    endDate?: string;
+    isCurrent?: boolean;
+    bullets?: string[];
+    // Old schema fallback
+    title?: string;
     year?: string;
     description?: string;
   }>
 ): string {
   if (!experience || experience.length === 0) return "";
 
-  const items = experience.map((exp) => {
-    const company = e(exp.company || "");
-    const title = e(exp.title || "");
-    const year = e(exp.year || "");
+  const items = experience
+    .filter((exp) => typeof exp === "object" && exp !== null)
+    .map((exp) => {
+      // Support both old and new schema
+      const company = e(exp.company || "");
+      const role = e(exp.role || exp.title || "");
+      const location = e(exp.location || "");
 
-    const rawDesc = exp.description || "";
-    const bullets = rawDesc
-      .split(/\.\s+|\n/)
-      .map((b) => b.trim())
-      .filter((b) => b.length > 0);
+      // Date range
+      let dateRange = e(exp.year || "");
+      if (!dateRange) {
+        const start = e(exp.startDate || "");
+        const endRaw = exp.isCurrent ? "Present" : e(exp.endDate || "");
+        dateRange = start && endRaw ? `${start} -- ${endRaw}` : start || endRaw;
+      }
 
-    const bulletItems =
-      bullets.length > 0
-        ? `
-      \\resumeItemListStart
-${bullets.map((b) => `        \\resumeItem{${e(b)}}`).join("\n")}
-      \\resumeItemListEnd`
+      const locationAndDate = location
+        ? `${location}`
         : "";
 
-    return `    \\resumeSubheading
-      {${company}}{${year}}
-      {${title}}{}${bulletItems}`;
-  });
+      // Bullets: prefer bullets[] array, fall back to description string
+      let bulletItems = "";
+      if (Array.isArray(exp.bullets) && exp.bullets.length > 0) {
+        const rendered = exp.bullets
+          .filter((b) => typeof b === "string" && b.trim())
+          .map((b) => `        \\resumeItem{${e(b)}}`)
+          .join("\n");
+        if (rendered) {
+          bulletItems = `\n      \\resumeItemListStart\n${rendered}\n      \\resumeItemListEnd`;
+        }
+      } else if (exp.description) {
+        const bullets = String(exp.description)
+          .split(/\.\s+|\n/)
+          .map((b) => b.trim())
+          .filter((b) => b.length > 0);
+        if (bullets.length > 0) {
+          const rendered = bullets.map((b) => `        \\resumeItem{${e(b)}}`).join("\n");
+          bulletItems = `\n      \\resumeItemListStart\n${rendered}\n      \\resumeItemListEnd`;
+        }
+      }
+
+      return `    \\resumeSubheading
+      {${company}}{${dateRange}}
+      {${role}}{${locationAndDate}}${bulletItems}`;
+    });
+
+  if (items.length === 0) return "";
 
   return `\\section{Experience}
   \\resumeSubHeadingListStart
@@ -90,28 +157,56 @@ ${items.join("\n")}
   \\resumeSubHeadingListEnd`;
 }
 
+// Projects — schema: { name, tags[], bullets[], liveUrl?, githubUrl? }
 function buildProjectsSection(
   projects: Array<{
     name?: string;
+    tags?: string[];
+    bullets?: string[];
+    liveUrl?: string;
+    githubUrl?: string;
+    // Old schema fallback
     description?: string;
   }>
 ): string {
   if (!projects || projects.length === 0) return "";
 
-  const items = projects.map((proj) => {
-    const name = e(proj.name || "Project");
-    const desc = e(proj.description || "");
+  const items = projects
+    .filter((p) => typeof p === "object" && p !== null)
+    .map((proj) => {
+      const name = e(proj.name || "Project");
 
-    const descBlock = desc
-      ? `
-      \\resumeItemListStart
-        \\resumeItem{${desc}}
-      \\resumeItemListEnd`
-      : "";
+      // Tech tags
+      const tagStr =
+        Array.isArray(proj.tags) && proj.tags.length > 0
+          ? ` $|$ \\emph{${proj.tags.map((t) => e(t)).join(", ")}}`
+          : "";
 
-    return `    \\resumeProjectHeading
-      {\\textbf{${name}}}{}${descBlock}`;
-  });
+      // Build heading with optional links
+      const links: string[] = [];
+      if (proj.liveUrl) links.push(`\\href{${proj.liveUrl}}{\\underline{Live}}`);
+      if (proj.githubUrl) links.push(`\\href{${proj.githubUrl}}{\\underline{Code}}`);
+      const linkStr = links.length > 0 ? ` | ${links.join(" | ")}` : "";
+
+      // Bullets
+      let bulletItems = "";
+      if (Array.isArray(proj.bullets) && proj.bullets.length > 0) {
+        const rendered = proj.bullets
+          .filter((b) => typeof b === "string" && b.trim())
+          .map((b) => `        \\resumeItem{${e(b)}}`)
+          .join("\n");
+        if (rendered) {
+          bulletItems = `\n      \\resumeItemListStart\n${rendered}\n      \\resumeItemListEnd`;
+        }
+      } else if (proj.description) {
+        bulletItems = `\n      \\resumeItemListStart\n        \\resumeItem{${e(proj.description)}}\n      \\resumeItemListEnd`;
+      }
+
+      return `    \\resumeProjectHeading
+      {\\textbf{${name}}${tagStr}${linkStr}}{}${bulletItems}`;
+    });
+
+  if (items.length === 0) return "";
 
   return `\\section{Projects}
   \\vspace{-5pt}
@@ -120,12 +215,78 @@ ${items.join("\n")}
   \\resumeSubHeadingListEnd`;
 }
 
-// ─── Main builder ────────────────────────────────────────────────────────────
+// Education — schema: { degree, institution, location, startYear, endYear, grade? }
+function buildEducationSection(
+  education: Array<{
+    degree?: string;
+    institution?: string;
+    location?: string;
+    startYear?: string;
+    endYear?: string;
+    grade?: string;
+    // Old fallback
+    school?: string;
+    year?: string;
+  }>
+): string {
+  if (!education || education.length === 0) return "";
+
+  const items = education
+    .filter((edu) => typeof edu === "object" && edu !== null)
+    .map((edu) => {
+      const institution = e(edu.institution || edu.school || "");
+      const degree = e(edu.degree || "");
+      const location = e(edu.location || "");
+      const startY = e(edu.startYear || "");
+      const endY = e(edu.endYear || edu.year || "");
+      const dateRange = startY && endY ? `${startY} -- ${endY}` : startY || endY;
+
+      const gradeBlock = edu.grade
+        ? `\n      \\resumeItemListStart\n        \\resumeItem{Grade: ${e(edu.grade)}}\n      \\resumeItemListEnd`
+        : "";
+
+      return `    \\resumeSubheading
+      {${institution}}{${dateRange}}
+      {${degree}}{${location}}${gradeBlock}`;
+    });
+
+  if (items.length === 0) return "";
+
+  return `\\section{Education}
+  \\resumeSubHeadingListStart
+${items.join("\n")}
+  \\resumeSubHeadingListEnd`;
+}
+
+// Achievements — schema: { title, description? }[]
+function buildAchievementsSection(
+  achievements: Array<{ title?: string; description?: string }>
+): string {
+  if (!achievements || achievements.length === 0) return "";
+
+  const valid = achievements.filter(
+    (a) => typeof a === "object" && a !== null && a.title
+  );
+  if (valid.length === 0) return "";
+
+  const items = valid.map((ach) => {
+    const title = e(ach.title!);
+    const desc = ach.description ? ` -- ${e(ach.description)}` : "";
+    return `    \\resumeItem{\\textbf{${title}}${desc}}`;
+  });
+
+  return `\\section{Achievements}
+  \\resumeItemListStart
+${items.join("\n")}
+  \\resumeItemListEnd`;
+}
+
+// ─── Main builder ─────────────────────────────────────────────────────────────
 
 export function buildLatex(resumeData: Record<string, any>): string {
   const name = e(resumeData.name || "Your Name");
   const role = e(resumeData.role || "");
-  const email = resumeData.email || "";
+  const email = String(resumeData.email || "");
   const phone = e(resumeData.phone || "");
   const location = e(resumeData.location || "");
   const summary = e(resumeData.summary || "");
@@ -133,12 +294,11 @@ export function buildLatex(resumeData: Record<string, any>): string {
   // Contact line
   const contactParts: string[] = [];
   if (phone) contactParts.push(phone);
-  if (email)
-    contactParts.push(`\\href{mailto:${email}}{\\underline{${e(email)}}}`);
+  if (email) contactParts.push(`\\href{mailto:${email}}{\\underline{${e(email)}}}`);
   if (location) contactParts.push(location);
   const contactLine = contactParts.join(" $|$ ");
 
-  // Sections (in desired order)
+  // Sections — standard ATS resume order
   const sections: string[] = [];
 
   if (summary) {
@@ -154,6 +314,12 @@ export function buildLatex(resumeData: Record<string, any>): string {
 
   const skillsSection = buildSkillsSection(resumeData.skills || []);
   if (skillsSection) sections.push(skillsSection);
+
+  const eduSection = buildEducationSection(resumeData.education || []);
+  if (eduSection) sections.push(eduSection);
+
+  const achSection = buildAchievementsSection(resumeData.achievements || []);
+  if (achSection) sections.push(achSection);
 
   const linksSection = buildLinksSection(resumeData.links || []);
   if (linksSection) sections.push(linksSection);
