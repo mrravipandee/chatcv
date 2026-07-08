@@ -42,7 +42,15 @@ export const verifyPaymentController = async (req: AuthRequest, res: Response) =
     }
 
     const result = await completePaymentService(sessionId, req.user.id);
-    return res.status(200).json(result);
+    return res.status(200).json({
+      success: true,
+      message: result.message,
+      data: {
+        tokensAdded: result.tokensAdded,
+        newLimit: result.newLimit,
+        newUsed: result.newUsed,
+      },
+    });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Unknown error';
     console.error('[PAYMENT] verify error:', message);

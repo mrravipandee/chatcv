@@ -8,6 +8,8 @@ export interface IUser extends Document {
   googleId?: string;
   isVerified: boolean;
   membership: 'free' | 'premium';
+  plan: 'free' | 'pro';
+  subscriptionStatus: 'active' | 'cancelled' | 'past_due' | 'none';
   chatTokensUsed: number;
   chatTokensLimit: number;
   createdAt: Date;
@@ -54,6 +56,18 @@ const UserSchema = new Schema<IUser>(
       type: String,
       enum: ['free', 'premium'],
       default: 'free',
+    },
+
+    plan: {
+      type: String,
+      enum: ['free', 'pro'],
+      default: 'free',
+    },
+
+    subscriptionStatus: {
+      type: String,
+      enum: ['active', 'cancelled', 'past_due', 'none'],
+      default: 'none',
     },
 
     // Number of chat messages used (replaces freeChatUsed boolean)

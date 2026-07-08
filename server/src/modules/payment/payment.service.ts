@@ -43,8 +43,8 @@ function getPlan(planId: string): Plan {
 // ── Lazily initialize Dodo client ─────────────────────────────────────────────
 
 function getDodoClient(): DodoPayments {
-  const apiKey = process.env.DODO_API_KEY;
-  if (!apiKey) throw new Error('DODO_API_KEY is not set in environment');
+  const apiKey = process.env.DODO_PAYMENTS_API_KEY || process.env.DODO_API_KEY;
+  if (!apiKey) throw new Error('DODO_PAYMENTS_API_KEY is not set in environment');
 
   const env = process.env.NODE_ENV === 'production' ? 'live_mode' : 'test_mode';
 
@@ -77,8 +77,7 @@ export async function createPaymentOrderService(userId: string, planId: string) 
       planId: plan.id,
       tokens: String(plan.tokens),
     },
-    success_url: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/dashboard/billing?success=1`,
-    cancel_url: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/dashboard/billing?cancelled=1`,
+    return_url: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/dashboard/billing?success=1`,
   });
 
   // Record pending payment
@@ -87,13 +86,13 @@ export async function createPaymentOrderService(userId: string, planId: string) 
     planId: plan.id,
     tokens: plan.tokens,
     amount: plan.price,
-    orderId: session.id,
+    orderId: session.session_id,
     status: 'pending',
   });
 
   return {
     checkoutUrl: session.checkout_url as string,
-    sessionId: session.id as string,
+    sessionId: session.session_id as string,
     planLabel: plan.label,
     tokens: plan.tokens,
     amount: plan.priceDisplay,
@@ -110,6 +109,7 @@ export async function completePaymentService(
   message: string;
   tokensAdded?: number;
   newLimit?: number;
+  newUsed?: number;
   alreadyDone?: boolean;
 }> {
   const payment = await Payment.findOne({ orderId: sessionId });
@@ -123,7 +123,7 @@ export async function completePaymentService(
 
   // Verify with Dodo that the session is actually paid
   const dodo = getDodoClient();
-  let session: { status?: string; id?: string };
+  let session: { payment_status?: string | null; id?: string };
 
   try {
     session = await (dodo as any).checkoutSessions.retrieve(sessionId);
@@ -131,8 +131,8 @@ export async function completePaymentService(
     throw new Error(`Failed to verify payment with Dodo: ${err instanceof Error ? err.message : 'unknown'}`);
   }
 
-  if (session.status !== 'succeeded' && session.status !== 'paid') {
-    throw new Error(`Payment not completed. Status: ${session.status}`);
+  if (session.payment_status !== 'succeeded') {
+    throw new Error(`Payment not completed. Status: ${session.payment_status}`);
   }
 
   // Mark payment as success
@@ -156,6 +156,7 @@ export async function completePaymentService(
     message: `Payment verified! ${payment.tokens} chats added to your account.`,
     tokensAdded: payment.tokens,
     newLimit: updatedUser.chatTokensLimit,
+    newUsed: updatedUser.chatTokensUsed,
   };
 }
 
