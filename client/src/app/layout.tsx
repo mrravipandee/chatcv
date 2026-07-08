@@ -16,16 +16,20 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://chatcv-gamma.vercel.app"),
 
   title: {
-    default: "ChatCV - AI-Powered Resume Builder",
+    default: "ChatCV - Free AI Resume Builder & AI Resume Maker",
     template: "%s | ChatCV",
   },
 
   description:
-    "Build your resume using AI chat. No forms, just chat and create professional resumes instantly.",
+    "Create professional, ATS-friendly resumes in minutes with ChatCV, the best free AI resume builder and AI resume maker. Chat with our assistant to build your CV for free.",
 
   keywords: [
-    "AI Resume Builder",
     "Resume Builder",
+    "Ai Resume Maker",
+    "free resume builder",
+    "resume builder free",
+    "resume builder ai",
+    "AI Resume Builder",
     "ChatCV",
     "ATS Resume Builder",
     "Online Resume Builder",
@@ -65,9 +69,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: "https://chatcv-gamma.vercel.app",
-    title: "ChatCV - AI-Powered Resume Builder",
+    title: "ChatCV - Free AI Resume Builder & AI Resume Maker",
     description:
-      "Build your resume using AI chat. No forms, just chat and create professional resumes instantly.",
+      "Create professional, ATS-friendly resumes in minutes with ChatCV, the best free AI resume builder and AI resume maker. Chat with our assistant to build your CV for free.",
     siteName: "ChatCV",
     locale: "en_US",
     images: [
@@ -75,16 +79,16 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "ChatCV AI Resume Builder",
+        alt: "ChatCV - Free AI Resume Builder & AI Resume Maker",
       },
     ],
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "ChatCV - AI-Powered Resume Builder",
+    title: "ChatCV - Free AI Resume Builder & AI Resume Maker",
     description:
-      "Build your resume using AI chat. No forms, just chat and create professional resumes instantly.",
+      "Create professional, ATS-friendly resumes in minutes with ChatCV, the best free AI resume builder and AI resume maker. Chat with our assistant to build your CV for free.",
     creator: "@chatcv",
     images: ["/og-image.png"],
   },
