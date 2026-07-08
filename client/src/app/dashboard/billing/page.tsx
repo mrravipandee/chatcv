@@ -141,6 +141,7 @@ function BillingContent() {
 
   const usagePercent = user ? Math.min((user.chatTokensUsed / user.chatTokensLimit) * 100, 100) : 0;
   const remaining = user ? Math.max(user.chatTokensLimit - user.chatTokensUsed, 0) : 0;
+  const isPremium = user?.membership === "premium";
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -178,22 +179,24 @@ function BillingContent() {
               </div>
               <span
                 className={`text-sm font-bold ${
-                  remaining === 0 ? "text-red-400" : remaining <= 5 ? "text-yellow-400" : "text-[#00ff9c]"
+                  isPremium ? "text-[#00ff9c]" : remaining === 0 ? "text-red-400" : remaining <= 5 ? "text-yellow-400" : "text-[#00ff9c]"
                 }`}
               >
-                {remaining} chats remaining
+                {isPremium ? "Unlimited chats" : `${remaining} chats remaining`}
               </span>
             </div>
             <div className="h-2 w-full overflow-hidden rounded-full bg-white/10">
               <div
                 className={`h-full rounded-full transition-all duration-500 ${
-                  remaining === 0 ? "bg-red-500" : remaining <= 5 ? "bg-yellow-400" : "bg-[#00ff9c]"
+                  isPremium ? "bg-[#00ff9c]" : remaining === 0 ? "bg-red-500" : remaining <= 5 ? "bg-yellow-400" : "bg-[#00ff9c]"
                 }`}
-                style={{ width: `${usagePercent}%` }}
+                style={{ width: `${isPremium ? 100 : usagePercent}%` }}
               />
             </div>
             <p className="mt-2 text-xs text-gray-500">
-              {user.chatTokensUsed} of {user.chatTokensLimit} chats used
+              {isPremium
+                ? "You have active Unlimited Premium access"
+                : `${user.chatTokensUsed} of ${user.chatTokensLimit} chats used`}
             </p>
           </div>
         )}
