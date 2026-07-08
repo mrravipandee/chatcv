@@ -7,8 +7,9 @@ import { setCachedResume } from '../../config/redis.client';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const MODEL = 'gpt-4o-mini';
-const EURI_API_URL = 'https://api.euron.one/api/v1/euri/chat/completions';
+import { GoogleGenAI } from '@google/genai';
+
+const MODEL = 'gemini-2.5-flash';
 
 // pdf-parse v1 — exports a simple async function directly
 // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -74,7 +75,8 @@ async function extractTextFromFile(file: Express.Multer.File): Promise<string> {
 // ── Call AI to parse resume text → structured JSON ────────────────────────────
 
 async function extractResumeFromText(rawText: string): Promise<Partial<IResumeData>> {
-  if (!process.env.EURI_API_KEY) throw new Error('EURI_API_KEY is not set');
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) throw new Error('GEMINI_API_KEY is not set');
 
   const prompt = `You are a resume parser. Extract structured resume data from the text below.
 
@@ -134,39 +136,18 @@ Return a JSON object with these fields (omit empty/unknown ones):
   ]
 }`;
 
-  console.log('[UPLOAD] Calling EURI API for extraction...');
+  console.log('[UPLOAD] Calling Gemini API for extraction...');
 
-  const response = await fetch(EURI_API_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${process.env.EURI_API_KEY}`,
+  const ai = new GoogleGenAI({ apiKey });
+  const response = await ai.models.generateContent({
+    model: MODEL,
+    contents: prompt,
+    config: {
+      responseMimeType: 'application/json',
     },
-    body: JSON.stringify({
-      model: MODEL,
-      messages: [
-        { role: 'user', content: prompt },
-      ],
-      max_tokens: 3000,
-    }),
   });
 
-  const responseText = await response.text();
-  console.log('[UPLOAD] EURI response status:', response.status);
-
-  if (!response.ok) {
-    console.error('[UPLOAD] EURI API error body:', responseText.slice(0, 500));
-    throw new Error(`AI extraction failed (HTTP ${response.status}): ${responseText.slice(0, 200)}`);
-  }
-
-  let data: { choices?: Array<{ message?: { content?: string } }> };
-  try {
-    data = JSON.parse(responseText) as typeof data;
-  } catch {
-    throw new Error('AI returned invalid JSON response');
-  }
-
-  const raw = data.choices?.[0]?.message?.content?.trim() || '{}';
+  const raw = response.text?.trim() || '{}';
 
   // Strip markdown code fences if present
   const cleaned = raw

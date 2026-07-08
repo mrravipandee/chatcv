@@ -29,8 +29,9 @@ const EMPTY_RESUME: IResumeData = {
   achievements: [],
 };
 
-const MODEL = 'gpt-4o-mini';
-const EURI_API_URL = 'https://api.euron.one/api/v1/euri/chat/completions';
+import { GoogleGenAI } from '@google/genai';
+
+const MODEL = 'gemini-2.5-flash';
 
 // ─────────────────────────────────────────
 // Helpers
@@ -217,44 +218,46 @@ function mergeResumeData(
 // API Call
 // ─────────────────────────────────────────
 
-async function callEuriAPI(
+async function callGeminiAPI(
   messages: Array<{ role: string; content: string }>,
-  label = 'call'
+  label = 'call',
+  isJson = false
 ): Promise<string> {
-  if (!process.env.EURI_API_KEY) throw new Error('EURI_API_KEY is not set');
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) throw new Error('GEMINI_API_KEY is not set');
 
-  console.log(`[CHAT] EURI ${label} — sending ${messages.length} messages`);
+  console.log(`[CHAT] Gemini ${label} — sending ${messages.length} messages`);
 
-  const response = await fetch(EURI_API_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${process.env.EURI_API_KEY}`,
-    },
-    body: JSON.stringify({
-      model: MODEL,
-      messages,
-      max_tokens: 1200,
-    }),
+  const ai = new GoogleGenAI({ apiKey });
+
+  const systemMessage = messages.find((m) => m.role === 'system');
+  const userMessages = messages.filter((m) => m.role !== 'system');
+
+  let contents: any;
+  if (userMessages.length === 1) {
+    contents = userMessages[0].content;
+  } else {
+    contents = userMessages.map((m) => ({
+      role: m.role === 'assistant' || m.role === 'model' ? 'model' : 'user',
+      parts: [{ text: m.content }],
+    }));
+  }
+
+  const config: any = {};
+  if (systemMessage) {
+    config.systemInstruction = systemMessage.content;
+  }
+  if (isJson) {
+    config.responseMimeType = 'application/json';
+  }
+
+  const response = await ai.models.generateContent({
+    model: MODEL,
+    contents,
+    config,
   });
 
-  // Always read body as text first so we can log it on error
-  const rawBody = await response.text();
-
-  if (!response.ok) {
-    console.error(`[CHAT] EURI ${label} HTTP ${response.status}:`, rawBody.slice(0, 400));
-    throw new Error(`EURI API error (${response.status}): ${rawBody.slice(0, 200)}`);
-  }
-
-  try {
-    const data = JSON.parse(rawBody) as {
-      choices?: Array<{ message?: { content?: string } }>;
-    };
-    return data.choices?.[0]?.message?.content?.trim() || '';
-  } catch {
-    console.error(`[CHAT] EURI ${label} — invalid JSON response:`, rawBody.slice(0, 200));
-    throw new Error('EURI API returned invalid JSON');
-  }
+  return response.text?.trim() || '';
 }
 
 // ─────────────────────────────────────────
@@ -323,7 +326,7 @@ export const sendChatMessageService = async (
   // ── Run AI calls sequentially to avoid rate limits ───────────────────────────
   console.log('[CHAT] Calling AI — conversational reply...');
 
-  const reply = await callEuriAPI(
+  const reply = await callGeminiAPI(
     [
       {
         role: 'system',
@@ -331,12 +334,13 @@ export const sendChatMessageService = async (
       },
       { role: 'user', content: message },
     ],
-    'reply'
+    'reply',
+    false
   );
 
   console.log('[CHAT] Calling AI — data extraction...');
 
-  const extractionRaw = await callEuriAPI(
+  const extractionRaw = await callGeminiAPI(
     [
       {
         role: 'system',
@@ -344,7 +348,8 @@ export const sendChatMessageService = async (
       },
       { role: 'user', content: message },
     ],
-    'extract'
+    'extract',
+    true
   );
 
   const extracted = parseJson(extractionRaw);
