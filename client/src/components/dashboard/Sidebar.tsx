@@ -20,7 +20,13 @@ interface Resume {
 }
 
 interface SidebarProps {
-  user?: { name: string; plan: string; email?: string };
+  user?: {
+    name: string;
+    plan: string;
+    email?: string;
+    chatTokensUsed?: number;
+    chatTokensLimit?: number;
+  };
   resumes?: Resume[];
   currentResumeId?: string;
   onCreateResume?: () => void;
@@ -40,11 +46,18 @@ export default function Sidebar({
   const router = useRouter();
   const isPremium = user?.plan === "Premium Plan";
 
-  const emailPrefix = user?.email ? user.email.split("@")[0] : "";
-  const fallbackName = emailPrefix
-    ? emailPrefix.charAt(0).toUpperCase() + emailPrefix.slice(1)
-    : "User";
-  const displayName = user?.name && user.name !== "User" ? user.name : fallbackName;
+  const getFirstName = (fullName?: string, email?: string) => {
+    if (fullName && fullName !== "User" && fullName.trim() !== "") {
+      return fullName.trim().split(" ")[0];
+    }
+    if (email) {
+      const prefix = email.split("@")[0];
+      const namePart = prefix.split(/[._-]/)[0];
+      return namePart.charAt(0).toUpperCase() + namePart.slice(1);
+    }
+    return "User";
+  };
+  const displayName = getFirstName(user?.name, user?.email);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -217,21 +230,48 @@ export default function Sidebar({
             </div>
           </div>
 
-          <div className="max-h-0 group-hover/sidebar:max-h-32 transition-all duration-300 overflow-hidden opacity-0 group-hover/sidebar:opacity-100">
+          <div className="max-h-0 group-hover/sidebar:max-h-40 transition-all duration-300 overflow-hidden opacity-0 group-hover/sidebar:opacity-100">
             {!isPremium ? (
-              <>
-                <p className="mt-3 text-xs text-gray-400 leading-relaxed">
-                  Unlock unlimited AI chats and templates.
-                </p>
-                <button
-                  onClick={handleUpgrade}
-                  className="mt-3.5 w-full rounded-xl bg-gradient-to-r from-[#00ff9c] to-[#00cc7a] py-2 font-bold text-black text-xs transition hover:shadow-lg hover:shadow-[#00ff9c]/20"
-                >
-                  Upgrade Now
-                </button>
-              </>
+              (() => {
+                const chatLimit = user?.chatTokensLimit ?? 5;
+                const chatUsed = user?.chatTokensUsed ?? 0;
+                const remainingChats = chatLimit - chatUsed;
+                const showUpgrade = remainingChats < 5;
+
+                return showUpgrade ? (
+                  <>
+                    <p className="mt-3 text-xs text-gray-400 leading-relaxed">
+                      Unlock unlimited AI chats and templates.
+                    </p>
+                    <button
+                      onClick={handleUpgrade}
+                      className="mt-3.5 w-full rounded-xl bg-gradient-to-r from-[#00ff9c] to-[#00cc7a] py-2 font-bold text-black text-xs transition hover:shadow-lg hover:shadow-[#00ff9c]/20"
+                    >
+                      Upgrade Now
+                    </button>
+                  </>
+                ) : (
+                  <div className="mt-3.5 space-y-2">
+                    <div className="flex justify-between text-[11px] text-gray-400">
+                      <span>Chats Used</span>
+                      <span className="font-bold text-white">{chatUsed} / {chatLimit}</span>
+                    </div>
+                    <div className="w-full bg-white/5 rounded-full h-1.5 overflow-hidden">
+                      <div
+                        className="bg-gradient-to-r from-[#00ff9c] to-[#00cc7a] h-full rounded-full transition-all duration-500 ease-out"
+                        style={{ width: `${Math.min(100, (chatUsed / chatLimit) * 100)}%` }}
+                      />
+                    </div>
+                    <p className="text-[10px] text-gray-500 font-medium">
+                      {remainingChats} chats remaining
+                    </p>
+                  </div>
+                );
+              })()
             ) : (
-              <p className="mt-3 text-xs text-gray-400">🎉 Unlimited Premium Access</p>
+              <p className="mt-3 text-xs text-[#00ff9c] font-medium flex items-center gap-1.5">
+                <span>🎉</span> Unlimited Access
+              </p>
             )}
           </div>
         </div>

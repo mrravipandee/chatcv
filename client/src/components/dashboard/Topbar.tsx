@@ -9,11 +9,18 @@ interface TopbarProps {
 export default function Topbar({ user }: TopbarProps) {
   const isPremium = user?.plan === "Premium Plan";
 
-  const emailPrefix = user?.email ? user.email.split("@")[0] : "";
-  const fallbackName = emailPrefix
-    ? emailPrefix.charAt(0).toUpperCase() + emailPrefix.slice(1)
-    : "User";
-  const displayName = user?.name && user.name !== "User" ? user.name : fallbackName;
+  const getFirstName = (fullName?: string, email?: string) => {
+    if (fullName && fullName !== "User" && fullName.trim() !== "") {
+      return fullName.trim().split(" ")[0];
+    }
+    if (email) {
+      const prefix = email.split("@")[0];
+      const namePart = prefix.split(/[._-]/)[0];
+      return namePart.charAt(0).toUpperCase() + namePart.slice(1);
+    }
+    return "User";
+  };
+  const displayName = getFirstName(user?.name, user?.email);
 
   return (
     <header className="h-16 border-b border-white/10 px-4 lg:px-6 flex items-center bg-black/40 backdrop-blur-sm">
