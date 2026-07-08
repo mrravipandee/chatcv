@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://chatcv-gamma.vercel.app"),
+  metadataBase: new URL("https://resumebuilder-chatcv.vercel.app"),
 
   title: {
     default: "ChatCV - Free AI Resume Builder & AI Resume Maker",
@@ -97,6 +97,10 @@ export const metadata: Metadata = {
     icon: "/favicon.ico",
     shortcut: "/favicon.ico",
     apple: "/favicon.ico",
+  },
+
+  verification: {
+    google: "1XnLLnxNOnoegYOvO9BGs1Ld1gDXj18RsKLtySms5G0",
   },
 
   // manifest: "/site.webmanifest",
