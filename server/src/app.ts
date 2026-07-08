@@ -13,6 +13,7 @@ const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:3001",
   "https://chatcv-gamma.vercel.app",
+  "https://resumebuilder-chatcv.vercel.app",
 ];
 
 if (process.env.CORS_ORIGIN) {
