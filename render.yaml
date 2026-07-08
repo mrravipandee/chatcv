@@ -1,0 +1,51 @@
+services:
+  # ── Backend Node.js/Express Web Service ──────────────────────────────────────
+  - type: web
+    name: chatcv-backend
+    runtime: node
+    rootDir: server
+    buildCommand: npm install --include=dev && npm run build
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 5001
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DODO_PAYMENTS_API_KEY
+        sync: false
+      - key: DODO_WEBHOOK_SECRET
+        sync: false
+      - key: DODO_PRODUCT_BASIC
+        sync: false
+      - key: DODO_PRODUCT_PRO
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+      - key: CORS_ORIGIN
+        sync: false
+      - key: EMAIL_USER
+        sync: false
+      - key: EMAIL_PASS
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: REDIS_URL
+        sync: false
+
+  # ── Frontend Next.js Web Service ─────────────────────────────────────────────
+  - type: web
+    name: chatcv-frontend
+    runtime: node
+    rootDir: client
+    buildCommand: npm install --include=dev && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          name: chatcv-backend
+          type: web
+          property: url
