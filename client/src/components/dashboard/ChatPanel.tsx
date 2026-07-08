@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Send, Sparkles, Loader2, Paperclip, X, MessageSquare } from "lucide-react";
+import { Send, Sparkles, Loader2, Paperclip, X, MessageSquare, Crown } from "lucide-react";
 import { uploadResume } from "@/lib/api";
 
 interface Message {
@@ -17,6 +17,7 @@ interface ChatPanelProps {
   tokensUsed?: number;
   tokensLimit?: number;
   userName?: string;
+  isPremium?: boolean;
 }
 
 export default function ChatPanel({
@@ -27,6 +28,7 @@ export default function ChatPanel({
   tokensUsed = 0,
   tokensLimit = 5,
   userName,
+  isPremium = false,
 }: ChatPanelProps) {
   const [text, setText] = useState("");
   const [uploading, setUploading] = useState(false);
@@ -116,22 +118,31 @@ export default function ChatPanel({
           </div>
 
           {/* Token Counter */}
-          <div className="flex flex-col items-end gap-1.5">
-            <div className="flex items-center gap-1.5">
-              <MessageSquare size={13} className={isLimitReached ? "text-red-400" : isLow ? "text-yellow-400" : "text-gray-400"} />
-              <span className={`text-xs font-semibold tracking-wide uppercase ${isLimitReached ? "text-red-400" : isLow ? "text-yellow-400" : "text-gray-400"}`}>
-                {isLimitReached ? "Limit reached" : `${tokensRemaining} chats left`}
+          {!isPremium ? (
+            <div className="flex flex-col items-end gap-1.5">
+              <div className="flex items-center gap-1.5">
+                <MessageSquare size={13} className={isLimitReached ? "text-red-400" : isLow ? "text-yellow-400" : "text-gray-400"} />
+                <span className={`text-xs font-semibold tracking-wide uppercase ${isLimitReached ? "text-red-400" : isLow ? "text-yellow-400" : "text-gray-400"}`}>
+                  {isLimitReached ? "Limit reached" : `${tokensRemaining} chats left`}
+                </span>
+              </div>
+              <div className="w-24 h-1 rounded-full bg-white/10 overflow-hidden">
+                <div
+                  className={`h-full rounded-full transition-all duration-500 ${
+                    isLimitReached ? "bg-red-500" : isLow ? "bg-yellow-400" : "bg-gradient-to-r from-[#00ff9c] to-[#00cc7a]"
+                  }`}
+                  style={{ width: `${tokenPercent}%` }}
+                />
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center gap-1.5 bg-[#00ff9c]/10 border border-[#00ff9c]/20 px-3 py-1.5 rounded-lg select-none">
+              <Crown size={14} className="text-[#00ff9c] animate-pulse" />
+              <span className="text-xs font-bold text-[#00ff9c] uppercase tracking-wider">
+                Unlimited Chats
               </span>
             </div>
-            <div className="w-24 h-1 rounded-full bg-white/10 overflow-hidden">
-              <div
-                className={`h-full rounded-full transition-all duration-500 ${
-                  isLimitReached ? "bg-red-500" : isLow ? "bg-yellow-400" : "bg-gradient-to-r from-[#00ff9c] to-[#00cc7a]"
-                }`}
-                style={{ width: `${tokenPercent}%` }}
-              />
-            </div>
-          </div>
+          )}
         </div>
       </div>
 

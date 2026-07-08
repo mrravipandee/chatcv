@@ -300,7 +300,7 @@ export const sendChatMessageService = async (
     tokensUsed = redisCount;
   }
 
-  if (tokensUsed >= tokensLimit) {
+  if (user.membership !== 'premium' && tokensUsed >= tokensLimit) {
     throw new Error(`CHAT_LIMIT_REACHED:${tokensLimit}`);
   }
 

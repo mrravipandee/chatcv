@@ -350,6 +350,7 @@ export default function DashboardPage() {
             tokensUsed={user.chatTokensUsed}
             tokensLimit={user.chatTokensLimit}
             userName={user.name !== 'User' ? user.name : undefined}
+            isPremium={user.plan === 'Premium Plan'}
           />
         </div>
         <div className="min-w-0 overflow-hidden">
