@@ -49,68 +49,82 @@ export default function Sidebar({
   };
 
   return (
-    <aside className="w-20 hover:w-64 transition-all duration-300 ease-in-out border-r border-white/10 bg-gradient-to-b from-zinc-950 to-black flex flex-col h-full group/sidebar z-30 min-w-[5rem] hover:min-w-[16rem]">
+    <aside className="w-20 hover:w-64 transition-all duration-300 ease-in-out border-r border-white/5 bg-[#09090b] flex flex-col h-full group/sidebar z-30 overflow-hidden select-none">
       {/* Logo */}
-      <div className="border-b border-white/10 px-6 py-6 h-20 flex items-center overflow-hidden shrink-0">
-        <Link href="/" className="block group flex items-center min-w-max gap-3">
-          <h1 className="text-2xl font-bold tracking-tight text-white group-hover:text-[#00ff9c] transition">
-            C<span className="text-[#00ff9c] opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300">hatCV</span>
-          </h1>
+      <div className="border-b border-white/5 h-20 flex items-center px-5 overflow-hidden shrink-0">
+        <Link href="/" className="flex items-center gap-3 w-full">
+          <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-[#00ff9c]/20 to-[#00cc7a]/5 border border-[#00ff9c]/30 shrink-0 shadow-lg shadow-[#00ff9c]/5">
+            <span className="font-extrabold text-[#00ff9c] text-lg font-mono">C</span>
+          </div>
+          <div className="opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 flex flex-col justify-center min-w-0">
+            <h1 className="text-sm font-bold tracking-tight text-white leading-none">
+              Chat<span className="text-[#00ff9c]">CV</span>
+            </h1>
+            <span className="text-[10px] text-gray-500 font-semibold mt-1 whitespace-nowrap">
+              AI Resume Builder
+            </span>
+          </div>
         </Link>
       </div>
 
       {/* New Resume Button */}
-      <div className="p-4 overflow-hidden shrink-0">
+      <div className="p-4 shrink-0 overflow-hidden">
         <button
           onClick={onCreateResume}
-          className="flex w-full items-center justify-start gap-3 rounded-lg bg-gradient-to-r from-[#00ff9c] to-[#00cc7a] p-3 font-semibold text-black transition hover:scale-105 hover:shadow-lg hover:shadow-[#00ff9c]/30 disabled:opacity-50 shadow-lg shadow-[#00ff9c]/20 min-w-max"
+          className="flex items-center gap-4 rounded-xl bg-gradient-to-r from-[#00ff9c] to-[#00cc7a] p-3 font-semibold text-black transition hover:scale-[1.02] hover:shadow-lg hover:shadow-[#00ff9c]/10 disabled:opacity-50 w-full overflow-hidden"
         >
-          <Plus size={18} className="shrink-0" />
-          <span className="opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 font-bold whitespace-nowrap">
+          <div className="flex items-center justify-center w-6 h-6 shrink-0">
+            <Plus size={20} className="stroke-[2.5]" />
+          </div>
+          <span className="opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 font-extrabold text-xs tracking-wider uppercase whitespace-nowrap">
             New Resume
           </span>
         </button>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 space-y-1 overflow-y-auto px-3">
+      <nav className="flex-1 space-y-1 overflow-y-auto px-4 py-2">
         <Link
           href="/dashboard"
-          className={`flex items-center gap-3 rounded-lg p-3 text-sm font-medium transition min-w-max ${
+          className={`flex items-center gap-4 rounded-xl p-3 text-sm font-medium transition-colors w-full overflow-hidden ${
             pathname === "/dashboard"
-              ? "bg-white/10 text-[#00ff9c]"
-              : "text-gray-400 hover:bg-white/5 hover:text-white"
+              ? "bg-white/5 text-[#00ff9c] border border-white/5"
+              : "text-gray-400 hover:bg-white/5 hover:text-white border border-transparent"
           }`}
         >
-          <FileText size={18} className="shrink-0" />
-          <span className="opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+          <div className="flex items-center justify-center w-6 h-6 shrink-0">
+            <FileText size={20} />
+          </div>
+          <span className="opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 font-semibold whitespace-nowrap">
             My Resumes
           </span>
         </Link>
 
         <Link
           href="/dashboard/chats"
-          className={`flex items-center gap-3 rounded-lg p-3 text-sm transition min-w-max ${
+          className={`flex items-center gap-4 rounded-xl p-3 text-sm font-medium transition-colors w-full overflow-hidden ${
             pathname === "/dashboard/chats"
-              ? "bg-white/10 text-[#00ff9c]"
-              : "text-gray-400 hover:bg-white/5 hover:text-white"
+              ? "bg-white/5 text-[#00ff9c] border border-white/5"
+              : "text-gray-400 hover:bg-white/5 hover:text-white border border-transparent"
           }`}
         >
-          <MessageSquare size={18} className="shrink-0" />
-          <span className="opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+          <div className="flex items-center justify-center w-6 h-6 shrink-0">
+            <MessageSquare size={20} />
+          </div>
+          <span className="opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 font-semibold whitespace-nowrap">
             AI Chats
           </span>
         </Link>
 
         {/* Recent Resumes Section */}
         {resumes.length > 0 && (
-          <div className="mt-4 border-t border-white/10 pt-4 overflow-hidden">
-            <p className="mb-3 px-3 text-xs font-semibold uppercase text-gray-600 tracking-wider opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+          <div className="mt-5 border-t border-white/5 pt-5 overflow-hidden">
+            <p className="mb-2 px-3 text-[10px] font-bold uppercase text-gray-500 tracking-wider opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 whitespace-nowrap">
               Recent Resumes
             </p>
             {isLoadingResumes ? (
-              <div className="flex items-center justify-center py-4">
-                <Loader2 size={16} className="animate-spin text-[#00ff9c]" />
+              <div className="flex items-center justify-center py-4 w-full">
+                <Loader2 size={18} className="animate-spin text-[#00ff9c]" />
               </div>
             ) : (
               <div className="space-y-1">
@@ -118,15 +132,17 @@ export default function Sidebar({
                   <button
                     key={resume._id}
                     onClick={() => onSelectResume?.(resume._id)}
-                    className={`w-full truncate rounded-lg p-3 text-left text-sm transition flex items-center gap-3 min-w-max ${
+                    className={`w-full rounded-xl p-3 text-left text-sm transition-colors flex items-center gap-4 overflow-hidden ${
                       currentResumeId === resume._id
-                        ? "bg-[#00ff9c]/20 text-[#00ff9c] font-medium"
-                        : "text-gray-400 hover:bg-white/5 hover:text-white"
+                        ? "bg-[#00ff9c]/10 text-[#00ff9c] font-semibold border border-[#00ff9c]/10"
+                        : "text-gray-400 hover:bg-white/5 hover:text-white border border-transparent"
                     }`}
                     title={resume.title}
                   >
-                    <span className="shrink-0">📄</span>
-                    <span className="opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 truncate whitespace-nowrap">
+                    <span className="shrink-0 text-lg w-6 h-6 flex items-center justify-center">
+                      📄
+                    </span>
+                    <span className="opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 truncate whitespace-nowrap font-medium">
                       {resume.title}
                     </span>
                   </button>
@@ -137,30 +153,34 @@ export default function Sidebar({
         )}
 
         {/* Bottom Navigation */}
-        <div className="mt-4 border-t border-white/10 pt-4 space-y-1 overflow-hidden">
+        <div className="mt-5 border-t border-white/5 pt-5 space-y-1 overflow-hidden">
           <Link
             href="/dashboard/billing"
-            className={`flex items-center gap-3 rounded-lg p-3 text-sm transition min-w-max ${
+            className={`flex items-center gap-4 rounded-xl p-3 text-sm font-medium transition-colors w-full overflow-hidden ${
               pathname === "/dashboard/billing"
-                ? "bg-white/10 text-[#00ff9c]"
-                : "text-gray-400 hover:bg-white/5 hover:text-white"
+                ? "bg-white/5 text-[#00ff9c] border border-white/5"
+                : "text-gray-400 hover:bg-white/5 hover:text-white border border-transparent"
             }`}
           >
-            <CreditCard size={18} className="shrink-0" />
-            <span className="opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+            <div className="flex items-center justify-center w-6 h-6 shrink-0">
+              <CreditCard size={20} />
+            </div>
+            <span className="opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 font-semibold whitespace-nowrap">
               Billing
             </span>
           </Link>
           <Link
             href="/dashboard/settings"
-            className={`flex items-center gap-3 rounded-lg p-3 text-sm transition min-w-max ${
+            className={`flex items-center gap-4 rounded-xl p-3 text-sm font-medium transition-colors w-full overflow-hidden ${
               pathname === "/dashboard/settings"
-                ? "bg-white/10 text-[#00ff9c]"
-                : "text-gray-400 hover:bg-white/5 hover:text-white"
+                ? "bg-white/5 text-[#00ff9c] border border-white/5"
+                : "text-gray-400 hover:bg-white/5 hover:text-white border border-transparent"
             }`}
           >
-            <Settings size={18} className="shrink-0" />
-            <span className="opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+            <div className="flex items-center justify-center w-6 h-6 shrink-0">
+              <Settings size={20} />
+            </div>
+            <span className="opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 font-semibold whitespace-nowrap">
               Settings
             </span>
           </Link>
@@ -168,28 +188,28 @@ export default function Sidebar({
       </nav>
 
       {/* User Plan Card */}
-      <div className="p-4 overflow-hidden shrink-0">
+      <div className="p-4 shrink-0 overflow-hidden">
         <div
-          className={`rounded-lg border p-4 transition min-w-max ${
+          className={`rounded-xl border p-3.5 transition-all w-full overflow-hidden ${
             isPremium
-              ? "border-[#00ff9c]/40 bg-[#00ff9c]/5"
-              : "border-white/10 bg-white/5"
+              ? "border-[#00ff9c]/20 bg-[#00ff9c]/5"
+              : "border-white/5 bg-white/5"
           }`}
         >
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4 w-full">
             <div
-              className={`p-2 rounded-lg shrink-0 ${
-                isPremium ? "bg-[#00ff9c]/20" : "bg-white/10"
+              className={`p-2 rounded-xl shrink-0 flex items-center justify-center w-10 h-10 ${
+                isPremium ? "bg-[#00ff9c]/15" : "bg-white/5"
               }`}
             >
-              <Crown size={18} className={isPremium ? "text-[#00ff9c]" : "text-gray-500"} />
+              <Crown size={20} className={isPremium ? "text-[#00ff9c]" : "text-gray-500"} />
             </div>
             <div className="flex-1 min-w-0 opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300">
-              <p className="font-semibold text-white text-sm truncate">
+              <p className="font-bold text-white text-sm truncate">
                 {user?.name || "User"}
               </p>
               <p
-                className={`text-xs font-medium ${
+                className={`text-[10px] font-bold uppercase tracking-wider ${
                   isPremium ? "text-[#00ff9c]" : "text-gray-500"
                 }`}
               >
@@ -197,37 +217,37 @@ export default function Sidebar({
               </p>
             </div>
           </div>
-          {!isPremium && (
-            <div className="opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300">
-              <p className="mt-3 text-xs text-gray-400 max-w-[180px]">
-                Unlock unlimited AI chats, exports, and more.
-              </p>
-              <button
-                onClick={handleUpgrade}
-                className="mt-3 w-full rounded-lg bg-gradient-to-r from-[#00ff9c] to-[#00cc7a] px-4 py-2 font-semibold text-black text-sm transition hover:shadow-lg hover:shadow-[#00ff9c]/30"
-              >
-                Upgrade Now
-              </button>
-            </div>
-          )}
-          {isPremium && (
-            <div className="opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300">
-              <p className="mt-3 text-xs text-gray-400">
-                🎉 You have unlimited access!
-              </p>
-            </div>
-          )}
+
+          <div className="max-h-0 group-hover/sidebar:max-h-32 transition-all duration-300 overflow-hidden opacity-0 group-hover/sidebar:opacity-100">
+            {!isPremium ? (
+              <>
+                <p className="mt-3 text-xs text-gray-400 leading-relaxed">
+                  Unlock unlimited AI chats and templates.
+                </p>
+                <button
+                  onClick={handleUpgrade}
+                  className="mt-3.5 w-full rounded-xl bg-gradient-to-r from-[#00ff9c] to-[#00cc7a] py-2 font-bold text-black text-xs transition hover:shadow-lg hover:shadow-[#00ff9c]/20"
+                >
+                  Upgrade Now
+                </button>
+              </>
+            ) : (
+              <p className="mt-3 text-xs text-gray-400">🎉 Unlimited Premium Access</p>
+            )}
+          </div>
         </div>
       </div>
 
       {/* Logout Button */}
-      <div className="p-4 border-t border-white/10 shrink-0 overflow-hidden">
+      <div className="p-4 border-t border-white/5 shrink-0 overflow-hidden">
         <button
           onClick={handleLogout}
-          className="flex w-full items-center justify-start gap-3 rounded-lg p-3 text-sm font-medium text-gray-400 hover:bg-white/10 hover:text-white transition min-w-max"
+          className="flex items-center gap-4 rounded-xl p-3 text-sm font-medium text-gray-400 hover:bg-red-500/10 hover:text-red-400 transition-colors w-full overflow-hidden"
         >
-          <LogOut size={16} className="shrink-0" />
-          <span className="opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+          <div className="flex items-center justify-center w-6 h-6 shrink-0">
+            <LogOut size={20} />
+          </div>
+          <span className="opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 font-semibold whitespace-nowrap">
             Logout
           </span>
         </button>
