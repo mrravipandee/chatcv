@@ -9,6 +9,8 @@ import {
   loginUserService,
   registerUserService,
   verifyOtpService,
+  updateProfileService,
+  changePasswordService,
 } from "./auth.service";
 
 import { 
@@ -100,6 +102,59 @@ export const getMeController = async (
     return res.status(400).json({
       success: false,
       message: "Failed to fetch user",
+    });
+  }
+};
+
+export const updateProfileController = async (
+  req: AuthRequest,
+  res: Response
+) => {
+  try {
+    const { name } = req.body as { name?: string };
+    if (!name) {
+      return res.status(400).json({ success: false, message: "Name is required" });
+    }
+
+    const updatedUser = await updateProfileService(req.user.id, name);
+    return res.status(200).json({
+      success: true,
+      message: "Profile updated successfully",
+      data: updatedUser,
+    });
+  } catch (error: any) {
+    return res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const changePasswordController = async (
+  req: AuthRequest,
+  res: Response
+) => {
+  try {
+    const { currentPassword, newPassword } = req.body as {
+      currentPassword?: string;
+      newPassword?: string;
+    };
+
+    if (!newPassword) {
+      return res.status(400).json({ success: false, message: "New password is required" });
+    }
+
+    const result = await changePasswordService(
+      req.user.id,
+      currentPassword || "",
+      newPassword
+    );
+
+    return res.status(200).json(result);
+  } catch (error: any) {
+    return res.status(400).json({
+      success: false,
+      message: error.message,
     });
   }
 };

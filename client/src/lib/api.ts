@@ -60,6 +60,11 @@ export interface LoginPayload {
   password: string;
 }
 
+export interface ChangePasswordPayload {
+  currentPassword?: string;
+  newPassword?: string;
+}
+
 export interface LoginResponse {
   token: string;
   user: {
@@ -252,6 +257,34 @@ export async function getCurrentUser(
   return fetchApi<CurrentUser>('/api/auth/me', {
     method: 'GET',
     headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
+export async function updateProfile(
+  name: string,
+  token: string
+): Promise<ApiResponse<CurrentUser>> {
+  return fetchApi<CurrentUser>('/api/auth/update-profile', {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ name }),
+  });
+}
+
+export async function changePassword(
+  payload: ChangePasswordPayload,
+  token: string
+): Promise<ApiResponse<{ success: boolean; message: string }>> {
+  return fetchApi<{ success: boolean; message: string }>('/api/auth/change-password', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
   });
 }
 

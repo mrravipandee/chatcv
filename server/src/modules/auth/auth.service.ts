@@ -162,3 +162,63 @@ export const loginUserService = async (payload: LoginInput) => {
     },
   };
 };
+
+export const updateProfileService = async (userId: string, name: string) => {
+  const trimmedName = name.trim();
+  if (trimmedName.length < 2) {
+    throw new Error("Name must be at least 2 characters");
+  }
+  if (trimmedName.length > 60) {
+    throw new Error("Name too long");
+  }
+
+  const user = await User.findByIdAndUpdate(
+    userId,
+    { name: trimmedName },
+    { new: true }
+  );
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  return {
+    id: user._id,
+    name: user.name,
+    email: user.email,
+    membership: user.membership,
+    chatTokensUsed: user.chatTokensUsed,
+    chatTokensLimit: user.chatTokensLimit,
+  };
+};
+
+export const changePasswordService = async (
+  userId: string,
+  currentPass: string,
+  newPass: string
+) => {
+  if (newPass.length < 6) {
+    throw new Error("New password must be at least 6 characters");
+  }
+
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  if (user.provider === "email" || user.passwordHash) {
+    if (!user.passwordHash) {
+      throw new Error("Invalid account configuration");
+    }
+    const isMatch = await bcrypt.compare(currentPass, user.passwordHash);
+    if (!isMatch) {
+      throw new Error("Current password incorrect");
+    }
+  }
+
+  const newHash = await bcrypt.hash(newPass, 10);
+  user.passwordHash = newHash;
+  await user.save();
+
+  return { success: true, message: "Password updated successfully" };
+};
