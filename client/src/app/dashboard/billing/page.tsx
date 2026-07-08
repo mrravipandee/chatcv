@@ -31,7 +31,9 @@ function BillingContent() {
     const cancelled = searchParams.get("cancelled");
 
     if (cancelled) {
-      setErrorMsg("Payment was cancelled. You can try again anytime.");
+      Promise.resolve().then(() => {
+        setErrorMsg("Payment was cancelled. You can try again anytime.");
+      });
       return;
     }
 
@@ -39,9 +41,11 @@ function BillingContent() {
       const token = localStorage.getItem("token");
       if (!token) return;
 
-      setVerifying(true);
-      setSuccessMsg("");
-      setErrorMsg("");
+      Promise.resolve().then(() => {
+        setVerifying(true);
+        setSuccessMsg("");
+        setErrorMsg("");
+      });
 
       verifyPayment({ sessionId }, token).then((res) => {
         setVerifying(false);

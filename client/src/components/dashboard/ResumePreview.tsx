@@ -3,9 +3,9 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import {
   Eye, FileDown, Loader2, CheckCircle, XCircle,
-  Code, Copy, Check, X, Sparkles
+  Code, Copy, Check, X
 } from "lucide-react";
-import { ResumeData, SkillGroup, Experience, Project, Education, Achievement } from "@/types/resume";
+import { ResumeData } from "@/types/resume";
 
 interface ResumePreviewProps {
   resumeData: ResumeData | null;
@@ -37,7 +37,9 @@ function buildLatexPreview(data: ResumeData): string {
       .replace(/\^/g, "\\textasciicircum{}");
 
   const links = data.links || [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const validLinks = links.filter((l: any) => typeof l === "object" && (l.label || l.name) && l.url);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const linkParts = validLinks.map((link: any) => {
     const label = link.label || link.name || "Link";
     const rawUrl = String(link.url || "").trim();
@@ -299,12 +301,16 @@ export default function ResumePreview({ resumeData, resumeId }: ResumePreviewPro
     };
   }, [resumeId]);
 
+  const serializedResumeData = JSON.stringify(resumeData);
+
   // Recompile whenever the resume changes (debounced by network response updates)
   useEffect(() => {
     if (!isEmpty && resumeId) {
-      compilePreview();
+      Promise.resolve().then(() => {
+        compilePreview();
+      });
     }
-  }, [resumeId, JSON.stringify(resumeData), compilePreview]);
+  }, [isEmpty, resumeId, serializedResumeData, compilePreview]);
 
   const handleCopyLatex = useCallback(async () => {
     if (!latexSource) return;

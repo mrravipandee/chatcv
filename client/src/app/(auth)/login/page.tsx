@@ -63,6 +63,7 @@ export default function LoginPage() {
     try {
       setLoading(true);
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const res: any =
         await loginUser(form);
 
@@ -99,11 +100,9 @@ export default function LoginPage() {
       router.push(
         "/dashboard"
       );
-    } catch (err: any) {
-      setError(
-        err.message ||
-          "Something went wrong."
-      );
+    } catch (err: unknown) {
+      const errorMsg = err instanceof Error ? err.message : "Something went wrong.";
+      setError(errorMsg);
     } finally {
       setLoading(false);
     }
