@@ -45,8 +45,9 @@ const GREETING: Message = {
 
 export default function DashboardPage() {
   const router = useRouter();
-  const [user, setUser] = useState<{ name: string; plan: string; chatTokensUsed: number; chatTokensLimit: number }>({
+  const [user, setUser] = useState<{ name: string; email: string; plan: string; chatTokensUsed: number; chatTokensLimit: number }>({
     name: 'User',
+    email: '',
     plan: 'Free Plan',
     chatTokensUsed: 0,
     chatTokensLimit: 5,
@@ -133,6 +134,7 @@ export default function DashboardPage() {
 
       setUser({
         name: userData.name || 'User',
+        email: userData.email || '',
         plan: userData.membership === 'premium' ? 'Premium Plan' : 'Free Plan',
         chatTokensUsed: userData.chatTokensUsed ?? 0,
         chatTokensLimit: userData.chatTokensLimit ?? 5,

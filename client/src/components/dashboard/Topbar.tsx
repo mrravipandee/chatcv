@@ -3,11 +3,17 @@
 import { Bell } from "lucide-react";
 
 interface TopbarProps {
-  user: { name: string; plan: string };
+  user: { name: string; plan: string; email?: string };
 }
 
 export default function Topbar({ user }: TopbarProps) {
   const isPremium = user?.plan === "Premium Plan";
+
+  const emailPrefix = user?.email ? user.email.split("@")[0] : "";
+  const fallbackName = emailPrefix
+    ? emailPrefix.charAt(0).toUpperCase() + emailPrefix.slice(1)
+    : "User";
+  const displayName = user?.name && user.name !== "User" ? user.name : fallbackName;
 
   return (
     <header className="h-16 border-b border-white/10 px-4 lg:px-6 flex items-center bg-black/40 backdrop-blur-sm">
@@ -20,10 +26,10 @@ export default function Topbar({ user }: TopbarProps) {
           </button>
           <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-2 hover:bg-white/10 transition">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-[#00ff9c] to-[#00cc7a] font-semibold text-black text-sm">
-              {user?.name?.charAt(0)?.toUpperCase() || "U"}
+              {displayName.charAt(0).toUpperCase()}
             </div>
             <div className="flex flex-col">
-              <p className="text-sm font-medium text-white">{user?.name || "User"}</p>
+              <p className="text-sm font-medium text-white">{displayName}</p>
               <div className="flex items-center gap-2">
                 <span
                   className={`text-xs font-semibold ${

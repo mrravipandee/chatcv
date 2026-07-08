@@ -20,7 +20,7 @@ interface Resume {
 }
 
 interface SidebarProps {
-  user?: { name: string; plan: string };
+  user?: { name: string; plan: string; email?: string };
   resumes?: Resume[];
   currentResumeId?: string;
   onCreateResume?: () => void;
@@ -39,6 +39,12 @@ export default function Sidebar({
   const pathname = usePathname();
   const router = useRouter();
   const isPremium = user?.plan === "Premium Plan";
+
+  const emailPrefix = user?.email ? user.email.split("@")[0] : "";
+  const fallbackName = emailPrefix
+    ? emailPrefix.charAt(0).toUpperCase() + emailPrefix.slice(1)
+    : "User";
+  const displayName = user?.name && user.name !== "User" ? user.name : fallbackName;
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -200,7 +206,7 @@ export default function Sidebar({
             </div>
             <div className="flex-1 min-w-0 opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300">
               <p className="font-bold text-white text-sm truncate">
-                {user?.name || "User"}
+                {displayName}
               </p>
               <p
                 className={`text-[10px] font-bold uppercase tracking-wider ${isPremium ? "text-[#00ff9c]" : "text-gray-500"

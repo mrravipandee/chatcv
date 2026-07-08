@@ -46,7 +46,7 @@ export default function Navbar() {
                     </div>
 
                     {/* CTA BUTTON */}
-                    <Link href="/subscribe">
+                    <Link href="/dashboard">
                         <motion.button
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
