@@ -55,7 +55,7 @@ export default function Sidebar({
       <div className="border-b border-white/5 h-20 flex items-center px-5 overflow-hidden shrink-0">
         <Link href="/" className="flex items-center gap-3 w-full">
           <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-[#00ff9c]/20 to-[#00cc7a]/5 border border-[#00ff9c]/30 shrink-0 shadow-lg shadow-[#00ff9c]/5">
-            <Image src="/ChatResumeBuilder.svg" alt="" />
+            <Image src="/ChatResumeBuilder.svg" alt="logo" width={30} height={20} />
           </div>
           <div className="opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 flex flex-col justify-center min-w-0">
             <h1 className="text-sm font-bold tracking-tight text-white leading-none">

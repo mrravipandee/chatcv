@@ -29,7 +29,7 @@ export const getMyResumesService = async (
 ) => {
   const resumes = await Resume.find({ userId })
     .sort({ updatedAt: -1 })
-    .select("_id title isPublic createdAt updatedAt");
+    .select("_id title isPublic data createdAt updatedAt");
 
   return resumes;
 };
