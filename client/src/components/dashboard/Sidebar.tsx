@@ -12,6 +12,7 @@ import {
   Loader2,
   LogOut,
 } from "lucide-react";
+import Image from "next/image";
 
 interface Resume {
   _id: string;
@@ -54,7 +55,7 @@ export default function Sidebar({
       <div className="border-b border-white/5 h-20 flex items-center px-5 overflow-hidden shrink-0">
         <Link href="/" className="flex items-center gap-3 w-full">
           <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-[#00ff9c]/20 to-[#00cc7a]/5 border border-[#00ff9c]/30 shrink-0 shadow-lg shadow-[#00ff9c]/5">
-            <span className="font-extrabold text-[#00ff9c] text-lg font-mono">C</span>
+            <Image src="/ChatResumeBuilder.svg" alt="" />
           </div>
           <div className="opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 flex flex-col justify-center min-w-0">
             <h1 className="text-sm font-bold tracking-tight text-white leading-none">
@@ -86,11 +87,10 @@ export default function Sidebar({
       <nav className="flex-1 space-y-1 overflow-y-auto px-4 py-2">
         <Link
           href="/dashboard"
-          className={`flex items-center gap-4 rounded-xl p-3 text-sm font-medium transition-colors w-full overflow-hidden ${
-            pathname === "/dashboard"
-              ? "bg-white/5 text-[#00ff9c] border border-white/5"
-              : "text-gray-400 hover:bg-white/5 hover:text-white border border-transparent"
-          }`}
+          className={`flex items-center gap-4 rounded-xl p-3 text-sm font-medium transition-colors w-full overflow-hidden ${pathname === "/dashboard"
+            ? "bg-white/5 text-[#00ff9c] border border-white/5"
+            : "text-gray-400 hover:bg-white/5 hover:text-white border border-transparent"
+            }`}
         >
           <div className="flex items-center justify-center w-6 h-6 shrink-0">
             <FileText size={20} />
@@ -102,11 +102,10 @@ export default function Sidebar({
 
         <Link
           href="/dashboard/chats"
-          className={`flex items-center gap-4 rounded-xl p-3 text-sm font-medium transition-colors w-full overflow-hidden ${
-            pathname === "/dashboard/chats"
-              ? "bg-white/5 text-[#00ff9c] border border-white/5"
-              : "text-gray-400 hover:bg-white/5 hover:text-white border border-transparent"
-          }`}
+          className={`flex items-center gap-4 rounded-xl p-3 text-sm font-medium transition-colors w-full overflow-hidden ${pathname === "/dashboard/chats"
+            ? "bg-white/5 text-[#00ff9c] border border-white/5"
+            : "text-gray-400 hover:bg-white/5 hover:text-white border border-transparent"
+            }`}
         >
           <div className="flex items-center justify-center w-6 h-6 shrink-0">
             <MessageSquare size={20} />
@@ -132,11 +131,10 @@ export default function Sidebar({
                   <button
                     key={resume._id}
                     onClick={() => onSelectResume?.(resume._id)}
-                    className={`w-full rounded-xl p-3 text-left text-sm transition-colors flex items-center gap-4 overflow-hidden ${
-                      currentResumeId === resume._id
-                        ? "bg-[#00ff9c]/10 text-[#00ff9c] font-semibold border border-[#00ff9c]/10"
-                        : "text-gray-400 hover:bg-white/5 hover:text-white border border-transparent"
-                    }`}
+                    className={`w-full rounded-xl p-3 text-left text-sm transition-colors flex items-center gap-4 overflow-hidden ${currentResumeId === resume._id
+                      ? "bg-[#00ff9c]/10 text-[#00ff9c] font-semibold border border-[#00ff9c]/10"
+                      : "text-gray-400 hover:bg-white/5 hover:text-white border border-transparent"
+                      }`}
                     title={resume.title}
                   >
                     <span className="shrink-0 text-lg w-6 h-6 flex items-center justify-center">
@@ -156,11 +154,10 @@ export default function Sidebar({
         <div className="mt-5 border-t border-white/5 pt-5 space-y-1 overflow-hidden">
           <Link
             href="/dashboard/billing"
-            className={`flex items-center gap-4 rounded-xl p-3 text-sm font-medium transition-colors w-full overflow-hidden ${
-              pathname === "/dashboard/billing"
-                ? "bg-white/5 text-[#00ff9c] border border-white/5"
-                : "text-gray-400 hover:bg-white/5 hover:text-white border border-transparent"
-            }`}
+            className={`flex items-center gap-4 rounded-xl p-3 text-sm font-medium transition-colors w-full overflow-hidden ${pathname === "/dashboard/billing"
+              ? "bg-white/5 text-[#00ff9c] border border-white/5"
+              : "text-gray-400 hover:bg-white/5 hover:text-white border border-transparent"
+              }`}
           >
             <div className="flex items-center justify-center w-6 h-6 shrink-0">
               <CreditCard size={20} />
@@ -171,11 +168,10 @@ export default function Sidebar({
           </Link>
           <Link
             href="/dashboard/settings"
-            className={`flex items-center gap-4 rounded-xl p-3 text-sm font-medium transition-colors w-full overflow-hidden ${
-              pathname === "/dashboard/settings"
-                ? "bg-white/5 text-[#00ff9c] border border-white/5"
-                : "text-gray-400 hover:bg-white/5 hover:text-white border border-transparent"
-            }`}
+            className={`flex items-center gap-4 rounded-xl p-3 text-sm font-medium transition-colors w-full overflow-hidden ${pathname === "/dashboard/settings"
+              ? "bg-white/5 text-[#00ff9c] border border-white/5"
+              : "text-gray-400 hover:bg-white/5 hover:text-white border border-transparent"
+              }`}
           >
             <div className="flex items-center justify-center w-6 h-6 shrink-0">
               <Settings size={20} />
@@ -188,19 +184,17 @@ export default function Sidebar({
       </nav>
 
       {/* User Plan Card */}
-      <div className="p-4 shrink-0 overflow-hidden">
+      <div className="shrink-0 overflow-hidden max-h-0 opacity-0 group-hover/sidebar:max-h-56 group-hover/sidebar:opacity-100 group-hover/sidebar:p-4 transition-all duration-300">
         <div
-          className={`rounded-xl border p-3.5 transition-all w-full overflow-hidden ${
-            isPremium
-              ? "border-[#00ff9c]/20 bg-[#00ff9c]/5"
-              : "border-white/5 bg-white/5"
-          }`}
+          className={`rounded-xl border p-3.5 transition-all w-full overflow-hidden ${isPremium
+            ? "border-[#00ff9c]/20 bg-[#00ff9c]/5"
+            : "border-white/5 bg-white/5"
+            }`}
         >
           <div className="flex items-center gap-4 w-full">
             <div
-              className={`p-2 rounded-xl shrink-0 flex items-center justify-center w-10 h-10 ${
-                isPremium ? "bg-[#00ff9c]/15" : "bg-white/5"
-              }`}
+              className={`p-2 rounded-xl shrink-0 flex items-center justify-center w-10 h-10 ${isPremium ? "bg-[#00ff9c]/15" : "bg-white/5"
+                }`}
             >
               <Crown size={20} className={isPremium ? "text-[#00ff9c]" : "text-gray-500"} />
             </div>
@@ -209,9 +203,8 @@ export default function Sidebar({
                 {user?.name || "User"}
               </p>
               <p
-                className={`text-[10px] font-bold uppercase tracking-wider ${
-                  isPremium ? "text-[#00ff9c]" : "text-gray-500"
-                }`}
+                className={`text-[10px] font-bold uppercase tracking-wider ${isPremium ? "text-[#00ff9c]" : "text-gray-500"
+                  }`}
               >
                 {user?.plan || "Free Plan"}
               </p>
