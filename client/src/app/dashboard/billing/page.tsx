@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Zap, Check, Loader2, MessageSquare, Crown, ArrowLeft, AlertCircle, ExternalLink } from "lucide-react";
 import {
@@ -12,7 +12,7 @@ import {
   type PaymentPlan,
 } from "@/lib/api";
 
-export default function BillingPage() {
+function BillingContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -309,5 +309,17 @@ export default function BillingPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function BillingPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex h-screen items-center justify-center bg-black">
+        <div className="mx-auto h-10 w-10 animate-spin rounded-full border-2 border-[#00ff9c] border-t-transparent" />
+      </div>
+    }>
+      <BillingContent />
+    </Suspense>
   );
 }

@@ -104,20 +104,37 @@ function mergeLinks(
   const updated = [...oldLinks];
 
   for (const incoming of newLinks) {
-    if (!incoming?.label) continue;
+    const label = incoming?.label || (incoming as any)?.name;
+    if (!label) continue;
 
-    const idx = updated.findIndex(
-      (l) => l?.label?.toLowerCase() === incoming.label.toLowerCase()
-    );
+    const idx = updated.findIndex((l) => {
+      const existingLabel = l?.label || (l as any)?.name;
+      return existingLabel?.toLowerCase() === label.toLowerCase();
+    });
+
+    const normalized: IContactLink = {
+      label,
+      url: incoming.url || "",
+    };
 
     if (idx >= 0) {
-      updated[idx] = { ...updated[idx], ...incoming };
+      updated[idx] = normalized;
     } else {
-      updated.push(incoming);
+      updated.push(normalized);
     }
   }
 
   return updated;
+}
+
+function normalizeStringForComparison(str: string): string {
+  return str
+    .toLowerCase()
+    .replace(/[–—−]/g, '-') // Replace en/em-dashes and minus with standard hyphen
+    .replace(/[’‘]/g, "'")  // Replace curly single quotes with standard single quote
+    .replace(/[“”]/g, '"')  // Replace curly double quotes with standard double quote
+    .replace(/\s+/g, ' ')   // Collapse multiple spaces
+    .trim();
 }
 
 function mergeByKey<T extends Record<string, any>>(
@@ -138,7 +155,8 @@ function mergeByKey<T extends Record<string, any>>(
       (e) =>
         typeof e[key] === 'string' &&
         typeof item[key] === 'string' &&
-        (e[key] as string).toLowerCase() === (item[key] as string).toLowerCase()
+        normalizeStringForComparison(e[key] as string) ===
+          normalizeStringForComparison(item[key] as string)
     );
 
     if (idx >= 0) {

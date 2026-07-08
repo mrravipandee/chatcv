@@ -328,7 +328,7 @@ export default function DashboardPage() {
   return (
     <>
       <Topbar user={user} />
-      <div className="grid h-[calc(100vh-73px)] min-w-0 overflow-hidden grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)_minmax(0,1fr)]">
+      <div className="grid h-[calc(100vh-73px)] min-w-0 overflow-hidden grid-cols-1 lg:grid-cols-[auto_minmax(0,1fr)_minmax(0,1fr)]">
         <div className="hidden min-w-0 overflow-hidden lg:block">
           <Sidebar
             user={user}

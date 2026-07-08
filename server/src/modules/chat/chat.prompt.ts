@@ -65,6 +65,7 @@ ${JSON.stringify(existingData || {}, null, 2)}
 7. If the user says "generate", "create", "make resume" → return { "generate": true }.
 8. If the user says "skip" or "none" → return { "skip": true }.
 9. Output ONLY valid JSON — no markdown fences, no explanation.
+10. IMPORTANT: When updating or adding details (such as links, technologies, bullets, dates, or grades) to an existing project, experience, or education entry, you MUST use the EXACT same name/role/degree title of that entry from the EXISTING DATA so they merge correctly (e.g. if the user says "add links to ChatCV project", look at EXISTING DATA and find "ChatCV – AI Powered Conversational Resume Builder" and use that exact string as the "name" in your JSON output).
 
 ## FIELD NAMES TO USE
 - "name": string
@@ -74,9 +75,10 @@ ${JSON.stringify(existingData || {}, null, 2)}
 - "location": string
 - "summary": string
 - "skills": ["skill1", "skill2"]  — NEW skills only
-- "experience": [{ "title": "...", "company": "...", "year": "...", "description": "..." }]  — NEW entries only
-- "projects": [{ "name": "...", "description": "..." }]  — NEW entries only
-- "links": [{ "name": "GitHub", "url": "https://..." }]  — NEW links only
+- "experience": [{ "role": "...", "company": "...", "location": "...", "startDate": "...", "endDate": "...", "isCurrent": false, "bullets": ["bullet1", "bullet2"] }]  — NEW entries or updates to existing
+- "projects": [{ "name": "...", "bullets": ["bullet1", "bullet2"], "tags": ["tech1", "tech2"], "liveUrl": "https://...", "githubUrl": "https://..." }]  — NEW entries or updates to existing
+- "education": [{ "degree": "...", "institution": "...", "location": "...", "startYear": "...", "endYear": "...", "grade": "..." }]  — NEW entries or updates to existing
+- "links": [{ "label": "GitHub", "url": "https://..." }]  — NEW links only
 - "generate": true  — if user wants to generate PDF
 - "skip": true      — if user wants to skip current field
 - "replaceArrays": true  — ONLY if user says "replace" or "clear" a section

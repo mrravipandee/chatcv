@@ -176,17 +176,25 @@ function buildProjectsSection(
     .map((proj) => {
       const name = e(proj.name || "Project");
 
-      // Tech tags
-      const tagStr =
-        Array.isArray(proj.tags) && proj.tags.length > 0
-          ? ` $|$ \\emph{${proj.tags.map((t) => e(t)).join(", ")}}`
-          : "";
-
-      // Build heading with optional links
+      // Build heading with optional links at the end
       const links: string[] = [];
-      if (proj.liveUrl) links.push(`\\href{${proj.liveUrl}}{\\underline{Live}}`);
-      if (proj.githubUrl) links.push(`\\href{${proj.githubUrl}}{\\underline{Code}}`);
-      const linkStr = links.length > 0 ? ` | ${links.join(" | ")}` : "";
+      if (proj.githubUrl) {
+        const rawUrl = String(proj.githubUrl).trim().replace(/\\/g, "");
+        const fullUrl = /^https?:\/\//.test(rawUrl) ? rawUrl : `https://${rawUrl}`;
+        links.push(`\\href{${fullUrl}}{\\underline{GitHub}}`);
+      }
+      if (proj.liveUrl) {
+        const rawUrl = String(proj.liveUrl).trim().replace(/\\/g, "");
+        const fullUrl = /^https?:\/\//.test(rawUrl) ? rawUrl : `https://${rawUrl}`;
+        links.push(`\\href{${fullUrl}}{\\underline{Live Demo}}`);
+      }
+      const linkStr = links.length > 0 ? links.join(" $|$ ") : "";
+
+      // Tech tags on the bottom line
+      const techStr =
+        Array.isArray(proj.tags) && proj.tags.length > 0
+          ? `\\small\\textit{${proj.tags.map((t) => e(t)).join(", ")}} & \\\\\n      `
+          : "";
 
       // Bullets
       let bulletItems = "";
@@ -202,8 +210,10 @@ function buildProjectsSection(
         bulletItems = `\n      \\resumeItemListStart\n        \\resumeItem{${e(proj.description)}}\n      \\resumeItemListEnd`;
       }
 
-      return `    \\resumeProjectHeading
-      {\\textbf{${name}}${tagStr}${linkStr}}{}${bulletItems}`;
+      return `    \\item
+    \\begin{tabular*}{1.0\\textwidth}[t]{l@{\\extracolsep{\\fill}}r}
+      \\textbf{${name}} & \\small ${linkStr} \\\\
+      ${techStr}\\end{tabular*}\\vspace{-7pt}${bulletItems}`;
     });
 
   if (items.length === 0) return "";
@@ -296,6 +306,20 @@ export function buildLatex(resumeData: Record<string, any>): string {
   if (phone) contactParts.push(phone);
   if (email) contactParts.push(`\\href{mailto:${email}}{\\underline{${e(email)}}}`);
   if (location) contactParts.push(location);
+
+  // Append links to the top contact section
+  const links = resumeData.links || [];
+  const validLinks = links.filter(
+    (l: any) => typeof l === "object" && (l.label || l.name) && l.url
+  );
+  validLinks.forEach((link: any) => {
+    const label = link.label || link.name || "Link";
+    const rawUrl = String(link.url || "").trim();
+    const cleanUrl = rawUrl.replace(/\\/g, "");
+    const fullUrl = /^https?:\/\//.test(cleanUrl) ? cleanUrl : `https://${cleanUrl}`;
+    contactParts.push(`\\href{${fullUrl}}{\\underline{${e(label)}}}`);
+  });
+
   const contactLine = contactParts.join(" $|$ ");
 
   // Sections — standard ATS resume order
@@ -320,9 +344,6 @@ export function buildLatex(resumeData: Record<string, any>): string {
 
   const achSection = buildAchievementsSection(resumeData.achievements || []);
   if (achSection) sections.push(achSection);
-
-  const linksSection = buildLinksSection(resumeData.links || []);
-  if (linksSection) sections.push(linksSection);
 
   const sectionsStr = sections.join("\n\n");
 
