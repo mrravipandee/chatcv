@@ -5,18 +5,22 @@
   "subtitle": "Discover hard and soft skills categories to optimize your resume skills section and beat the ATS.",
   "excerpt": "Looking for the right skills to list on your CV? Read our guide on 100 resume skills examples grouped by industry to optimize your application.",
   "category": "Resume Writing",
-  "tags": ["Resume Tips", "Career Advice", "Resume Examples"],
+  "tags": [
+    "Resume Tips",
+    "Career Advice",
+    "Resume Examples"
+  ],
   "author": {
     "name": "Ravi Pandey",
     "slug": "ravi-pandey",
     "role": "Founder & Technical Architect",
-    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200",
+    "avatar": "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "bio": "Ravi Pandey is a full-stack engineer and tech founder with over 10 years of experience helping thousands of developers optimize their career documents and land top-tier tech roles."
   },
   "publishDate": "2026-07-09T19:20:00Z",
   "updatedDate": "2026-07-09T19:20:00Z",
   "readingTime": 12,
-  "featuredImage": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800",
+  "featuredImage": "/resume-builder-chatcv-100-resume-skills-examples-for-every-profession-in-2026.png",
   "imageAltText": "A collaborative team works together mapping different workflow nodes on a whiteboard.",
   "content": [
     {
@@ -84,12 +88,32 @@
     },
     {
       "type": "table",
-      "headers": ["Job Field", "Key Hard Skills to List", "Key Soft Skills to List"],
+      "headers": [
+        "Job Field",
+        "Key Hard Skills to List",
+        "Key Soft Skills to List"
+      ],
       "rows": [
-        ["Software Developers", "React, TypeScript, AWS, Git, Node.js, SQL", "Collaboration, mentorship, clean-code care"],
-        ["Product Managers", "PRD writing, roadmapping, SQL, JIRA, Agile", "Executive alignment, product empathy, leadership"],
-        ["Marketers", "SEO, SEMrush, Google Analytics, Copywriting", "Communication, adaptation, creative thinking"],
-        ["Finance Professionals", "Financial modeling, Excel formulas, accounting, SQL", "Attention to detail, problem-solving, integrity"]
+        [
+          "Software Developers",
+          "React, TypeScript, AWS, Git, Node.js, SQL",
+          "Collaboration, mentorship, clean-code care"
+        ],
+        [
+          "Product Managers",
+          "PRD writing, roadmapping, SQL, JIRA, Agile",
+          "Executive alignment, product empathy, leadership"
+        ],
+        [
+          "Marketers",
+          "SEO, SEMrush, Google Analytics, Copywriting",
+          "Communication, adaptation, creative thinking"
+        ],
+        [
+          "Finance Professionals",
+          "Financial modeling, Excel formulas, accounting, SQL",
+          "Attention to detail, problem-solving, integrity"
+        ]
       ]
     },
     {
@@ -156,12 +180,20 @@
     "buttonLink": "/dashboard",
     "type": "interactive"
   },
-  "relatedPostsSlugs": ["how-to-make-a-resume", "best-ai-resume-builder"],
+  "relatedPostsSlugs": [
+    "how-to-make-a-resume",
+    "best-ai-resume-builder"
+  ],
   "seo": {
     "metaTitle": "100 Core Resume Skills Examples for Every Job (2026)",
     "metaDescription": "Browse 100 core resume skills examples. Grouped by industry, learn how to separate hard and soft skills to pass the recruiter screening.",
     "focusKeyword": "Resume Skills Examples",
-    "secondaryKeywords": ["technical skills list", "resume hard skills", "soft skills for CV", "job skills matrix"],
+    "secondaryKeywords": [
+      "technical skills list",
+      "resume hard skills",
+      "soft skills for CV",
+      "job skills matrix"
+    ],
     "searchIntent": "informational",
     "difficulty": "medium",
     "contentType": "pillar"

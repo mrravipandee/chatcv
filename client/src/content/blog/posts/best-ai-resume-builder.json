@@ -5,18 +5,23 @@
   "subtitle": "Discover the top AI resume makers of the year, compare standard builders, and learn how to optimize your resume with AI.",
   "excerpt": "Struggling to find the best AI resume builder in 2026? Read our detailed, objective comparison of the top AI resume makers, free tools, and ATS optimization features to land your next interview.",
   "category": "AI Resume Builder",
-  "tags": ["AI Resume Builder", "Resume Tips", "ATS", "Career Advice"],
+  "tags": [
+    "AI Resume Builder",
+    "Resume Tips",
+    "ATS",
+    "Career Advice"
+  ],
   "author": {
     "name": "Ravi Pandey",
     "slug": "ravi-pandey",
     "role": "Founder & Technical Architect",
-    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200",
+    "avatar": "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "bio": "Ravi Pandey is a full-stack engineer and tech founder with over 10 years of experience helping thousands of developers optimize their career documents and land top-tier tech roles."
   },
   "publishDate": "2026-07-09T19:00:00Z",
   "updatedDate": "2026-07-09T19:00:00Z",
   "readingTime": 12,
-  "featuredImage": "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&q=80&w=800",
+  "featuredImage": "/resume-builder-chatcv-best-ai-resume-builder-in-2026-free-and-ats-friendly-guide.png",
   "imageAltText": "A modern workspaces desktop with a laptop screen displaying a resume builder application.",
   "content": [
     {
@@ -52,13 +57,49 @@
     },
     {
       "type": "table",
-      "headers": ["Builder", "Interface Type", "ATS Formatting", "Special Feature", "Pricing"],
+      "headers": [
+        "Builder",
+        "Interface Type",
+        "ATS Formatting",
+        "Special Feature",
+        "Pricing"
+      ],
       "rows": [
-        ["ChatCV", "Conversational AI Chat", "LaTeX PDF (100% compatible)", "Copy LaTeX source code", "Free tier / Premium"],
-        ["Resume.io", "Form-based wizard", "Standard HTML PDF", "Pre-written phrases library", "Paid subscription"],
-        ["Zety", "Form-based blocks", "Basic PDF/Text", "Cover letter matching", "Paid subscription"],
-        ["Enhancv", "Drag-and-drop builder", "Styled PDF templates", "Visual customization", "Paid subscription"],
-        ["Novorésumé", "Fussy static blocks", "Clean template files", "Optimized formats", "Free / Paid"]
+        [
+          "ChatCV",
+          "Conversational AI Chat",
+          "LaTeX PDF (100% compatible)",
+          "Copy LaTeX source code",
+          "Free tier / Premium"
+        ],
+        [
+          "Resume.io",
+          "Form-based wizard",
+          "Standard HTML PDF",
+          "Pre-written phrases library",
+          "Paid subscription"
+        ],
+        [
+          "Zety",
+          "Form-based blocks",
+          "Basic PDF/Text",
+          "Cover letter matching",
+          "Paid subscription"
+        ],
+        [
+          "Enhancv",
+          "Drag-and-drop builder",
+          "Styled PDF templates",
+          "Visual customization",
+          "Paid subscription"
+        ],
+        [
+          "Novorésumé",
+          "Fussy static blocks",
+          "Clean template files",
+          "Optimized formats",
+          "Free / Paid"
+        ]
       ]
     },
     {
@@ -157,12 +198,21 @@
     "buttonLink": "/dashboard",
     "type": "interactive"
   },
-  "relatedPostsSlugs": ["ats-friendly-resume-guide", "ai-resume-builder-trends-2026"],
+  "relatedPostsSlugs": [
+    "ats-friendly-resume-guide",
+    "ai-resume-builder-trends-2026"
+  ],
   "seo": {
     "metaTitle": "Best AI Resume Builder in 2026: Free & ATS-Friendly Guide",
     "metaDescription": "Discover the top AI resume builders of the year. Compare features, formats, ATS compatibility, and learn how to write a resume with AI.",
     "focusKeyword": "AI Resume Builder",
-    "secondaryKeywords": ["AI resume maker", "free AI resume builder", "how to write a resume with AI", "AI CV builder", "ATS-friendly AI resume"],
+    "secondaryKeywords": [
+      "AI resume maker",
+      "free AI resume builder",
+      "how to write a resume with AI",
+      "AI CV builder",
+      "ATS-friendly AI resume"
+    ],
     "searchIntent": "informational",
     "difficulty": "medium",
     "contentType": "pillar"

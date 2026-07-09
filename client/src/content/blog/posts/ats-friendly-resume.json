@@ -5,18 +5,23 @@
   "subtitle": "The ultimate optimization strategy to format, write, and keyword-optimize your resume to beat the scanner.",
   "excerpt": "Struggling to pass the applicant tracking system filters? Learn how to build an ATS-friendly resume using clear formatting templates, keyword structures, and professional typesetting.",
   "category": "Resume Writing",
-  "tags": ["ATS", "Resume Tips", "Job Search", "Career Advice"],
+  "tags": [
+    "ATS",
+    "Resume Tips",
+    "Job Search",
+    "Career Advice"
+  ],
   "author": {
     "name": "Ravi Pandey",
     "slug": "ravi-pandey",
     "role": "Founder & Technical Architect",
-    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200",
+    "avatar": "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "bio": "Ravi Pandey is a full-stack engineer and tech founder with over 10 years of experience helping thousands of developers optimize their career documents and land top-tier tech roles."
   },
   "publishDate": "2026-07-09T19:05:00Z",
   "updatedDate": "2026-07-09T19:05:00Z",
   "readingTime": 10,
-  "featuredImage": "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&q=80&w=800",
+  "featuredImage": "/resume-builder-chatcv-how-to-create-an-ats-friendly-resume-that-gets-interviews.png",
   "imageAltText": "A close up of a clean single-column resume document laid out on a dark workspace.",
   "content": [
     {
@@ -56,12 +61,37 @@
     },
     {
       "type": "table",
-      "headers": ["Format Type", "ATS Parsing Accuracy", "Layout Reliability", "Best Use Case"],
+      "headers": [
+        "Format Type",
+        "ATS Parsing Accuracy",
+        "Layout Reliability",
+        "Best Use Case"
+      ],
       "rows": [
-        ["LaTeX PDF", "100% (High text compatibility)", "Excellent (typeset grid)", "Tech, engineering, academic CVs"],
-        ["Word (.docx)", "95% (Highly searchable)", "Poor (layout shifts across Word versions)", "General corporate applications"],
-        ["Plain Text (.txt)", "100% (No format elements)", "Terrible (looks plain to recruiters)", "System input forms fallback"],
-        ["Graphic PDFs", "30% (Many parts unreadable)", "Good (visually locked)", "Never recommend for online apps"]
+        [
+          "LaTeX PDF",
+          "100% (High text compatibility)",
+          "Excellent (typeset grid)",
+          "Tech, engineering, academic CVs"
+        ],
+        [
+          "Word (.docx)",
+          "95% (Highly searchable)",
+          "Poor (layout shifts across Word versions)",
+          "General corporate applications"
+        ],
+        [
+          "Plain Text (.txt)",
+          "100% (No format elements)",
+          "Terrible (looks plain to recruiters)",
+          "System input forms fallback"
+        ],
+        [
+          "Graphic PDFs",
+          "30% (Many parts unreadable)",
+          "Good (visually locked)",
+          "Never recommend for online apps"
+        ]
       ]
     },
     {
@@ -135,12 +165,20 @@
     "buttonLink": "/dashboard",
     "type": "interactive"
   },
-  "relatedPostsSlugs": ["ats-friendly-resume-guide", "best-ai-resume-builder"],
+  "relatedPostsSlugs": [
+    "ats-friendly-resume-guide",
+    "best-ai-resume-builder"
+  ],
   "seo": {
     "metaTitle": "How to Create an ATS-Friendly Resume (2026 Guide)",
     "metaDescription": "Optimize your resume for Applicant Tracking Systems. Learn how to format headers, select keywords, choose files, and pass the recruiter screening.",
     "focusKeyword": "ATS Friendly Resume",
-    "secondaryKeywords": ["ATS-friendly resume format", "beat applicant tracking system", "resume parser test", "PDF vs Word resume"],
+    "secondaryKeywords": [
+      "ATS-friendly resume format",
+      "beat applicant tracking system",
+      "resume parser test",
+      "PDF vs Word resume"
+    ],
     "searchIntent": "informational",
     "difficulty": "easy",
     "contentType": "pillar"

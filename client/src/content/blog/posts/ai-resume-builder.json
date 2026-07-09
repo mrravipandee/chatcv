@@ -5,18 +5,23 @@
   "subtitle": "How to leverage conversational AI, NLP keywords, and professional typesetting to write a stand-out CV.",
   "excerpt": "Discover how AI resume builders work, how they compare to traditional formatting tools, and how to write a recruiter-ready CV using AI without triggering automated filters.",
   "category": "AI Resume Builder",
-  "tags": ["AI Resume Maker", "AI Resume Builder", "Resume Tips", "ATS"],
+  "tags": [
+    "AI Resume Maker",
+    "AI Resume Builder",
+    "Resume Tips",
+    "ATS"
+  ],
   "author": {
     "name": "Ravi Pandey",
     "slug": "ravi-pandey",
     "role": "Founder & Technical Architect",
-    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200",
+    "avatar": "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "bio": "Ravi Pandey is a full-stack engineer and tech founder with over 10 years of experience helping thousands of developers optimize their career documents and land top-tier tech roles."
   },
   "publishDate": "2026-07-09T18:00:00Z",
   "updatedDate": "2026-07-09T18:00:00Z",
   "readingTime": 15,
-  "featuredImage": "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&q=80&w=800",
+  "featuredImage": "/resume-builder-chatcv-the-definitive-guide-to-ai-resume-builders-beat-the-ats-and-land-interviews.png",
   "imageAltText": "A professional writing a resume using a modern AI-powered laptop in a bright office environment.",
   "content": [
     {
@@ -75,13 +80,43 @@
     },
     {
       "type": "table",
-      "headers": ["Feature", "Traditional Word Templates", "Basic AI Resume Builders", "ChatCV (Conversational LaTeX)"],
+      "headers": [
+        "Feature",
+        "Traditional Word Templates",
+        "Basic AI Resume Builders",
+        "ChatCV (Conversational LaTeX)"
+      ],
       "rows": [
-        ["Creation Method", "Manual form filling & text editing", "Static templates with inline AI prompts", "Conversational Chat with AI assistant"],
-        ["ATS Parsing Compatibility", "Poor (tables, multi-columns break)", "Variable (mostly HTML-to-PDF grids)", "100% Compatible (Typeset using standard LaTeX)"],
-        ["Content Suggestions", "None", "Basic generic descriptions", "Context-aware metrics-focused phrasing"],
-        ["LaTeX Source Export", "No", "No", "Yes (full raw source code exportable)"],
-        ["Formatting Workflow", "Fussy alignment & formatting shifts", "Rigid block templates", "Completely automatic styling & pagination"]
+        [
+          "Creation Method",
+          "Manual form filling & text editing",
+          "Static templates with inline AI prompts",
+          "Conversational Chat with AI assistant"
+        ],
+        [
+          "ATS Parsing Compatibility",
+          "Poor (tables, multi-columns break)",
+          "Variable (mostly HTML-to-PDF grids)",
+          "100% Compatible (Typeset using standard LaTeX)"
+        ],
+        [
+          "Content Suggestions",
+          "None",
+          "Basic generic descriptions",
+          "Context-aware metrics-focused phrasing"
+        ],
+        [
+          "LaTeX Source Export",
+          "No",
+          "No",
+          "Yes (full raw source code exportable)"
+        ],
+        [
+          "Formatting Workflow",
+          "Fussy alignment & formatting shifts",
+          "Rigid block templates",
+          "Completely automatic styling & pagination"
+        ]
       ]
     },
     {
@@ -199,7 +234,10 @@
     "buttonLink": "/dashboard",
     "type": "interactive"
   },
-  "relatedPostsSlugs": ["ats-friendly-resume-guide", "ai-resume-builder-trends-2026"],
+  "relatedPostsSlugs": [
+    "ats-friendly-resume-guide",
+    "ai-resume-builder-trends-2026"
+  ],
   "seo": {
     "metaTitle": "Ultimate Guide to AI Resume Builders: Beat the ATS (2026)",
     "metaDescription": "Learn how to build a professional, ATS-optimized resume using AI resume builders. Step-by-step optimization strategies, LaTeX source guides, and tips.",

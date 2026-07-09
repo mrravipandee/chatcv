@@ -5,18 +5,23 @@
   "subtitle": "Discover how AI-driven tools are reshaping how candidates write resumes and land interviews.",
   "excerpt": "With AI technology progressing rapidly, job seekers are turning to AI resume makers to build tailored resumes in minutes. Find out why AI CV builders are the future of job hunting.",
   "category": "AI Resume Builder",
-  "tags": ["AI Resume Maker", "AI Resume Builder", "Future of Work", "Resume Tips"],
+  "tags": [
+    "AI Resume Maker",
+    "AI Resume Builder",
+    "Future of Work",
+    "Resume Tips"
+  ],
   "author": {
     "name": "Ravi Pandey",
     "slug": "ravi-pandey",
     "role": "Founder & Technical Architect",
-    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200",
+    "avatar": "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "bio": "Ravi Pandey is a full-stack engineer and tech founder with over 10 years of experience helping thousands of developers optimize their career documents and land top-tier tech roles."
   },
   "publishDate": "2026-07-02T10:00:00Z",
   "updatedDate": "2026-07-05T14:30:00Z",
   "readingTime": 5,
-  "featuredImage": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=800",
+  "featuredImage": "/resume-builder-chatcv-why-ai-resume-builders-are-dominating-job-applications-in-2026.png",
   "imageAltText": "Concept art of AI and human hands collaborating to edit digital data documents.",
   "content": [
     {
@@ -86,12 +91,19 @@
     "buttonLink": "/dashboard",
     "type": "banner"
   },
-  "relatedPostsSlugs": ["ats-friendly-resume-guide"],
+  "relatedPostsSlugs": [
+    "ats-friendly-resume-guide"
+  ],
   "seo": {
     "metaTitle": "Why AI Resume Builders Are the Future of Job Hunting (2026)",
     "metaDescription": "Explore how AI resume builders are changing recruitment. Learn how conversational AI tools speed up resume building and improve interview rates.",
     "focusKeyword": "AI Resume Builder",
-    "secondaryKeywords": ["AI resume maker", "Conversational AI CV", "free AI resume", "LaTeX resume template"],
+    "secondaryKeywords": [
+      "AI resume maker",
+      "Conversational AI CV",
+      "free AI resume",
+      "LaTeX resume template"
+    ],
     "searchIntent": "informational",
     "difficulty": "easy",
     "contentType": "supporting"

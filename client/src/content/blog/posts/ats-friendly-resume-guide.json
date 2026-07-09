@@ -5,18 +5,23 @@
   "subtitle": "Learn how to optimize your resume for Applicant Tracking Systems (ATS) to get more interviews.",
   "excerpt": "Struggling to get past applicant tracking systems? Read our comprehensive, step-by-step developer guide on how to build a 100% ATS-friendly resume that gets past recruiters and lands interview calls.",
   "category": "Resume Writing",
-  "tags": ["ATS", "Job Search", "Resume Tips", "Career Advice"],
+  "tags": [
+    "ATS",
+    "Job Search",
+    "Resume Tips",
+    "Career Advice"
+  ],
   "author": {
     "name": "Ravi Pandey",
     "slug": "ravi-pandey",
     "role": "Founder & Technical Architect",
-    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200",
+    "avatar": "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "bio": "Ravi Pandey is a full-stack engineer and tech founder with over 10 years of experience helping thousands of developers optimize their career documents and land top-tier tech roles."
   },
   "publishDate": "2026-06-15T08:00:00Z",
   "updatedDate": "2026-07-01T12:00:00Z",
   "readingTime": 6,
-  "featuredImage": "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&q=80&w=800",
+  "featuredImage": "/resume-builder-chatcv-the-ultimate-ats-resume-optimization-guide-for-2026.png",
   "imageAltText": "Applicant Tracking System dashboard tracking resume applications on a laptop screen.",
   "content": [
     {
@@ -85,11 +90,27 @@
     },
     {
       "type": "table",
-      "headers": ["Job Title", "Core ATS Keywords to Include", "Preferred Resume Section"],
+      "headers": [
+        "Job Title",
+        "Core ATS Keywords to Include",
+        "Preferred Resume Section"
+      ],
       "rows": [
-        ["Software Engineer", "React, Node.js, TypeScript, REST APIs, Git", "Technical Skills, Experience"],
-        ["Product Manager", "Product Roadmap, Agile, Scrum, A/B Testing, SQL", "Core Competencies, Experience"],
-        ["SEO Specialist", "Google Analytics, Keyword Research, Link Building, SEMrush", "Key Skills, Projects"]
+        [
+          "Software Engineer",
+          "React, Node.js, TypeScript, REST APIs, Git",
+          "Technical Skills, Experience"
+        ],
+        [
+          "Product Manager",
+          "Product Roadmap, Agile, Scrum, A/B Testing, SQL",
+          "Core Competencies, Experience"
+        ],
+        [
+          "SEO Specialist",
+          "Google Analytics, Keyword Research, Link Building, SEMrush",
+          "Key Skills, Projects"
+        ]
       ]
     }
   ],
@@ -110,12 +131,19 @@
     "buttonLink": "/dashboard",
     "type": "interactive"
   },
-  "relatedPostsSlugs": ["ai-resume-builder-trends-2026"],
+  "relatedPostsSlugs": [
+    "ai-resume-builder-trends-2026"
+  ],
   "seo": {
     "metaTitle": "ATS Resume Optimization Guide: Get Past the Screener (2026)",
     "metaDescription": "Learn how to optimize your resume for Applicant Tracking Systems (ATS). A comprehensive guide on formats, file types, keywords, and headers with actionable templates.",
     "focusKeyword": "ATS Resume Optimization",
-    "secondaryKeywords": ["ATS-friendly resume", "applicant tracking system", "resume keyword optimization", "PDF vs Word resume"],
+    "secondaryKeywords": [
+      "ATS-friendly resume",
+      "applicant tracking system",
+      "resume keyword optimization",
+      "PDF vs Word resume"
+    ],
     "searchIntent": "informational",
     "difficulty": "medium",
     "contentType": "pillar"

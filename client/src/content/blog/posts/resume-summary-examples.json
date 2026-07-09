@@ -5,18 +5,22 @@
   "subtitle": "Discover professional resume summary templates and examples across software, design, marketing, and sales.",
   "excerpt": "Looking for the perfect resume summary? Browse our archive of 50 professional resume summary examples categorized by industry to help you stand out.",
   "category": "Resume Writing",
-  "tags": ["Resume Tips", "Career Advice", "Resume Examples"],
+  "tags": [
+    "Resume Tips",
+    "Career Advice",
+    "Resume Examples"
+  ],
   "author": {
     "name": "Ravi Pandey",
     "slug": "ravi-pandey",
     "role": "Founder & Technical Architect",
-    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200",
+    "avatar": "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "bio": "Ravi Pandey is a full-stack engineer and tech founder with over 10 years of experience helping thousands of developers optimize their career documents and land top-tier tech roles."
   },
   "publishDate": "2026-07-09T19:15:00Z",
   "updatedDate": "2026-07-09T19:15:00Z",
   "readingTime": 11,
-  "featuredImage": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=800",
+  "featuredImage": "/resume-builder-chatcv-50-resume-summary-examples-that-recruiters-love-in-2026.png",
   "imageAltText": "A professional analyzing different client portfolio files on a tablet screen.",
   "content": [
     {
@@ -82,12 +86,32 @@
     },
     {
       "type": "table",
-      "headers": ["Job Category", "Recommended Summary Focus", "Primary Keywords to Include"],
+      "headers": [
+        "Job Category",
+        "Recommended Summary Focus",
+        "Primary Keywords to Include"
+      ],
       "rows": [
-        ["Software Engineers", "Languages, databases, architecture, team size", "React, Node.js, AWS, scale metrics"],
-        ["Product Managers", "Product discovery, conversion gains, user scale", "PRD writing, Agile, roadmapping, growth %"],
-        ["Marketers", "Traffic growth, channel metrics, lead capture", "SEO, Google Analytics, conversion %, traffic numbers"],
-        ["Sales Professionals", "Quota achievements, contract volume, client retention", "B2B Sales, quota exceed %, contract value, ARR"]
+        [
+          "Software Engineers",
+          "Languages, databases, architecture, team size",
+          "React, Node.js, AWS, scale metrics"
+        ],
+        [
+          "Product Managers",
+          "Product discovery, conversion gains, user scale",
+          "PRD writing, Agile, roadmapping, growth %"
+        ],
+        [
+          "Marketers",
+          "Traffic growth, channel metrics, lead capture",
+          "SEO, Google Analytics, conversion %, traffic numbers"
+        ],
+        [
+          "Sales Professionals",
+          "Quota achievements, contract volume, client retention",
+          "B2B Sales, quota exceed %, contract value, ARR"
+        ]
       ]
     },
     {
@@ -163,12 +187,20 @@
     "buttonLink": "/dashboard",
     "type": "interactive"
   },
-  "relatedPostsSlugs": ["how-to-make-a-resume", "best-ai-resume-builder"],
+  "relatedPostsSlugs": [
+    "how-to-make-a-resume",
+    "best-ai-resume-builder"
+  ],
   "seo": {
     "metaTitle": "50 Professional Resume Summary Examples (2026 Guide)",
     "metaDescription": "Browse 50 professional resume summary examples categorized by industry. Learn the exact summary writing formula to stand out to recruiters.",
     "focusKeyword": "Resume Summary Examples",
-    "secondaryKeywords": ["professional summary templates", "resume summary objective", "career summary examples", "executive summary resume"],
+    "secondaryKeywords": [
+      "professional summary templates",
+      "resume summary objective",
+      "career summary examples",
+      "executive summary resume"
+    ],
     "searchIntent": "informational",
     "difficulty": "medium",
     "contentType": "pillar"

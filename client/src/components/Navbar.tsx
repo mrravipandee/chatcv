@@ -30,12 +30,13 @@ export default function Navbar() {
 
                     {/* NAV LINKS */}
                     <div className="hidden md:flex gap-8 items-center">
-                        {['Features', 'How it Works', 'Waitlist'].map((item) => {
+                        {['Features', 'How it Works', 'Waitlist', 'Blog'].map((item) => {
                             const isWaitlist = item === 'Waitlist';
+                            const isBlog = item === 'Blog';
                             return (
                                 <Link
                                     key={item}
-                                    href={isWaitlist ? "/subscribe" : `#${item.toLowerCase().replace(/\s+/g, '')}`}
+                                    href={isWaitlist ? "/subscribe" : isBlog ? "/blog" : `#${item.toLowerCase().replace(/\s+/g, '')}`}
                                     className="relative text-zinc-400 text-sm font-medium hover:text-white transition-colors group"
                                 >
                                     {item}
