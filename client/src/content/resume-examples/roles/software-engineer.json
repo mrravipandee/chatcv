@@ -1,0 +1,71 @@
+{
+  "role": "software-engineer",
+  "title": "Software Engineer Resume Examples & Guide (2026)",
+  "jobTitle": "Software Engineer",
+  "industry": "Technology & Design",
+  "experienceLevel": "all",
+  "metaDescription": "Top Software Engineer resume examples and ATS guide. Copy premium LaTeX template code, find industry-standard ATS skills, and write high-impact bullet points.",
+  "summaryExamples": [
+    {
+      "title": "Entry Level Software Engineer",
+      "text": "Detail-oriented Software Engineering graduate with strong foundations in React, TypeScript, and Node.js. Experienced in building full-stack web applications through academic projects and collaborative open-source contributions. Proven ability to write clean, maintainable code and quickly adapt to modern tech stacks."
+    },
+    {
+      "title": "Mid Level Software Engineer",
+      "text": "Software Engineer with 4+ years of professional experience designing, building, and maintaining production-ready web applications. Expert in React, Next.js, and cloud architectures (AWS). Proven track record of improving site loading speeds by 40% and deploying robust REST APIs that handle millions of requests monthly."
+    },
+    {
+      "title": "Senior Software Engineer",
+      "text": "Lead Software Engineer with 8+ years of expertise architecting microservices and scalable SaaS platforms. Skilled in system design, distributed databases (PostgreSQL, MongoDB), and mentoring high-performing engineering teams. Managed cross-functional delivery of a platform serving 500k+ active daily users."
+    }
+  ],
+  "atsKeywords": [
+    "Software Engineering",
+    "React.js",
+    "Next.js",
+    "TypeScript",
+    "Node.js",
+    "System Design",
+    "RESTful APIs",
+    "Microservices",
+    "AWS (Amazon Web Services)",
+    "PostgreSQL",
+    "MongoDB",
+    "CI/CD Pipelines",
+    "Docker",
+    "Git",
+    "Agile/Scrum"
+  ],
+  "bulletPoints": [
+    {
+      "category": "Technical Accomplishments",
+      "points": [
+        "Spearheaded design and migration of monolithic architecture to modern Node.js microservices, reducing server overhead costs by 28% and eliminating system downtime.",
+        "Architected responsive web dashboards using React, TypeScript, and TailwindCSS, enhancing Core Web Vitals scores and boosting user engagement by 15%.",
+        "Designed and implemented secure REST APIs using Express and MongoDB, improving data fetch speeds by 35% through query optimization and database indexing.",
+        "Created custom automated CI/CD pipelines using GitHub Actions, cutting team release deployment cycles from 2 hours down to 10 minutes."
+      ]
+    },
+    {
+      "category": "Collaboration & Leadership",
+      "points": [
+        "Collaborated with UX designers and Product Managers to define requirements and implement 10+ new features, increasing monthly active users (MAU) by 12%.",
+        "Mentored and onboarded 4 junior engineers, conducting weekly code reviews and teaching clean code design principles and test-driven development (TDD).",
+        "Led weekly Agile standups and sprint planning sessions, improving team project delivery velocity by 18% over a 6-month period."
+      ]
+    }
+  ],
+  "latexCode": "% --- LATEX RESUME TEMPLATE FOR SOFTWARE ENGINEERS ---\n\\documentclass[10pt,letterpaper]{article}\n\\usepackage[utf8]{charset}\n\\usepackage{geometry}\n\\geometry{letterpaper, margin=0.75in}\n\\usepackage{hyperref}\n\\usepackage{enumitem}\n\n\\begin{document}\n\\begin{center}\n    {\\Huge \\bf JOHN DOE} \\\\\n    \\vspace{2pt}\n    San Francisco, CA | (123) 456-7890 | john.doe@email.com | linkedin.com/in/johndoe\n\\end{center}\n\n\\section*{PROFESSIONAL SUMMARY}\nDynamic Software Engineer with 4+ years of experience designing and implementing scalable web applications. Expert in React, TypeScript, and backend microservices. Proven track record of optimizing database performance and streamlining development workflows.\n\n\\section*{TECHNICAL SKILLS}\n\\begin{itemize}[noitemsep,topsep=0pt]\n    \\item \\textbf{Languages:} JavaScript, TypeScript, Python, HTML/CSS, SQL\n    \\item \\textbf{Frameworks:} React, Next.js, Node.js, Express, TailwindCSS\n    \\item \\textbf{Databases & Tools:} PostgreSQL, MongoDB, AWS, Git, Docker, CI/CD\n\\end{itemize}\n\n\\section*{EXPERIENCE}\n\\textbf{Mid-Level Software Engineer} \\hfill Jan 2024 - Present \\\\\nTechCorp Solutions, San Francisco, CA\n\\begin{itemize}[noitemsep,topsep=2pt]\n    \\item Spearheaded migration of legacy frontend codebases to Next.js 14, improving performance score by 35%.\n    \\item Developed RESTful APIs supporting 20k+ daily transactions with 99.9% uptime.\n    \\item Integrated third-party APIs (Stripe, Twilio), expanding platform capabilities.\n\\end{itemize}\n\n\\end{document}",
+  "faqs": [
+    {
+      "question": "Should software engineering resumes be single-page?",
+      "answer": "Yes, unless you have 8+ years of experience, a single-page resume is highly recommended. It keeps your achievements concise and easy for recruiters to scan in 6 seconds."
+    },
+    {
+      "question": "Is LaTeX preferred for software engineer resumes?",
+      "answer": "Yes, LaTeX is highly valued in technical fields like software engineering, data science, and academia. It offers precise formatting, looks premium, and modern ATS parse standard text-based PDF compilation beautifully."
+    }
+  ],
+  "relatedRoles": ["product-manager"],
+  "updatedDate": "2026-07-08T09:00:00Z"
+}

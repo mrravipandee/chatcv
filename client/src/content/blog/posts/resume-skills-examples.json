@@ -1,0 +1,172 @@
+{
+  "id": "post_resume_skills_examples",
+  "slug": "resume-skills-examples",
+  "title": "100 Resume Skills Examples for Every Profession in 2026",
+  "subtitle": "Discover hard and soft skills categories to optimize your resume skills section and beat the ATS.",
+  "excerpt": "Looking for the right skills to list on your CV? Read our guide on 100 resume skills examples grouped by industry to optimize your application.",
+  "category": "Resume Writing",
+  "tags": ["Resume Tips", "Career Advice", "Resume Examples"],
+  "author": {
+    "name": "Ravi Pandey",
+    "slug": "ravi-pandey",
+    "role": "Founder & Technical Architect",
+    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200",
+    "bio": "Ravi Pandey is a full-stack engineer and tech founder with over 10 years of experience helping thousands of developers optimize their career documents and land top-tier tech roles."
+  },
+  "publishDate": "2026-07-09T19:20:00Z",
+  "updatedDate": "2026-07-09T19:20:00Z",
+  "readingTime": 12,
+  "featuredImage": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800",
+  "imageAltText": "A collaborative team works together mapping different workflow nodes on a whiteboard.",
+  "content": [
+    {
+      "type": "paragraph",
+      "text": "Your skills section is one of the most critical parts of your resume. When parsing your document, Applicant Tracking Systems (ATS) scan for matching technical keywords to score your profile. If you omit the exact skills requested in the job description, your application will rank lower regardless of your experience. In this guide, we provide **100 resume skills examples** categorized by industry."
+    },
+    {
+      "type": "paragraph",
+      "text": "To align your skills matrix with your formatting, choose the [best AI resume builder](/blog/best-ai-resume-builder) to compile text, read our [ATS optimization guide](/blog/ats-friendly-resume), learn how to write details in [how to make a resume](/blog/how-to-make-a-resume), and get headline ideas from [50 resume summary examples](/blog/resume-summary-examples)."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Hard Skills vs. Soft Skills"
+    },
+    {
+      "type": "paragraph",
+      "text": "When building your resume, you must list both hard and soft skills. Hard skills are technical abilities acquired through education or experience (e.g., coding in React, accounting, SQL). Soft skills are interpersonal qualities (e.g., communication, leadership, time management). While soft skills are important, hard skills are far easier for ATS parsers to verify."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "100 Skills Examples by Industry"
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "text": "1. Technology & Software Development"
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        "**Languages:** JavaScript, TypeScript, Python, HTML/CSS, SQL, Go, Rust.",
+        "**Frameworks & Libraries:** React.js, Next.js, Angular, Node.js, Express, TailwindCSS.",
+        "**Tools & Cloud:** AWS, Docker, Kubernetes, CI/CD, Git, PostgreSQL, MongoDB, GraphQL."
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "text": "2. Product Management & Design"
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        "**Product Strategy:** Roadmapping, product discovery, PRD writing, Agile/Scrum.",
+        "**UX/UI Design:** Figma, wireframing, prototyping, user testing, design systems.",
+        "**Analytics & Telemetry:** Mixpanel, Amplitude, SQL databases, A/B testing."
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "text": "3. Marketing & Sales"
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        "**Digital Marketing:** SEO (Search Engine Optimization), Google Analytics, SEMrush, email marketing.",
+        "**B2B Sales:** Account management, lead generation, cold calling, CRM tools (Salesforce, HubSpot)."
+      ]
+    },
+    {
+      "type": "table",
+      "headers": ["Job Field", "Key Hard Skills to List", "Key Soft Skills to List"],
+      "rows": [
+        ["Software Developers", "React, TypeScript, AWS, Git, Node.js, SQL", "Collaboration, mentorship, clean-code care"],
+        ["Product Managers", "PRD writing, roadmapping, SQL, JIRA, Agile", "Executive alignment, product empathy, leadership"],
+        ["Marketers", "SEO, SEMrush, Google Analytics, Copywriting", "Communication, adaptation, creative thinking"],
+        ["Finance Professionals", "Financial modeling, Excel formulas, accounting, SQL", "Attention to detail, problem-solving, integrity"]
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "How to Integrate Skills into Your Work Experience"
+    },
+    {
+      "type": "paragraph",
+      "text": "Simply listing skills in a bulleted list is only half the battle. You must prove you *applied* those skills under your work experiences. For example, instead of just listing 'React', write a bullet point: *'Developed responsive dashboards using **React** and **TypeScript**, improving site load speeds by 30%.'* This context validates your expertise to recruiters."
+    },
+    {
+      "type": "callout",
+      "style": "info",
+      "text": "Pro-Tip: Scan the job posting for repeated technologies and make sure they are placed exactly in your core skills section. Matching spelling is critical for ATS scanning compliance."
+    }
+  ],
+  "faqs": [
+    {
+      "question": "How do I list skills on my resume?",
+      "answer": "Create a dedicated skills section. Group similar skills together (e.g. Languages, Frameworks, Tools) to make it easy for recruiters to scan."
+    },
+    {
+      "question": "What are hard skills?",
+      "answer": "Hard skills are technical, teachable abilities that can be measured (e.g. speaking a language, typing code, operating software)."
+    },
+    {
+      "question": "What are soft skills?",
+      "answer": "Soft skills are interpersonal, character traits that define how you work and interact with others (e.g. communication, teamwork, adaptability)."
+    },
+    {
+      "question": "How many skills should I put on my resume?",
+      "answer": "List 10 to 15 key skills. Focus on the core qualifications requested in the target job description."
+    },
+    {
+      "question": "Should I list soft skills on my resume?",
+      "answer": "Yes, but list them in moderation. Hard skills are far more important for passing automated ATS scans."
+    },
+    {
+      "question": "Can I use AI to help optimize my skills section?",
+      "answer": "Yes. An AI builder like ChatCV can analyze job descriptions and suggest which technical keywords you should include."
+    },
+    {
+      "question": "What are the most in-demand skills in 2026?",
+      "answer": "Technical skills like React, Node.js, cloud systems (AWS), data analytics (SQL, Mixpanel), and project management (Agile) are highly valued."
+    },
+    {
+      "question": "Should I include skills I only have basic knowledge of?",
+      "answer": "Only list skills you can comfortably answer interview questions about. Listing skills you don't know well is risky."
+    },
+    {
+      "question": "How do I show proficiency levels for my skills?",
+      "answer": "Avoid using progress bars or percentages (e.g. '80% Java'). Instead, group them by experience level (e.g., 'Proficient in React; Familiar with Rust')."
+    },
+    {
+      "question": "Can ATS parsers read custom skills graphics?",
+      "answer": "No. Many ATS systems ignore graphics and charts. Stick to standard text lists to ensure compatibility."
+    }
+  ],
+  "cta": {
+    "title": "Build a Resume with the Right Skills Automatically",
+    "description": "Don't guess which skills you need. Chat with ChatCV's AI assistant to identify core skills and write a professional LaTeX resume in minutes.",
+    "buttonText": "Build Resume with AI",
+    "buttonLink": "/dashboard",
+    "type": "interactive"
+  },
+  "relatedPostsSlugs": ["how-to-make-a-resume", "best-ai-resume-builder"],
+  "seo": {
+    "metaTitle": "100 Core Resume Skills Examples for Every Job (2026)",
+    "metaDescription": "Browse 100 core resume skills examples. Grouped by industry, learn how to separate hard and soft skills to pass the recruiter screening.",
+    "focusKeyword": "Resume Skills Examples",
+    "secondaryKeywords": ["technical skills list", "resume hard skills", "soft skills for CV", "job skills matrix"],
+    "searchIntent": "informational",
+    "difficulty": "medium",
+    "contentType": "pillar"
+  },
+  "featured": false,
+  "draft": false,
+  "language": "en"
+}

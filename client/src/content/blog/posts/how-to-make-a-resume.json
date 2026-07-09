@@ -1,0 +1,163 @@
+{
+  "id": "post_how_to_make_a_resume",
+  "slug": "how-to-make-a-resume",
+  "title": "How to Write a Resume in 2026: Complete Step-by-Step Guide",
+  "subtitle": "Learn how to structure, format, and write every section of your professional resume from scratch.",
+  "excerpt": "Ready to write your CV? Read our comprehensive, step-by-step career guide on how to make a professional, ATS-optimized resume that lands interviews.",
+  "category": "Resume Writing",
+  "tags": ["Resume Tips", "Career Advice", "Job Search"],
+  "author": {
+    "name": "Ravi Pandey",
+    "slug": "ravi-pandey",
+    "role": "Founder & Technical Architect",
+    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200",
+    "bio": "Ravi Pandey is a full-stack engineer and tech founder with over 10 years of experience helping thousands of developers optimize their career documents and land top-tier tech roles."
+  },
+  "publishDate": "2026-07-09T19:10:00Z",
+  "updatedDate": "2026-07-09T19:10:00Z",
+  "readingTime": 14,
+  "featuredImage": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&q=80&w=800",
+  "imageAltText": "A job applicant preparing and reviewing their paper resume before an interview.",
+  "content": [
+    {
+      "type": "paragraph",
+      "text": "Writing a resume is one of the most challenging aspects of job hunting. How do you summarize years of experience, projects, and skills onto a single sheet of paper? In this guide, we will break down the exact steps to create a professional resume. From formatting margins to writing bullet points, we've got you covered."
+    },
+    {
+      "type": "paragraph",
+      "text": "Before you begin, decide on your creation tools. You can use standard text editors, or leverage the [best AI resume builder](/blog/best-ai-resume-builder) to speed up drafting. To pass recruiter screenings, make sure to read our guidelines on [how to create an ATS-friendly resume](/blog/ats-friendly-resume)."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Step 1: Choose the Right Resume Format"
+    },
+    {
+      "type": "paragraph",
+      "text": "There are three primary resume structures used by professionals. Choose the format that aligns with your experience level:"
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        "**Reverse-Chronological:** The most popular layout. Lists experience from newest to oldest. Best for candidates with stable career histories.",
+        "**Functional (Skills-Based):** Focuses on skill matrices over job histories. Best for career changers and freshers.",
+        "**Combination (Hybrid):** Combines skills listings with a detailed chronological history. Best for experienced candidates."
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Step 2: Format Contact Details Accurately"
+    },
+    {
+      "type": "paragraph",
+      "text": "Keep contact headers clean. Include your full name, phone number, email address, location (city/state), and links to professional profiles (e.g. LinkedIn or GitHub). Never include personal information like birth dates, photos, or marriage status."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Step 3: Write a Compelling Professional Summary"
+    },
+    {
+      "type": "paragraph",
+      "text": "Your summary is your elevator pitch. In 3-4 sentences, summarize your years of experience, top achievements, and primary skills. For inspiration, check out our list of [50 resume summary examples](/blog/resume-summary-examples)."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Step 4: Detail Work Experiences Using Action Verbs"
+    },
+    {
+      "type": "paragraph",
+      "text": "Under experience, list your accomplishments rather than daily tasks. Use Google's XYZ formula: *'Accomplished [X], as measured by [Y], by doing [Z].'* For example, instead of 'Responsible for updates', write: *'Redesigned front-end interfaces, boosting page loading speeds by 30%.'* Structure your skill list using our [100 resume skills examples](/blog/resume-skills-examples) guide."
+    },
+    {
+      "type": "table",
+      "headers": ["Resume Section", "Target Length", "ATS Priority", "Required Elements"],
+      "rows": [
+        ["Contact Info", "Header (1 line)", "Critical", "Name, Email, Phone, Location, Portfolio"],
+        ["Professional Summary", "3-4 sentences", "High", "Years of experience, core skills, achievements"],
+        ["Work Experience", "3-5 bullets per job", "Critical", "Company, role, dates, achievements"],
+        ["Core Skills", "10-15 keywords", "High", "Hard skills, frameworks, software tools"],
+        ["Education", "1-2 lines per degree", "Medium", "Degree, school, graduation year"]
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Step 5: Outline Core Skills & Education"
+    },
+    {
+      "type": "paragraph",
+      "text": "List hard skills in a dedicated skills section, grouping them by category (e.g., Languages, Software, Frameworks). Under Education, list your degree, school, location, and graduation year. Only include GPA if you recently graduated and it was above 3.5."
+    },
+    {
+      "type": "callout",
+      "style": "info",
+      "text": "Quick Tip: Keep formatting clean. Set margins to 0.75 or 1 inch, choose standard fonts like Arial or Helvetica, and export the document as a text-searchable PDF."
+    }
+  ],
+  "faqs": [
+    {
+      "question": "How do I make a resume from scratch?",
+      "answer": "Choose a format, write your contact details, draft a professional summary, list your experiences, map your skills, and add education history."
+    },
+    {
+      "question": "What is the best resume format?",
+      "answer": "The reverse-chronological format is best because it is easy for recruiters to scan and parses accurately in ATS systems."
+    },
+    {
+      "question": "Should a resume be one page?",
+      "answer": "Yes. Keep your resume to a single page unless you have 8+ years of experience. Focus on your most relevant achievements."
+    },
+    {
+      "question": "How do I list skills on my resume?",
+      "answer": "Create a dedicated skills section and list 10 to 15 keywords. Focus on hard technical skills matching the job description."
+    },
+    {
+      "question": "Do I need to include references on my resume?",
+      "answer": "No. References take up valuable page space. Only provide references if explicitly requested by the hiring company."
+    },
+    {
+      "question": "Can I use AI to write my resume?",
+      "answer": "Yes. An AI builder like ChatCV can help you write metrics-driven accomplishments and format your resume in LaTeX automatically."
+    },
+    {
+      "question": "What is a professional summary?",
+      "answer": "It is a short paragraph at the top of your resume that pitches your top achievements and skills to the recruiter."
+    },
+    {
+      "question": "Should I include my GPA on my resume?",
+      "answer": "Only include your GPA if you are a student or recent graduate and your GPA is 3.5 or higher. Otherwise, leave it off."
+    },
+    {
+      "question": "What standard fonts are best for resumes?",
+      "answer": "Stick to clean sans-serif fonts like Arial, Helvetica, Calibri, or Geist for high readability."
+    },
+    {
+      "question": "How far back should my work experience go?",
+      "answer": "Only go back 10 to 15 years. Older experience is usually less relevant and takes up valuable document space."
+    }
+  ],
+  "cta": {
+    "title": "Build Your Professional Resume with ChatCV",
+    "description": "Stop struggling with formatting. Chat with our AI assistant to write and design a premium LaTeX resume in under 5 minutes.",
+    "buttonText": "Start Building Free",
+    "buttonLink": "/dashboard",
+    "type": "interactive"
+  },
+  "relatedPostsSlugs": ["ats-friendly-resume", "best-ai-resume-builder"],
+  "seo": {
+    "metaTitle": "How to Write a Resume: Step-by-Step Guide (2026)",
+    "metaDescription": "Learn how to make a professional resume from scratch. Complete step-by-step guide detailing layouts, summaries, work experience, and keywords.",
+    "focusKeyword": "How to Make a Resume",
+    "secondaryKeywords": ["how to write a resume", "professional resume layout", "chronological resume template", "resume formatting rules"],
+    "searchIntent": "informational",
+    "difficulty": "medium",
+    "contentType": "pillar"
+  },
+  "featured": false,
+  "draft": false,
+  "language": "en"
+}

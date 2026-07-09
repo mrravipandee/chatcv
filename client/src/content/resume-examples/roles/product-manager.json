@@ -1,0 +1,68 @@
+{
+  "role": "product-manager",
+  "title": "Product Manager Resume Examples & Guide (2026)",
+  "jobTitle": "Product Manager",
+  "industry": "Technology & Design",
+  "experienceLevel": "all",
+  "metaDescription": "Top Product Manager resume examples and ATS guide. Copy premium LaTeX template code, find industry-standard ATS skills, and write metrics-driven bullet points.",
+  "summaryExamples": [
+    {
+      "title": "Entry Level Product Manager (Associate PM)",
+      "text": "Self-motivated and analytical Associate Product Manager with experience managing cross-functional student project teams. Strong understanding of product lifecycle management, user research, agile methodologies, and data analysis. Dedicated to solving user problems and translating insights into product features."
+    },
+    {
+      "title": "Mid Level Product Manager",
+      "text": "Results-oriented Product Manager with 5+ years of experience leading cross-functional teams to launch SaaS features. Expert in product discovery, user testing, agile project execution, and telemetry analysis (Mixpanel, Amplitude). Spearheaded a product redesign that increased activation rate by 22%."
+    },
+    {
+      "title": "Senior Product Manager",
+      "text": "Strategic Product Leader with 9+ years of experience managing complex platform portfolios and directing product vision. Proven success aligning sales, engineering, design, and marketing to launch platforms generating $15M+ ARR. Expert in growth hacking, user acquisition strategies, and executive alignment."
+    }
+  ],
+  "atsKeywords": [
+    "Product Management",
+    "Product Discovery",
+    "Agile/Scrum Methodologies",
+    "Product Lifecycle",
+    "User Research",
+    "A/B Testing",
+    "Mixpanel / Amplitude",
+    "SQL & Data Analysis",
+    "Roadmapping",
+    "PRD Writing",
+    "Go-To-Market (GTM) Strategy",
+    "SaaS Growth",
+    "Cross-Functional Leadership"
+  ],
+  "bulletPoints": [
+    {
+      "category": "Impact & Execution",
+      "points": [
+        "Authored comprehensive Product Requirement Documents (PRDs) and led discovery for 5 high-priority SaaS integrations, expanding target addressable market by 15%.",
+        "Designed and executed 20+ user testing sessions to iterate on signup onboarding, decreasing user friction and increasing registration rates by 24%.",
+        "Conducted A/B testing on pricing page layout variants, directly resulting in an 11% increase in visitor-to-customer conversion rate.",
+        "Created and monitored KPIs in Mixpanel to track feature adoption, identifying bottlenecks and reducing user churn by 6% over 3 months."
+      ]
+    },
+    {
+      "category": "Stakeholder Management & Leadership",
+      "points": [
+        "Aligned engineering, design, marketing, and sales departments around quarterly roadmap priorities, ensuring on-time delivery of 4 key major feature updates.",
+        "Presented monthly performance metrics and strategic updates directly to executive stakeholders, driving alignment on product investments."
+      ]
+    }
+  ],
+  "latexCode": "% --- LATEX RESUME TEMPLATE FOR PRODUCT MANAGERS ---\n\\documentclass[10pt,letterpaper]{article}\n\\usepackage[utf8]{charset}\n\\usepackage{geometry}\n\\geometry{letterpaper, margin=0.75in}\n\\usepackage{hyperref}\n\\usepackage{enumitem}\n\n\\begin{document}\n\\begin{center}\n    {\\Huge \\bf JANE SMITH} \\\\\n    \\vspace{2pt}\n    New York, NY | (987) 654-3210 | jane.smith@email.com | linkedin.com/in/janesmith\n\\end{center}\n\n\\section*{PROFESSIONAL SUMMARY}\nResults-driven Product Manager with 5+ years of experience leading cross-functional teams to build and launch user-focused SaaS features. Expertise in agile methodologies, data analytics, and user research. Proven success increasing user activation and customer retention rates.\n\n\\section*{CORE COMPETENCIES}\n\\begin{itemize}[noitemsep,topsep=0pt]\n    \\item \\textbf{Product Strategy:} Roadmap creation, PRD writing, GTM strategy, product discovery\n    \\item \\textbf{Analytics & Research:} A/B testing, SQL, Amplitude, Mixpanel, user interviews\n    \\item \\textbf{Methodologies & Skills:} Agile/Scrum, JIRA, wireframing, cross-functional leadership\n\\end{itemize}\n\n\\section*{EXPERIENCE}\n\\textbf{Product Manager} \\hfill Oct 2022 - Present \\\\\nSaaSify Platform, New York, NY\n\\begin{itemize}[noitemsep,topsep=2pt]\n    \\item Spearheaded the redesign of user onboarding, boosting conversion by 22%.\n    \\item Directed product roadmap for a team of 8 engineers and 2 UX designers.\n    \\item Automated user feedback loops, resolving critical feature bugs 40% faster.\n\\end{itemize}\n\n\\end{document}",
+  "faqs": [
+    {
+      "question": "How do you show technical skills on a product manager resume?",
+      "answer": "Product managers don't need to write code, but they must show they can communicate with engineers. Highlight technical skills like SQL, data analytics, API concepts, or agile management tools (Jira, Confluence) rather than deep programming languages."
+    },
+    {
+      "question": "What is the most important section on a PM resume?",
+      "answer": "The Experience section is the most important. Focus on metrics-driven bullet points (e.g. '% increase in engagement', '$ ARR generated', '% churn reduced') to prove you build products that succeed."
+    }
+  ],
+  "relatedRoles": ["software-engineer"],
+  "updatedDate": "2026-07-09T10:00:00Z"
+}

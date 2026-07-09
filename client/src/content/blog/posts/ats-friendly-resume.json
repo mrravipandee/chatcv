@@ -1,0 +1,151 @@
+{
+  "id": "post_ats_friendly_resume",
+  "slug": "ats-friendly-resume",
+  "title": "How to Create an ATS-Friendly Resume That Gets Interviews",
+  "subtitle": "The ultimate optimization strategy to format, write, and keyword-optimize your resume to beat the scanner.",
+  "excerpt": "Struggling to pass the applicant tracking system filters? Learn how to build an ATS-friendly resume using clear formatting templates, keyword structures, and professional typesetting.",
+  "category": "Resume Writing",
+  "tags": ["ATS", "Resume Tips", "Job Search", "Career Advice"],
+  "author": {
+    "name": "Ravi Pandey",
+    "slug": "ravi-pandey",
+    "role": "Founder & Technical Architect",
+    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200",
+    "bio": "Ravi Pandey is a full-stack engineer and tech founder with over 10 years of experience helping thousands of developers optimize their career documents and land top-tier tech roles."
+  },
+  "publishDate": "2026-07-09T19:05:00Z",
+  "updatedDate": "2026-07-09T19:05:00Z",
+  "readingTime": 10,
+  "featuredImage": "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&q=80&w=800",
+  "imageAltText": "A close up of a clean single-column resume document laid out on a dark workspace.",
+  "content": [
+    {
+      "type": "paragraph",
+      "text": "Applying for jobs online can feel like throwing your resume into a black hole. You submit application after application, only to receive immediate automated rejections. The culprit is almost always the **Applicant Tracking System (ATS)**. In this guide, we will teach you exactly how to build an **ATS-friendly resume** that gets read by human recruiters."
+    },
+    {
+      "type": "paragraph",
+      "text": "An ATS is a software gatekeeper. It parses your resume's text, indexes your skills, and ranks your profile. If your formatting is messy or you lack keywords, you get filtered out. For more tools and strategies, read our comparisons on the [best AI resume builder](/blog/best-ai-resume-builder) options and learn the basics in [how to write a resume](/blog/how-to-make-a-resume)."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "How ATS Parsers Read Your Resume"
+    },
+    {
+      "type": "paragraph",
+      "text": "ATS software doesn't read resumes like humans. It extracts text and maps it to a database. Anything it can't parse is ignored. If your contact details are inside a fancy header image, the ATS might read you as having no email or phone number. Keep formatting simple."
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        "**Single-Column Layouts:** Parsers read left-to-right. Multi-column structures confuse the scanner, mixing columns together.",
+        "**Text-Based PDFs:** Never upload scanned resumes (images). The parser sees them as empty graphics. Ensure you can highlight and select the text.",
+        "**Standard Headings:** Stick to terms like 'Work Experience' and 'Technical Skills'. Custom phrases like 'My Professional Journey' confuse bots."
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Keywords: The Secret to High ATS Scores"
+    },
+    {
+      "type": "paragraph",
+      "text": "Keywords are skills, job titles, and tools listed in the job description. The closer your resume matches these keywords, the higher you rank. Map these keywords naturally in your work experiences and skills matrix. Learn how to outline them in our [resume skills examples](/blog/resume-skills-examples) guide, and get summary ideas from [50 resume summary examples](/blog/resume-summary-examples)."
+    },
+    {
+      "type": "table",
+      "headers": ["Format Type", "ATS Parsing Accuracy", "Layout Reliability", "Best Use Case"],
+      "rows": [
+        ["LaTeX PDF", "100% (High text compatibility)", "Excellent (typeset grid)", "Tech, engineering, academic CVs"],
+        ["Word (.docx)", "95% (Highly searchable)", "Poor (layout shifts across Word versions)", "General corporate applications"],
+        ["Plain Text (.txt)", "100% (No format elements)", "Terrible (looks plain to recruiters)", "System input forms fallback"],
+        ["Graphic PDFs", "30% (Many parts unreadable)", "Good (visually locked)", "Never recommend for online apps"]
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Actionable ATS Optimization Checklist"
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        "Use standard, clear fonts (e.g. Arial, Times New Roman, Geist).",
+        "Save and export the document as a text-searchable PDF.",
+        "Remove all tables, graphs, progress bars, and header icons.",
+        "Spell out both acronyms and full titles (e.g. 'Search Engine Optimization (SEO)').",
+        "Start every accomplishment bullet point with a strong action verb."
+      ]
+    },
+    {
+      "type": "callout",
+      "style": "info",
+      "text": "Important: Do not hide keywords in white text at the bottom. Modern ATS parsers convert all text to orange/black plain text for recruiters, exposing hidden stuffing and getting your application flagged immediately."
+    }
+  ],
+  "faqs": [
+    {
+      "question": "What is an ATS-friendly resume?",
+      "answer": "It is a resume styled and written to be scanned and parsed accurately by Applicant Tracking Systems without errors."
+    },
+    {
+      "question": "Can I use templates with color?",
+      "answer": "Yes. ATS parsers read characters, not colors. However, avoid graphic borders, icons, and text boxes."
+    },
+    {
+      "question": "Is PDF or Word better for ATS?",
+      "answer": "Both are fine, but a text-searchable PDF is preferred because it locks your formatting, avoiding layout shifts."
+    },
+    {
+      "question": "How do I test if my PDF is ATS-friendly?",
+      "answer": "Copy all text from the PDF (Ctrl+A / Ctrl+C) and paste it into Notepad. If the text is readable and in order, it will pass."
+    },
+    {
+      "question": "Should I include columns on my resume?",
+      "answer": "No. Single-column layouts are much safer because parsers read text lines left-to-right, mixing columns."
+    },
+    {
+      "question": "Does ChatCV build ATS-friendly resumes?",
+      "answer": "Yes. ChatCV compiles your resume in LaTeX, yielding a clean single-column structure that parses perfectly."
+    },
+    {
+      "question": "Can ATS scan bullet points?",
+      "answer": "Yes. Standard bullet points (circles or squares) are parsed easily. Avoid custom graphical icon bullet characters."
+    },
+    {
+      "question": "Should I list all my historical jobs?",
+      "answer": "Only list relevant jobs from the last 10-15 years. This helps keep your document concise and targeted."
+    },
+    {
+      "question": "Can I use abbreviations on my resume?",
+      "answer": "Yes, but spell out the full term first to match whatever keywords the recruiter searches for."
+    },
+    {
+      "question": "How many skills should I list on my resume?",
+      "answer": "List 10 to 15 core skills. Focus on technical skills and specific competencies matching the job description."
+    }
+  ],
+  "cta": {
+    "title": "Create a 100% ATS-Compliant Resume Automatically",
+    "description": "Stop struggling with Word formatting. ChatCV lets you build a beautiful, parsed LaTeX resume by chatting with AI.",
+    "buttonText": "Build My ATS Resume Free",
+    "buttonLink": "/dashboard",
+    "type": "interactive"
+  },
+  "relatedPostsSlugs": ["ats-friendly-resume-guide", "best-ai-resume-builder"],
+  "seo": {
+    "metaTitle": "How to Create an ATS-Friendly Resume (2026 Guide)",
+    "metaDescription": "Optimize your resume for Applicant Tracking Systems. Learn how to format headers, select keywords, choose files, and pass the recruiter screening.",
+    "focusKeyword": "ATS Friendly Resume",
+    "secondaryKeywords": ["ATS-friendly resume format", "beat applicant tracking system", "resume parser test", "PDF vs Word resume"],
+    "searchIntent": "informational",
+    "difficulty": "easy",
+    "contentType": "pillar"
+  },
+  "featured": false,
+  "draft": false,
+  "language": "en"
+}

@@ -1,0 +1,12 @@
+{
+  "industries": [
+    {
+      "name": "Technology & Design",
+      "slug": "technology-design",
+      "roles": [
+        { "name": "Software Engineer", "slug": "software-engineer" },
+        { "name": "Product Manager", "slug": "product-manager" }
+      ]
+    }
+  ]
+}
