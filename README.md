@@ -2,7 +2,7 @@
 
 > Build your resume by just chatting. No forms, no templates to fill — just talk and watch your resume come alive.
 
-![ChatCV Dashboard](https://chatcv-gamma.vercel.app/og-image.png)
+![ChatCV Dashboard](https://resumebuilder-chatcv.vercel.app/og-image.png)
 
 ---
 
@@ -46,9 +46,9 @@ Click PDF → LaTeX compiled → downloaded to your machine
 ## Tech Stack
 
 **Frontend**
-- Next.js 14 (App Router)
+- Next.js 16 (App Router)
 - TypeScript
-- Tailwind CSS
+- Tailwind CSS (v4)
 - WebSocket (real-time PDF status)
 
 **Backend**
@@ -58,6 +58,19 @@ Click PDF → LaTeX compiled → downloaded to your machine
 - Google Gemini AI (`gemini-2.0-flash`)
 - WebSocket (`ws`) for live PDF generation updates
 - ytotech LaTeX compiler API
+
+---
+
+## SEO & Search Indexing Architecture
+
+To achieve premium search engine visibility, ChatCV features a dedicated growth engineering framework:
+- **Index Guarding**: All private routes under `/dashboard/` and `/login`/`/register`/`/verify-otp` layout files are strictly configured with `noindex, nofollow` metadata headers.
+- **Client-Server Metadata Separation**: The waitlist page `/subscribe` is refactored into a Server page that exports dynamic search metadata wrapping a dynamic client form layout.
+- **Dynamic Site maps & Robots**: Auto-aligns allowed crawl rules. The sitemap dynamically generates public post links and career example directories while excluding forbidden routes to keep GSC clean of errors.
+- **JSON-LD Schema Markup**: The root HTML template dynamically registers:
+  - **Organization Schema**: Connects ChatCV with brand assets.
+  - **WebSite Schema**: Adds Sitelinks Searchbox compatibility.
+  - **SoftwareApplication Schema**: Drives rich visual product search cards.
 
 ---
 
@@ -183,6 +196,12 @@ Frontend auto-downloads PDF
 | Database | [MongoDB Atlas](https://mongodb.com/atlas) |
 
 **Live:** [chatcv-gamma.vercel.app](https://chatcv-gamma.vercel.app)
+
+---
+
+## Contributing
+
+We welcome contributions to ChatCV! Please read [CONTRIBUTING.md](file:///Users/ravipandey/Ravii/Web%202.0/MERN/fullstack/chatcv/CONTRIBUTING.md) for details on code style, lint check rules, and submission pipelines.
 
 ---
 
