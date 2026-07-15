@@ -10,6 +10,8 @@ export default function robots(): MetadataRoute.Robots {
         "/api/",
         "/login",
         "/register",
+        "/verify-otp",
+        "/admin",
       ],
     },
     sitemap: "https://resumebuilder-chatcv.vercel.app/sitemap.xml",

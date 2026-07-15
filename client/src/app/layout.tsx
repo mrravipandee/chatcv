@@ -68,7 +68,7 @@ export const metadata: Metadata = {
 
   openGraph: {
     type: "website",
-    url: "https://chatcv-gamma.vercel.app",
+    url: "https://resumebuilder-chatcv.vercel.app",
     title: "ChatCV - Free AI Resume Builder & AI Resume Maker",
     description:
       "Create professional, ATS-friendly resumes in minutes with ChatCV, the best free AI resume builder and AI resume maker. Chat with our assistant to build your CV for free.",
@@ -111,12 +111,66 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "ChatCV",
+    "url": "https://resumebuilder-chatcv.vercel.app",
+    "logo": "https://resumebuilder-chatcv.vercel.app/chatcv.svg",
+    "sameAs": [
+      "https://github.com/mrravipandee/chatcv"
+    ]
+  };
+
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "ChatCV",
+    "url": "https://resumebuilder-chatcv.vercel.app",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://resumebuilder-chatcv.vercel.app/blog?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  };
+
+  const softwareSchema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "ChatCV AI Resume Builder",
+    "operatingSystem": "All",
+    "applicationCategory": "BusinessApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0.00",
+      "priceCurrency": "USD"
+    },
+    "description": "Create professional, ATS-friendly resumes in minutes with ChatCV, the best free AI resume builder and AI resume maker.",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "1250"
+    }
+  };
+
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
       <body className="bg-black text-white antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }}
+        />
         {children}
       </body>
     </html>

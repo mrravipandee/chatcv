@@ -23,14 +23,14 @@ export default function Navbar() {
 
                             {/* Custom SVG Logo Container */}
                             <div>
-                                <Image src="./chatcv.svg" alt="ChatCV logo" width={100} height={24} className="h-12 w-auto object-contain" />
+                                <Image src="/chatcv.svg" alt="ChatCV logo" width={100} height={24} className="h-12 w-auto object-contain" />
                             </div>
                         </div>
                     </Link>
 
                     {/* NAV LINKS */}
                     <div className="hidden md:flex gap-8 items-center">
-                        {['Features', 'How it Works', 'Waitlist', 'Blog'].map((item) => {
+                        {['Features', 'How it Works', 'Blog'].map((item) => {
                             const isWaitlist = item === 'Waitlist';
                             const isBlog = item === 'Blog';
                             return (

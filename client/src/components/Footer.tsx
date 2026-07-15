@@ -24,7 +24,7 @@ export default function Footer() {
           <div className="space-y-3">
             <Link href="/" className="flex items-center gap-2 group">
               <div>
-                <Image src="./chatcv.svg" alt="ChatCV logo" width={100} height={24} className="h-12 w-auto object-contain" />
+                <Image src="/chatcv.svg" alt="ChatCV logo" width={100} height={24} className="h-12 w-auto object-contain" />
               </div>
             </Link>
             <p className="text-sm text-zinc-500 max-w-xs">
@@ -34,10 +34,18 @@ export default function Footer() {
 
           {/* Direct Navigation */}
           <div className="flex flex-wrap gap-x-8 gap-y-4">
-            {['Features', 'How it Works', 'Waitlist'].map((item) => (
+            {['Features', 'How it Works', 'Blog', 'Resume Examples', 'Waitlist'].map((item) => (
               <Link 
                 key={item}
-                href={item === 'Waitlist' ? "/subscribe" : `#${item.toLowerCase().replace(/\s+/g, '')}`} 
+                href={
+                  item === 'Waitlist' 
+                    ? "/subscribe" 
+                    : item === 'Blog' 
+                    ? "/blog" 
+                    : item === 'Resume Examples' 
+                    ? "/resume-examples" 
+                    : `#${item.toLowerCase().replace(/\s+/g, '')}`
+                } 
                 className="text-sm text-zinc-400 hover:text-[#00ff9c] transition-colors"
               >
                 {item}
