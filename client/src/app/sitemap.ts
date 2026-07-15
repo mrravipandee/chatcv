@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 import { getAllPosts, getCategories, getTags, getAllResumeRoles } from "../lib/blog";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://resumebuilder-chatcv.vercel.app";
+  const baseUrl = "https://resume-builder-chatcv.vercel.app";
 
   // 1. Static Pages
   const staticPages: MetadataRoute.Sitemap = [

@@ -45,7 +45,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
 
   const author = authorPost.author;
   const authorPosts = getPostsByAuthor(authorSlug);
-  const baseUrl = "https://resumebuilder-chatcv.vercel.app";
+  const baseUrl = "https://resume-builder-chatcv.vercel.app";
 
   // PROFILE PAGE JSON-LD SCHEMA FOR EEAT
   const profileSchema = {

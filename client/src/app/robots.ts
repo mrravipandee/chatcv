@@ -14,6 +14,6 @@ export default function robots(): MetadataRoute.Robots {
         "/admin",
       ],
     },
-    sitemap: "https://resumebuilder-chatcv.vercel.app/sitemap.xml",
+    sitemap: "https://resume-builder-chatcv.vercel.app/sitemap.xml",
   };
 }

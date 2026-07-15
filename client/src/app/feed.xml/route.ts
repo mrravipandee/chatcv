@@ -2,7 +2,7 @@ import { getAllPosts } from "@/lib/blog";
 
 export async function GET() {
   const posts = getAllPosts();
-  const baseUrl = "https://resumebuilder-chatcv.vercel.app";
+  const baseUrl = "https://resume-builder-chatcv.vercel.app";
 
   const itemsXml = posts
     .map((post) => {

@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: ResumeRolePageProps): Promise
   const role = getResumeRole(resolvedParams.role);
   if (!role) return {};
 
-  const baseUrl = "https://resumebuilder-chatcv.vercel.app";
+  const baseUrl = "https://resume-builder-chatcv.vercel.app";
   const canonicalUrl = `${baseUrl}/resume-examples/${role.role}`;
 
   return {
@@ -57,7 +57,7 @@ export default async function ResumeRolePage({ params }: ResumeRolePageProps) {
   }
 
   const relatedRoles = getRelatedResumeRoles(role, 4);
-  const baseUrl = "https://resumebuilder-chatcv.vercel.app";
+  const baseUrl = "https://resume-builder-chatcv.vercel.app";
 
   // SCHEMAS GENERATION
   const breadcrumbSchema = {

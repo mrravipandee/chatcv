@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "ChatCV Career Blog - AI Resume & Interview Advice",
     description: "Expert advice on resume keyword optimization, beat applicant tracking systems, ATS guides, and modern career acceleration strategies.",
-    url: "https://resumebuilder-chatcv.vercel.app/blog",
+    url: "https://resume-builder-chatcv.vercel.app/blog",
     type: "website",
   },
 };

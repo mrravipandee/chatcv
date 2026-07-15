@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   const post = getPostBySlug(resolvedParams.slug);
   if (!post) return {};
 
-  const baseUrl = "https://resumebuilder-chatcv.vercel.app";
+  const baseUrl = "https://resume-builder-chatcv.vercel.app";
   const canonicalUrl = post.seo.canonicalUrl || `${baseUrl}/blog/${post.slug}`;
 
   return {
@@ -192,7 +192,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     year: "numeric",
   });
 
-  const baseUrl = "https://resumebuilder-chatcv.vercel.app";
+  const baseUrl = "https://resume-builder-chatcv.vercel.app";
 
   // SCHEMAS GENERATION
   const breadcrumbSchema = {
