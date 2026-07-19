@@ -22,9 +22,32 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 
+  const baseUrl = "https://resume-builder-chatcv.vercel.app";
+  const canonicalUrl = `${baseUrl}/blog/category/${resolvedParams.category}`;
+
   return {
     title: `${decodedCategory} Articles | ChatCV Blog`,
     description: `Read the latest articles, guides, and career resources under the ${decodedCategory} category on the ChatCV blog.`,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: `${decodedCategory} Articles | ChatCV Blog`,
+      description: `Read the latest articles, guides, and career resources under the ${decodedCategory} category on the ChatCV blog.`,
+      url: canonicalUrl,
+      type: "website",
+      siteName: "ChatCV",
+      locale: "en_US",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${decodedCategory} Articles | ChatCV Blog`,
+      description: `Read the latest articles, guides, and career resources under the ${decodedCategory} category on the ChatCV blog.`,
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
   };
 }
 
@@ -40,8 +63,76 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   const posts = getPostsByCategory(matchedCategory);
 
+  const baseUrl = "https://resume-builder-chatcv.vercel.app";
+  const canonicalUrl = `${baseUrl}/blog/category/${rawCategory}`;
+  
+  // Title capitalized properly
+  const decodedCategory = matchedCategory
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+
+  // Schema declarations
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": baseUrl,
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": `${baseUrl}/blog`,
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Categories",
+        "item": `${baseUrl}/blog/category`,
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": decodedCategory,
+        "item": canonicalUrl,
+      },
+    ],
+  };
+
+  const collectionSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": `${decodedCategory} Articles | ChatCV Blog`,
+    "description": `Read the latest articles, guides, and career resources under the ${decodedCategory} category on the ChatCV blog.`,
+    "url": canonicalUrl,
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": posts.map((post, idx) => ({
+        "@type": "ListItem",
+        "position": idx + 1,
+        "url": `${baseUrl}/blog/${post.slug}`,
+        "name": post.title,
+      })),
+    },
+  };
+
   return (
     <main className="bg-black min-h-screen pt-28 pb-20 text-white">
+      {/* Schema Injections */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
+      />
+
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <Link href="/blog" className="text-zinc-500 hover:text-[#00ff9c] text-xs font-bold flex items-center gap-1 mb-8 transition-colors">
           <ArrowLeft className="w-3.5 h-3.5" />

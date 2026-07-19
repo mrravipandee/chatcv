@@ -26,9 +26,39 @@ export async function generateMetadata({ params }: AuthorPageProps): Promise<Met
   
   if (!post) return {};
 
+  const baseUrl = "https://resume-builder-chatcv.vercel.app";
+  const canonicalUrl = `${baseUrl}/blog/author/${authorSlug}`;
+
   return {
     title: `${post.author.name} - Author Profile | ChatCV`,
     description: post.author.bio,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: `${post.author.name} - Author Profile | ChatCV`,
+      description: post.author.bio,
+      url: canonicalUrl,
+      type: "profile",
+      siteName: "ChatCV",
+      locale: "en_US",
+      images: [
+        {
+          url: post.author.avatar,
+          alt: post.author.name,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary",
+      title: `${post.author.name} - Author Profile | ChatCV`,
+      description: post.author.bio,
+      images: [post.author.avatar],
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
   };
 }
 
@@ -46,6 +76,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
   const author = authorPost.author;
   const authorPosts = getPostsByAuthor(authorSlug);
   const baseUrl = "https://resume-builder-chatcv.vercel.app";
+  const canonicalUrl = `${baseUrl}/blog/author/${authorSlug}`;
 
   // PROFILE PAGE JSON-LD SCHEMA FOR EEAT
   const profileSchema = {
@@ -64,12 +95,47 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
     },
   };
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": baseUrl,
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": `${baseUrl}/blog`,
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Authors",
+        "item": `${baseUrl}/blog/author`,
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": author.name,
+        "item": canonicalUrl,
+      },
+    ],
+  };
+
   return (
     <main className="bg-black min-h-screen pt-28 pb-20 text-white">
       {/* SCHEMA INJECTION */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(profileSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
