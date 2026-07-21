@@ -19,7 +19,7 @@ const playFont = Play({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://resume-builder-chatcv.vercel.app"),
+  metadataBase: new URL("https://resumebuilder-chatcv.vercel.app"),
 
   title: {
     default: "ChatCV - Free AI Resume Builder & AI Resume Maker",
@@ -210,7 +210,7 @@ export const metadata: Metadata = {
 
   openGraph: {
     type: "website",
-    url: "https://resume-builder-chatcv.vercel.app",
+    url: "https://resumebuilder-chatcv.vercel.app",
     title: "ChatCV - Free AI Resume Builder & AI Resume Maker",
     description:
       "Create professional, ATS-friendly resumes in minutes with ChatCV, the best free AI resume builder and AI resume maker. Chat with our assistant to build your CV for free.",
@@ -260,8 +260,8 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "ChatCV",
-    "url": "https://resume-builder-chatcv.vercel.app",
-    "logo": "https://resume-builder-chatcv.vercel.app/chatcv.svg",
+    "url": "https://resumebuilder-chatcv.vercel.app",
+    "logo": "https://resumebuilder-chatcv.vercel.app/chatcv.svg",
     "sameAs": [
       "https://github.com/mrravipandee/chatcv"
     ]
@@ -271,10 +271,10 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "ChatCV",
-    "url": "https://resume-builder-chatcv.vercel.app",
+    "url": "https://resumebuilder-chatcv.vercel.app",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://resume-builder-chatcv.vercel.app/blog?q={search_term_string}",
+      "target": "https://resumebuilder-chatcv.vercel.app/blog?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   };

@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: AuthorPageProps): Promise<Met
   
   if (!post) return {};
 
-  const baseUrl = "https://resume-builder-chatcv.vercel.app";
+  const baseUrl = "https://resumebuilder-chatcv.vercel.app";
   const canonicalUrl = `${baseUrl}/blog/author/${authorSlug}`;
 
   return {
@@ -75,7 +75,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
 
   const author = authorPost.author;
   const authorPosts = getPostsByAuthor(authorSlug);
-  const baseUrl = "https://resume-builder-chatcv.vercel.app";
+  const baseUrl = "https://resumebuilder-chatcv.vercel.app";
   const canonicalUrl = `${baseUrl}/blog/author/${authorSlug}`;
 
   // PROFILE PAGE JSON-LD SCHEMA FOR EEAT

@@ -7,12 +7,12 @@ export const metadata: Metadata = {
   title: "Blog Tags | ChatCV Career Advice Hub",
   description: "Explore all keywords, categories, and topics across the ChatCV career and resume building blog. Find specific topics ranging from ATS keywords to LaTeX tips.",
   alternates: {
-    canonical: "https://resume-builder-chatcv.vercel.app/blog/tag",
+    canonical: "https://resumebuilder-chatcv.vercel.app/blog/tag",
   },
   openGraph: {
     title: "Blog Tags | ChatCV Career Advice Hub",
     description: "Explore all keywords, categories, and topics across the ChatCV career and resume building blog.",
-    url: "https://resume-builder-chatcv.vercel.app/blog/tag",
+    url: "https://resumebuilder-chatcv.vercel.app/blog/tag",
     type: "website",
     siteName: "ChatCV",
     locale: "en_US",
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 
 export default function TagsIndexPage() {
   const tags = getTags();
-  const baseUrl = "https://resume-builder-chatcv.vercel.app";
+  const baseUrl = "https://resumebuilder-chatcv.vercel.app";
   const canonicalUrl = `${baseUrl}/blog/tag`;
 
   const breadcrumbSchema = {

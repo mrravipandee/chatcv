@@ -7,12 +7,12 @@ export const metadata: Metadata = {
   title: "Blog Categories | ChatCV Career Advice Hub",
   description: "Browse our career guides, resume templates, and ATS optimization advice organized by categories like AI Resume Builder, LaTeX Resumes, and Interview Tips.",
   alternates: {
-    canonical: "https://resume-builder-chatcv.vercel.app/blog/category",
+    canonical: "https://resumebuilder-chatcv.vercel.app/blog/category",
   },
   openGraph: {
     title: "Blog Categories | ChatCV Career Advice Hub",
     description: "Browse our career guides, resume templates, and ATS optimization advice organized by category.",
-    url: "https://resume-builder-chatcv.vercel.app/blog/category",
+    url: "https://resumebuilder-chatcv.vercel.app/blog/category",
     type: "website",
     siteName: "ChatCV",
     locale: "en_US",
@@ -42,7 +42,7 @@ function getCategoryDescription(category: string): string {
 
 export default function CategoriesIndexPage() {
   const categories = getCategories();
-  const baseUrl = "https://resume-builder-chatcv.vercel.app";
+  const baseUrl = "https://resumebuilder-chatcv.vercel.app";
   const canonicalUrl = `${baseUrl}/blog/category`;
 
   const breadcrumbSchema = {

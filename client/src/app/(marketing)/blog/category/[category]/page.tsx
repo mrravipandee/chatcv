@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 
-  const baseUrl = "https://resume-builder-chatcv.vercel.app";
+  const baseUrl = "https://resumebuilder-chatcv.vercel.app";
   const canonicalUrl = `${baseUrl}/blog/category/${resolvedParams.category}`;
 
   return {
@@ -63,7 +63,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   const posts = getPostsByCategory(matchedCategory);
 
-  const baseUrl = "https://resume-builder-chatcv.vercel.app";
+  const baseUrl = "https://resumebuilder-chatcv.vercel.app";
   const canonicalUrl = `${baseUrl}/blog/category/${rawCategory}`;
   
   // Title capitalized properly

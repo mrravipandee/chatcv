@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: TagPageProps): Promise<Metada
   const resolvedParams = await params;
   const tagLabel = resolvedParams.tag.replace(/-/g, " ");
 
-  const baseUrl = "https://resume-builder-chatcv.vercel.app";
+  const baseUrl = "https://resumebuilder-chatcv.vercel.app";
   const canonicalUrl = `${baseUrl}/blog/tag/${resolvedParams.tag}`;
 
   return {
@@ -60,7 +60,7 @@ export default async function TagPage({ params }: TagPageProps) {
 
   const posts = getPostsByTag(matchedTag);
 
-  const baseUrl = "https://resume-builder-chatcv.vercel.app";
+  const baseUrl = "https://resumebuilder-chatcv.vercel.app";
   const canonicalUrl = `${baseUrl}/blog/tag/${rawTag}`;
 
   // Schema declarations

@@ -8,12 +8,12 @@ export const metadata: Metadata = {
   title: "Verified Authors & Contributors | ChatCV Career Advice Hub",
   description: "Meet the experts, resume writers, and career coaches behind ChatCV's professional advice, guide templates, and career resources.",
   alternates: {
-    canonical: "https://resume-builder-chatcv.vercel.app/blog/author",
+    canonical: "https://resumebuilder-chatcv.vercel.app/blog/author",
   },
   openGraph: {
     title: "Verified Authors & Contributors | ChatCV Career Advice Hub",
     description: "Meet the experts, resume writers, and career coaches behind ChatCV's professional advice.",
-    url: "https://resume-builder-chatcv.vercel.app/blog/author",
+    url: "https://resumebuilder-chatcv.vercel.app/blog/author",
     type: "website",
     siteName: "ChatCV",
     locale: "en_US",
@@ -41,7 +41,7 @@ export default function AuthorsIndexPage() {
   });
   
   const authors = Array.from(uniqueAuthorsMap.values());
-  const baseUrl = "https://resume-builder-chatcv.vercel.app";
+  const baseUrl = "https://resumebuilder-chatcv.vercel.app";
   const canonicalUrl = `${baseUrl}/blog/author`;
 
   const breadcrumbSchema = {
