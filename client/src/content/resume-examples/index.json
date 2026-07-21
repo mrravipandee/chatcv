@@ -5,7 +5,16 @@
       "slug": "technology-design",
       "roles": [
         { "name": "Software Engineer", "slug": "software-engineer" },
-        { "name": "Product Manager", "slug": "product-manager" }
+        { "name": "Senior Software Engineer", "slug": "senior-software-engineer" },
+        { "name": "Product Manager", "slug": "product-manager" },
+        { "name": "Data Scientist", "slug": "data-scientist" }
+      ]
+    },
+    {
+      "name": "Healthcare & Medicine",
+      "slug": "healthcare-medicine",
+      "roles": [
+        { "name": "Registered Nurse", "slug": "registered-nurse" }
       ]
     }
   ]

@@ -1,0 +1,69 @@
+{
+  "role": "senior-software-engineer",
+  "title": "Senior Software Engineer Resume Examples & ATS Guide (2026)",
+  "jobTitle": "Senior Software Engineer",
+  "industry": "Technology & Design",
+  "experienceLevel": "senior",
+  "metaDescription": "Top Senior Software Engineer resume examples and ATS guide. Copy premium LaTeX template code, find industry-standard ATS skills, and write high-impact bullet points.",
+  "summaryExamples": [
+    {
+      "title": "Lead Software Architect",
+      "text": "Enterprise Software Architect with 10+ years of expertise designing distributed microservices and scaling cloud infrastructures. Proficient in AWS, Kubernetes, and Go/Node.js. Proven record of migrating high-traffic platforms to serverless architectures, reducing hosting costs by 45%."
+    },
+    {
+      "title": "Senior Full Stack Engineer",
+      "text": "Senior Software Engineer with 8+ years of experience leading cross-functional teams to build high-performance web applications. Expert in React, TypeScript, and database optimization. Managed development and delivery of a platform serving 1M+ active daily users."
+    },
+    {
+      "title": "Senior Backend Engineer",
+      "text": "Senior Systems Engineer specializing in high-throughput API designs, database replication, and backend systems. Proficient in Java, Spring Boot, PostgreSQL, and Kafka. Re-architected system transactions to handle 50k+ requests per second with 99.99% uptime."
+    }
+  ],
+  "atsKeywords": [
+    "Software Architecture",
+    "Distributed Systems",
+    "Microservices",
+    "Cloud Computing (AWS/GCP)",
+    "Kubernetes & Docker",
+    "System Design",
+    "React.js & Next.js",
+    "TypeScript",
+    "Node.js & Go",
+    "Database Tuning (PostgreSQL)",
+    "CI/CD Pipelines",
+    "Agile/Scrum Leadership",
+    "Technical Mentorship",
+    "API Gateway Design",
+    "Kafka & Event-Driven Architecture"
+  ],
+  "bulletPoints": [
+    {
+      "category": "Technical Leadership & Architecture",
+      "points": [
+        "Architected enterprise-level migration from a legacy monolithic system to a Dockerized microservices mesh on AWS, eliminating single points of failure and reducing API latency by 60%.",
+        "Pioneered implementation of Event-Driven architectures using Apache Kafka, facilitating real-time data syncs across 5 distributed team systems.",
+        "Established CI/CD deployment pipelines using GitLab CI and Terraform, accelerating team release velocity from weekly runs to multiple daily deployments."
+      ]
+    },
+    {
+      "category": "Team Operations & Mentorship",
+      "points": [
+        "Mentored and coached 8 mid-level and junior developers, boosting engineering velocity by 25% and fostering code quality best practices through structured code reviews.",
+        "Partnered with VP of Engineering and Product Directors to formulate technical roadmaps, align sprints, and deliver key features on schedule."
+      ]
+    }
+  ],
+  "latexCode": "% --- LATEX RESUME TEMPLATE FOR SENIOR SOFTWARE ENGINEERS ---\n\\documentclass[10pt,letterpaper]{article}\n\\usepackage[utf8]{charset}\n\\usepackage{geometry}\n\\geometry{letterpaper, margin=0.75in}\n\\usepackage{hyperref}\n\\usepackage{enumitem}\n\n\\begin{document}\n\\begin{center}\n    {\\Huge \\bf ALEXANDER DUPONT} \\\\\n    \\vspace{2pt}\n    Seattle, WA | (206) 555-0177 | alex.dupont@email.com | linkedin.com/in/alexdupont\n\\end{center}\n\n\\section*{PROFESSIONAL SUMMARY}\nLead Software Engineer with 8+ years of experience architecting distributed systems and leading agile teams. Specialized in cloud architectures, microservices, and high-performance databases.\n\n\\section*{TECHNICAL SKILLS}\n\\begin{itemize}[noitemsep,topsep=0pt]\n    \\item \\textbf{Architecture & DBs:} Microservices, Event-Driven Systems, PostgreSQL, MongoDB, Redis\n    \\item \\textbf{Languages & Frameworks:} Go, TypeScript, Node.js, React, Java, Spring Boot\n    \\item \\textbf{DevOps & Cloud:} AWS (EC2, S3, RDS, ECS), Docker, Kubernetes, CI/CD, Terraform\n\\end{itemize}\n\n\\section*{EXPERIENCE}\n\\textbf{Senior Software Engineer} \\hfill Aug 2023 - Present \\\\\nCloudScale Technologies, Seattle, WA\n\\begin{itemize}[noitemsep,topsep=2pt]\n    \\item Architected and deployed serverless APIs using AWS Lambda and API Gateway, cutting infrastructure cost by 35%.\n    \\item Led a team of 4 engineers to build a real-time analytics dashboard, increasing client onboarding by 20%.\n    \\item Re-indexed high-volume PostgreSQL databases, reducing query search times by 50%.\n\\end{itemize}\n\n\\end{document}",
+  "faqs": [
+    {
+      "question": "Should a senior developer resume fit on one page?",
+      "answer": "If you have 8+ years of experience, a two-page resume is acceptable, but a single-page resume is still highly valued if it focuses purely on high-impact accomplishments rather than junior-level responsibilities."
+    },
+    {
+      "question": "How should senior developers demonstrate leadership?",
+      "answer": "Focus on metrics showing how you mentored junior staff, improved team delivery velocity, designed long-term system architecture, and collaborated with business stakeholders."
+    }
+  ],
+  "relatedRoles": ["software-engineer", "product-manager"],
+  "updatedDate": "2026-07-21T10:00:00Z"
+}

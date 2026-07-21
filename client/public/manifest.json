@@ -1,0 +1,16 @@
+{
+  "name": "ChatCV AI Resume Builder",
+  "short_name": "ChatCV",
+  "description": "Create professional, ATS-friendly LaTeX resumes by chatting with AI.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#00ff9c",
+  "icons": [
+    {
+      "src": "/chatcv.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

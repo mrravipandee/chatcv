@@ -1,0 +1,69 @@
+{
+  "role": "data-scientist",
+  "title": "Data Scientist Resume Examples & Guide (2026)",
+  "jobTitle": "Data Scientist",
+  "industry": "Technology & Design",
+  "experienceLevel": "all",
+  "metaDescription": "Top Data Scientist resume examples and ATS guide. Copy premium LaTeX template code, find industry-standard ATS skills, and write high-impact bullet points.",
+  "summaryExamples": [
+    {
+      "title": "Entry Level Data Scientist",
+      "text": "Aspiring Data Scientist with a Master's in Statistics and extensive training in Python, SQL, and Machine Learning algorithms. Proficient in data cleaning, exploratory data analysis (EDA), and predictive modeling. Eager to deploy quantitative models to drive data-driven decision making."
+    },
+    {
+      "title": "Mid Level Data Scientist",
+      "text": "Data Scientist with 3+ years of experience turning raw enterprise data into actionable predictive insights. Expert in PyTorch, Scikit-learn, and database optimizations. Developed machine learning pipelines that reduced user churn rates by 12% and optimized operational workflows."
+    },
+    {
+      "title": "Senior Data Scientist",
+      "text": "Lead Data Scientist with 7+ years of experience designing and deploying production-grade AI systems and business intelligence architectures. Proven history of leading cross-functional teams to build ML engines serving millions of active users and generating $5M+ in revenue impact."
+    }
+  ],
+  "atsKeywords": [
+    "Data Science",
+    "Machine Learning",
+    "Python",
+    "SQL",
+    "R Programming",
+    "Deep Learning",
+    "NLP",
+    "Data Visualization",
+    "Pandas & NumPy",
+    "PyTorch & TensorFlow",
+    "Scikit-learn",
+    "PostgreSQL",
+    "Tableau",
+    "A/B Testing",
+    "Predictive Modeling"
+  ],
+  "bulletPoints": [
+    {
+      "category": "Machine Learning & Engineering",
+      "points": [
+        "Built and deployed random forest and gradient boosting regression models using Scikit-learn, improving customer behavior prediction accuracy by 22%.",
+        "Engineered data pre-processing and pipeline validation architectures using Pandas and Spark, reducing dataset processing times by 40%.",
+        "Designed conversational analytics tools and NLP models using PyTorch, saving customer service operational costs by 15%."
+      ]
+    },
+    {
+      "category": "Business Impact & Visualization",
+      "points": [
+        "Collaborated with product leadership to execute A/B testing strategies on home interfaces, raising conversion metrics by 8.5%.",
+        "Constructed real-time business intelligence and data visualization dashboards using Tableau, empowering executive leadership with key metrics updates."
+      ]
+    }
+  ],
+  "latexCode": "% --- LATEX RESUME TEMPLATE FOR DATA SCIENTISTS ---\n\\documentclass[10pt,letterpaper]{article}\n\\usepackage[utf8]{charset}\n\\usepackage{geometry}\n\\geometry{letterpaper, margin=0.75in}\n\\usepackage{hyperref}\n\\usepackage{enumitem}\n\n\\begin{document}\n\\begin{center}\n    {\\Huge \\bf JANE SMITH} \\\\\n    \\vspace{2pt}\n    Boston, MA | (987) 654-3210 | jane.smith@email.com | linkedin.com/in/janesmith\n\\end{center}\n\n\\section*{PROFESSIONAL SUMMARY}\nData Scientist with 3+ years of professional experience leveraging Python, SQL, and machine learning models to solve complex business queries. Passionate about data pipelines and business intelligence.\n\n\\section*{TECHNICAL SKILLS}\n\\begin{itemize}[noitemsep,topsep=0pt]\n    \\item \\textbf{Languages & DBs:} Python, SQL, R, PostgreSQL, MongoDB\n    \\item \\textbf{ML Libraries:} Scikit-learn, Pandas, PyTorch, NumPy, TensorFlow\n    \\item \\textbf{Tools & Platforms:} Git, Docker, Tableau, AWS, Jupyter Notebooks\n\\end{itemize}\n\n\\section*{EXPERIENCE}\n\\textbf{Data Scientist} \\hfill Mar 2024 - Present \\\\\nAnalytics Pro Inc., Boston, MA\n\\begin{itemize}[noitemsep,topsep=2pt]\n    \\item Developed predictive model to analyze customer lifecycle value, boosting marketing ROI by 18%.\n    \\item Streamlined data processing operations by migrating legacy databases to AWS PostgreSQL.\n    \\item Formulated A/B test methodologies on platform features, securing actionable statistical insights.\n\\end{itemize}\n\n\\end{document}",
+  "faqs": [
+    {
+      "question": "Is Python or R preferred for data science resumes?",
+      "answer": "Python is heavily preferred for general industry roles due to its dominance in machine learning, system integration, and production engineering. R remains valuable for purely academic and statistics-focused roles."
+    },
+    {
+      "question": "What is the best way to list metrics on a data science resume?",
+      "answer": "Focus on the business outcomes of your models (e.g., 'improved prediction accuracy by 15%', 'reduced database latency by 30%', or 'boosted conversions by 8%') rather than just listing raw algorithms."
+    }
+  ],
+  "relatedRoles": ["software-engineer"],
+  "updatedDate": "2026-07-21T10:00:00Z"
+}

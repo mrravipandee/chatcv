@@ -1,0 +1,69 @@
+{
+  "role": "registered-nurse",
+  "title": "Registered Nurse Resume Examples & Guide (2026)",
+  "jobTitle": "Registered Nurse",
+  "industry": "Healthcare & Medicine",
+  "experienceLevel": "all",
+  "metaDescription": "Top Registered Nurse resume examples and ATS guide. Copy premium LaTeX template code, find industry-standard ATS skills, and write high-impact bullet points.",
+  "summaryExamples": [
+    {
+      "title": "New Graduate Nurse",
+      "text": "Compassionate and detail-oriented nursing graduate with clinical training in acute care and ICU environments. Adept at patient monitoring, treatment administration, and charting. Committed to delivering evidence-based patient-centric care."
+    },
+    {
+      "title": "Mid Level Registered Nurse",
+      "text": "Registered Nurse with 4+ years of dedicated experience in fast-paced emergency rooms and critical care units. Skilled in patient triage, emergency life support, and multi-disciplinary coordination. Achieved a 95% patient satisfaction rating."
+    },
+    {
+      "title": "Clinical Nurse Manager",
+      "text": "Nurse Manager with 9+ years of leadership in medical-surgical floors and hospital administration. Expert in staff scheduling, compliance management, and clinical quality protocols. Led a nursing department of 40+ staff maintaining high clinical safety ratings."
+    }
+  ],
+  "atsKeywords": [
+    "Patient Care",
+    "Clinical Nursing",
+    "Emergency Medicine",
+    "ICU Protocols",
+    "BLS & ACLS Certification",
+    "Electronic Health Records (EHR)",
+    "Patient Triage",
+    "Medication Administration",
+    "Vital Signs Monitoring",
+    "Direct Patient Advocacy",
+    "Care Coordination",
+    "HIPAA Compliance",
+    "Wound Care",
+    "Medical-Surgical floors",
+    "Quality Auditing"
+  ],
+  "bulletPoints": [
+    {
+      "category": "Patient Care & Clinical Nursing",
+      "points": [
+        "Monitored vital signs and administered medications to up to 6 acute care patients per shift, maintaining 100% compliance with hospital safety standards.",
+        "Coordinated patient discharge planning protocols with physicians, physical therapists, and family care partners, cutting readmission rates by 12%.",
+        "Documented detailed patient chart metrics using Electronic Health Record (EHR) platforms in strict alignment with HIPAA regulations."
+      ]
+    },
+    {
+      "category": "Emergency & Life Support",
+      "points": [
+        "Led patient triage operations in emergency departments, prioritizing urgent care needs to optimize hospital admission workflows.",
+        "Participated in emergency life support protocols (ACLS/BLS), stabilizing critical patients during trauma occurrences."
+      ]
+    }
+  ],
+  "latexCode": "% --- LATEX RESUME TEMPLATE FOR REGISTERED NURSES ---\n\\documentclass[10pt,letterpaper]{article}\n\\usepackage[utf8]{charset}\n\\usepackage{geometry}\n\\geometry{letterpaper, margin=0.75in}\n\\usepackage{hyperref}\n\\usepackage{enumitem}\n\n\\begin{document}\n\\begin{center}\n    {\\Huge \\bf SARAH WILLIAMS, RN} \\\\\n    \\vspace{2pt}\n    Chicago, IL | (312) 555-0199 | sarah.williams@email.com | linkedin.com/in/sarahwilliams\n\\end{center}\n\n\\section*{PROFESSIONAL SUMMARY}\nRegistered Nurse with 4+ years of clinical experience in critical care and patient support. Skilled in EHR charting, medication administration, and care coordination.\n\n\\section*{TECHNICAL SKILLS}\n\\begin{itemize}[noitemsep,topsep=0pt]\n    \\item \\textbf{Nursing Certifications:} RN License, BLS, ACLS, PALS\n    \\item \\textbf{Clinical Practices:} Patient Assessment, Triage, EHR Charting, IV Therapy\n    \\item \\textbf{Compliance & Software:} HIPAA, Epic EHR System, CarePlanning tools\n\\end{itemize}\n\n\\section*{EXPERIENCE}\n\\textbf{Registered Nurse} \\hfill Jun 2022 - Present \\\\\nCity Health Hospital, Chicago, IL\n\\begin{itemize}[noitemsep,topsep=2pt]\n    \\item Administered complex medication schedules and IV lines for up to 5 patients concurrently.\n    \\item Formulated individualized patient care paths, boosting compliance and recovery metrics by 14%.\n    \\item Trained 6 incoming nurse residents on hospital telemetry systems and charting standards.\n\\end{itemize}\n\n\\end{document}",
+  "faqs": [
+    {
+      "question": "Should nursing resumes include list of certifications at the top?",
+      "answer": "Yes. Nursing licenses (e.g. RN, NP) and certifications (BLS, ACLS) are critical gating requirements. Listing them at the top of the resume helps both ATS systems and recruiters verify credentials instantly."
+    },
+    {
+      "question": "What is Epic EHR and should it be listed?",
+      "answer": "Epic is the most widely used Electronic Health Record platform in major healthcare networks. Stating proficiency in Epic or Cerner shows recruiters that you need minimal system training."
+    }
+  ],
+  "relatedRoles": ["product-manager"],
+  "updatedDate": "2026-07-21T10:00:00Z"
+}

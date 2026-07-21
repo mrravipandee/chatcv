@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Play } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -9,6 +9,12 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+const playFont = Play({
+  weight: ["400", "700"],
+  variable: "--font-play",
   subsets: ["latin"],
 });
 
@@ -239,7 +245,10 @@ export const metadata: Metadata = {
     google: "1XnLLnxNOnoegYOvO9BGs1Ld1gDXj18RsKLtySms5G0",
   },
 
-  // manifest: "/site.webmanifest",
+  manifest: "/manifest.json",
+  other: {
+    "theme-color": "#00ff9c",
+  },
 };
 
 export default function RootLayout({
@@ -292,7 +301,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable}`}
+      className={`${geistSans.variable} ${geistMono.variable} ${playFont.variable}`}
     >
       <body className="bg-black text-white antialiased">
         <script
