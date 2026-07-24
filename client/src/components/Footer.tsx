@@ -33,21 +33,24 @@ export default function Footer() {
           </div>
 
           {/* Direct Navigation */}
-          <div className="flex flex-wrap gap-x-8 gap-y-4">
+          <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-x-8 gap-y-4 max-w-lg">
             {['Features', 'How it Works', 'Blog', 'Resume Examples', 'Waitlist'].map((item) => (
               <Link 
                 key={item}
                 href={
-                  item === 'Waitlist' 
+                  item === 'Features'
+                    ? "/features"
+                    : item === 'Waitlist' 
                     ? "/subscribe" 
                     : item === 'Blog' 
                     ? "/blog" 
                     : item === 'Resume Examples' 
                     ? "/resume-examples" 
-                    : `#${item.toLowerCase().replace(/\s+/g, '')}`
+                    : `/#${item.toLowerCase().replace(/\s+/g, '')}`
                 } 
-                className="text-sm text-zinc-400 hover:text-[#00ff9c] transition-colors"
+                className="text-sm text-zinc-400 hover:text-[#00ff9c] transition-all flex items-center gap-2 group"
               >
+                <span className="w-1.5 h-1.5 bg-zinc-800 group-hover:bg-[#00ff9c] rotate-45 transition-colors shrink-0" />
                 {item}
               </Link>
             ))}

@@ -169,7 +169,7 @@ export default function FeaturesPage() {
                   transition={{ duration: 0.6 }}
                   className={`lg:col-span-6 ${isEven ? "lg:order-1" : "lg:order-2"}`}
                 >
-                  <div className="relative aspect-video w-full bg-gradient-to-b from-zinc-900/60 to-zinc-950/80 border border-white/10 rounded-3xl p-8 flex flex-col justify-center overflow-hidden shadow-2xl group hover:border-[#00ff9c]/35 transition-all duration-500">
+                  <div className="relative w-full min-h-[260px] sm:min-h-[280px] bg-gradient-to-b from-zinc-900/60 to-zinc-950/80 border border-white/10 rounded-3xl p-6 sm:p-8 py-8 sm:py-10 flex flex-col justify-center overflow-hidden shadow-2xl group hover:border-[#00ff9c]/35 transition-all duration-500">
                     {/* Glowing Accent */}
                     <div
                       className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"

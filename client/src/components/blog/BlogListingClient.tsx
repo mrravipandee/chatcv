@@ -288,7 +288,7 @@ export default function BlogListingClient({
         {!selectedCategory && !selectedTag && !searchQuery && featuredPost && (
           <div className="mb-24">
             <h2 className="text-xs font-black uppercase tracking-widest text-zinc-500 mb-6 flex items-center gap-2.5">
-              <Flame className="w-4 h-4 text-orange-500" />
+              <span className="w-2 h-2 bg-orange-500 rotate-45 shrink-0 shadow-[0_0_8px_rgba(249,115,22,0.5)] animate-pulse" />
               Featured Editorial
             </h2>
 
@@ -309,7 +309,8 @@ export default function BlogListingClient({
                 {/* Text panel */}
                 <div className="flex flex-col justify-between lg:col-span-5 py-4">
                   <div>
-                    <span className="bg-[#00ff9c]/10 text-[#00ff9c] border border-[#00ff9c]/25 text-[10px] font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider">
+                    <span className="inline-flex items-center gap-2 bg-[#00ff9c]/10 text-[#00ff9c] border border-[#00ff9c]/25 text-[10px] font-bold px-3.5 py-1.5 rounded-md uppercase tracking-wider shadow-[0_2px_8px_rgba(0,255,156,0.05)]">
+                      <span className="w-1.5 h-1.5 bg-[#00ff9c] rotate-45 shrink-0 animate-pulse" />
                       {featuredPost.category}
                     </span>
                     
@@ -342,8 +343,9 @@ export default function BlogListingClient({
                       </div>
                     </div>
 
-                    <div className="bg-[#00ff9c] text-black font-extrabold text-xs px-5 py-3 rounded-xl shadow-[0_4px_15px_rgba(0,255,156,0.25)] group-hover:bg-white group-hover:shadow-[0_4px_25px_rgba(255,255,255,0.2)] transition-all">
-                      Read Post
+                    <div className="bg-[#00ff9c] text-black font-extrabold text-xs px-5 py-3 rounded-md shadow-[0_4px_15px_rgba(0,255,156,0.25)] group-hover:bg-white group-hover:shadow-[0_4px_25px_rgba(255,255,255,0.2)] transition-all flex items-center gap-1.5">
+                      <span>Read Post</span>
+                      <span className="w-1.5 h-1.5 bg-black group-hover:bg-black/80 rotate-45 shrink-0 transition-colors" />
                     </div>
                   </div>
                 </div>
@@ -360,10 +362,10 @@ export default function BlogListingClient({
                 setSelectedCategory(null);
                 setSelectedTag(null);
               }}
-              className={`relative text-xs font-bold px-4 py-2 rounded-xl transition-all ${
+              className={`relative text-xs font-bold px-4 py-2 rounded-md border transition-all ${
                 selectedCategory === null && selectedTag === null
-                  ? "bg-[#00ff9c] text-black"
-                  : "bg-zinc-900/60 border border-white/5 text-zinc-400 hover:text-white"
+                  ? "bg-[#00ff9c] border-[#00ff9c] text-black shadow-[0_2px_10px_rgba(0,255,156,0.15)]"
+                  : "bg-zinc-900/60 border-white/5 text-zinc-400 hover:text-white hover:border-white/10"
               }`}
             >
               All Articles
@@ -378,14 +380,15 @@ export default function BlogListingClient({
                     setSelectedCategory(cat);
                     setSelectedTag(null);
                   }}
-                  className={`text-xs font-bold px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
+                  className={`text-xs font-bold px-4 py-2 rounded-md border transition-all flex items-center gap-2 ${
                     isSelected
-                      ? "bg-[#00ff9c] text-black"
-                      : "bg-zinc-900/60 border border-white/5 text-zinc-400 hover:text-white"
+                      ? "bg-[#00ff9c] border-[#00ff9c] text-black shadow-[0_2px_10px_rgba(0,255,156,0.15)]"
+                      : "bg-zinc-900/60 border-white/5 text-zinc-400 hover:text-white hover:border-white/10"
                   }`}
                 >
+                  {isSelected && <span className="w-1.5 h-1.5 bg-black rotate-45 shrink-0" />}
                   <span>{cat}</span>
-                  <span className={`text-[9px] px-1.5 py-0.5 rounded-full ${isSelected ? "bg-black/20 text-black" : "bg-black/40 text-zinc-500"}`}>
+                  <span className={`text-[9px] px-1.5 py-0.5 rounded ${isSelected ? "bg-black/10 text-black font-extrabold" : "bg-black/40 text-zinc-500"}`}>
                     {count}
                   </span>
                 </button>

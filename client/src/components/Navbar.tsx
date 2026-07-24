@@ -6,24 +6,24 @@ import Link from "next/link";
 
 export default function Navbar() {
     return (
-        <div className="w-full fixed top-6 z-50 flex justify-center px-4">
+        <div className="w-full fixed top-3 md:top-6 z-50 flex justify-center px-4">
             <motion.nav
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="w-full max-w-5xl bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl px-6 py-3 shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
+                className="w-full max-w-5xl bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl px-4 md:px-6 py-2 md:py-3 shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
             >
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center gap-2">
 
                     {/* LOGO SECTION WITH CUSTOM SVG */}
-                    <Link href="/" className="flex items-center gap-2 group cursor-pointer">
+                    <Link href="/" className="flex items-center gap-2 group cursor-pointer shrink-0">
                         <div className="relative">
                             {/* Glow effect */}
                             <div className="absolute inset-0 bg-[#00ff9c] blur-lg opacity-20 group-hover:opacity-40 transition-opacity" />
 
                             {/* Custom SVG Logo Container */}
-                            <div>
-                                <Image src="/chatcv.svg" alt="ChatCV logo" width={100} height={24} className="h-12 w-auto object-contain" />
+                            <div className="flex items-center">
+                                <Image src="/chatcv.svg" alt="ChatCV logo" width={100} height={24} className="h-8 md:h-12 w-auto object-contain" />
                             </div>
                         </div>
                     </Link>
@@ -56,11 +56,11 @@ export default function Navbar() {
                     </div>
 
                     {/* CTA BUTTON */}
-                    <Link href="/dashboard">
+                    <Link href="/dashboard" className="shrink-0">
                         <motion.button
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
-                            className="relative group bg-[#00ff9c] text-black px-5 py-2.5 rounded-xl font-bold text-sm overflow-hidden"
+                            className="relative group bg-[#00ff9c] text-black px-3.5 md:px-5 py-2 md:py-2.5 rounded-xl font-bold text-xs md:text-sm overflow-hidden"
                         >
                             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
                             <span className="relative z-10">Get Started</span>
