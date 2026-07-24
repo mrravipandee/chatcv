@@ -65,9 +65,9 @@ export default function TableOfContents() {
 
   return (
     <div className="w-full bg-gradient-to-b from-zinc-900/60 to-zinc-950/80 rounded-2xl border border-white/10 p-6 backdrop-blur-xl shadow-xl">
-      <div className="flex items-center gap-2 mb-4 border-b border-white/5 pb-3">
-        <List className="w-4 h-4 text-[#00ff9c]" />
-        <h4 className="text-xs uppercase tracking-widest text-zinc-400 font-extrabold">
+      <div className="flex items-center gap-2.5 mb-4 border-b border-white/5 pb-3">
+        <span className="w-2 h-2 bg-[#00ff9c] rotate-45 shrink-0 shadow-[0_0_8px_rgba(0,255,156,0.5)]" />
+        <h4 className="text-[10px] uppercase tracking-widest text-zinc-400 font-black">
           Outline
         </h4>
       </div>

@@ -273,6 +273,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_-10%,rgba(0,255,156,0.06),transparent)] pointer-events-none" />
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f293710_1px,transparent_1px),linear-gradient(to_bottom,#1f293710_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none" />
 
+      {/* DECORATIVE RHOMBUS BACKGROUND SHAPES */}
+      <div className="absolute top-[12%] left-[-120px] w-80 h-80 bg-gradient-to-br from-[#00ff9c]/5 to-transparent border border-[#00ff9c]/10 rotate-45 rounded-[40px] blur-[1px] pointer-events-none hidden xl:block" />
+      <div className="absolute top-[45%] right-[-150px] w-96 h-96 bg-gradient-to-tl from-emerald-500/5 to-transparent border border-emerald-500/10 rotate-45 rounded-[48px] blur-[2px] pointer-events-none hidden xl:block" />
+      <div className="absolute top-[75%] left-[-80px] w-72 h-72 bg-gradient-to-tr from-[#00ff9c]/5 to-transparent border border-[#00ff9c]/5 rotate-45 rounded-[30px] blur-[1px] pointer-events-none hidden xl:block" />
+
       {/* SCHEMA INJECTIONS */}
       <script
         type="application/ld+json"
@@ -337,10 +342,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
         {/* HERO HEADER */}
         <div className="max-w-3xl mb-12">
-          <span className="bg-[#00ff9c]/10 border border-[#00ff9c]/25 text-[#00ff9c] text-[10px] font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider">
+          <span className="inline-flex items-center gap-2 bg-[#00ff9c]/10 border border-[#00ff9c]/25 text-[#00ff9c] text-[10px] font-bold px-3.5 py-1.5 rounded-md uppercase tracking-wider">
+            <span className="w-1.5 h-1.5 bg-[#00ff9c] rotate-45 shrink-0 animate-pulse" />
             {post.category}
           </span>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mt-6 mb-6 leading-tight tracking-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mt-6 mb-6 leading-tight tracking-tight font-sans">
             {post.title}
           </h1>
           <p className="text-zinc-400 text-sm sm:text-base md:text-lg mb-8 leading-relaxed">
@@ -437,49 +443,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 ) : <div />}
               </div>
             )}
-
-            {/* COMMENT THREADS PLACEHOLDER */}
-            <div className="mt-16 pt-10 border-t border-white/5 bg-zinc-900/10 border border-white/5 rounded-3xl p-6 sm:p-8">
-              <h3 className="text-base sm:text-lg font-black text-white mb-6 flex items-center gap-2">
-                <MessageSquare className="w-5 h-5 text-[#00ff9c]" /> Discussion
-              </h3>
-              
-              <div className="flex gap-4 mb-8">
-                <div className="w-8 h-8 rounded-xl bg-zinc-800 border border-white/10 flex-shrink-0 flex items-center justify-center font-bold text-xs">U</div>
-                <div className="flex-grow">
-                  <textarea
-                    placeholder="Join the discussion... (Requires signup)"
-                    disabled
-                    rows={3}
-                    className="w-full bg-black/40 border border-white/10 rounded-2xl px-4 py-3 text-xs text-white placeholder-zinc-600 focus:outline-none resize-none disabled:opacity-50"
-                  />
-                  <div className="flex justify-between items-center mt-2.5">
-                    <span className="text-[9px] text-zinc-500 font-semibold uppercase">Markdown Supported</span>
-                    <Link href="/login">
-                      <button className="bg-zinc-900 border border-white/10 hover:border-[#00ff9c]/20 text-[10px] font-bold py-2 px-4 rounded-xl text-zinc-300 hover:text-white transition-all">
-                        Sign In to Post
-                      </button>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-
-              {/* MOCK COMMENTS */}
-              <div className="space-y-6 opacity-60">
-                <div className="flex gap-4">
-                  <div className="w-8 h-8 rounded-xl bg-zinc-800 border border-white/10 flex-shrink-0 flex items-center justify-center font-bold text-xs text-[#00ff9c]">JD</div>
-                  <div>
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <span className="text-xs font-bold text-zinc-200">John Doe</span>
-                      <span className="text-[9px] text-zinc-500 font-medium">2 days ago</span>
-                    </div>
-                    <p className="text-xs text-zinc-400 leading-relaxed">
-                      This is by far the most exhaustive ATS resource I have read. Typesetting via LaTeX actually makes a huge difference in visual parsing.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
           </article>
 
           {/* FLOATING SIDEBAR (DESKTOP ONLY) */}

@@ -97,7 +97,8 @@ export default function BlogCard({ post }: BlogCardProps) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
 
         {/* CATEGORY TAG */}
-        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md border border-white/10 px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase text-[#00ff9c]">
+        <div className="absolute top-4 left-4 bg-black/80 backdrop-blur-md border border-[#00ff9c]/25 px-3 py-1 rounded text-[10px] font-bold tracking-wider uppercase text-[#00ff9c] flex items-center gap-1.5 shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+          <span className="w-1.5 h-1.5 bg-[#00ff9c] rotate-45 shrink-0" />
           {post.category}
         </div>
 

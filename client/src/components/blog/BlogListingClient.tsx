@@ -147,6 +147,10 @@ export default function BlogListingClient({
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f293710_1px,transparent_1px),linear-gradient(to_bottom,#1f293710_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none" />
       <div className="absolute top-[20%] left-[-10%] w-[400px] h-[400px] bg-[#00ff9c]/[0.02] blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute top-[40%] right-[-10%] w-[500px] h-[500px] bg-emerald-500/[0.02] blur-[150px] rounded-full pointer-events-none" />
+      
+      {/* DECORATIVE RHOMBUS BACKGROUND SHAPES */}
+      <div className="absolute top-[15%] left-[-120px] w-80 h-80 bg-gradient-to-br from-[#00ff9c]/5 to-transparent border border-[#00ff9c]/10 rotate-45 rounded-[40px] blur-[1px] pointer-events-none hidden xl:block" />
+      <div className="absolute top-[55%] right-[-150px] w-96 h-96 bg-gradient-to-tl from-emerald-500/5 to-transparent border border-emerald-500/10 rotate-45 rounded-[48px] blur-[2px] pointer-events-none hidden xl:block" />
 
       {/* NOISE OVERLAY */}
       <div className="absolute inset-0 opacity-[0.015] bg-[radial-gradient(#fff_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none" />
@@ -395,8 +399,8 @@ export default function BlogListingClient({
           
           {/* MAIN POSTS COLUMN (9 COLS) */}
           <div className="lg:col-span-8">
-            <h2 className="text-xs font-black uppercase tracking-widest text-zinc-500 mb-8 flex items-center gap-2">
-              <Newspaper className="w-4 h-4 text-[#00ff9c]" />
+            <h2 className="text-xs font-black uppercase tracking-widest text-zinc-500 mb-8 flex items-center gap-2.5">
+              <span className="w-2 h-2 bg-[#00ff9c] rotate-45 shrink-0 shadow-[0_0_8px_rgba(0,255,156,0.5)]" />
               {selectedCategory || selectedTag || searchQuery
                 ? `Results (${filteredPosts.length})`
                 : "Editorial Feed"}
@@ -475,8 +479,8 @@ export default function BlogListingClient({
 
             {/* POPULAR ARTICLES LIST */}
             <div className="bg-zinc-900/20 border border-white/5 rounded-3xl p-6">
-              <h4 className="text-xs uppercase tracking-widest text-zinc-400 font-extrabold mb-4 flex items-center gap-2 border-b border-white/5 pb-3">
-                <TrendingUp className="w-4 h-4 text-[#00ff9c]" />
+              <h4 className="text-xs uppercase tracking-widest text-zinc-400 font-black mb-4 flex items-center gap-2.5 border-b border-white/5 pb-3">
+                <span className="w-2 h-2 bg-[#00ff9c] rotate-45 shrink-0 shadow-[0_0_8px_rgba(0,255,156,0.5)]" />
                 Trending Guides
               </h4>
               <div className="space-y-4.5">
@@ -498,8 +502,8 @@ export default function BlogListingClient({
             {/* LOCAL READING BOOKMARKS HISTORY (Client-side localStorage check) */}
             {bookmarkedPosts.length > 0 && (
               <div className="bg-zinc-900/20 border border-white/5 rounded-3xl p-6">
-                <h4 className="text-xs uppercase tracking-widest text-zinc-400 font-extrabold mb-4 flex items-center gap-2 border-b border-white/5 pb-3">
-                  <Bookmark className="w-4 h-4 text-[#00ff9c]" />
+                <h4 className="text-xs uppercase tracking-widest text-zinc-400 font-black mb-4 flex items-center gap-2.5 border-b border-white/5 pb-3">
+                  <span className="w-2 h-2 bg-[#00ff9c] rotate-45 shrink-0 shadow-[0_0_8px_rgba(0,255,156,0.5)]" />
                   Saved Articles
                 </h4>
                 <div className="space-y-3.5">
@@ -516,8 +520,8 @@ export default function BlogListingClient({
 
             {/* POPULAR TAGS CLOUD */}
             <div className="bg-zinc-900/20 border border-white/5 rounded-3xl p-6">
-              <h4 className="text-xs uppercase tracking-widest text-zinc-400 font-extrabold mb-4 flex items-center gap-2 border-b border-white/5 pb-3">
-                <Tag className="w-4 h-4 text-[#00ff9c]" />
+              <h4 className="text-xs uppercase tracking-widest text-zinc-400 font-black mb-4 flex items-center gap-2.5 border-b border-white/5 pb-3">
+                <span className="w-2 h-2 bg-[#00ff9c] rotate-45 shrink-0 shadow-[0_0_8px_rgba(0,255,156,0.5)]" />
                 Tags
               </h4>
               <div className="flex flex-wrap gap-1.5">
