@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { Metadata } from "next";
 import Link from "next/link";
 import { Bot, FileCode, Search, Layout, Shield, Zap, Sparkles, ArrowRight, Check } from "lucide-react";

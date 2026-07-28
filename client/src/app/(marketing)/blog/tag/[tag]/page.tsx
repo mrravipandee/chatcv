@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { Metadata } from "next";
 import Link from "next/link";
 import { getTags, getPostsByTag } from "@/lib/blog";
@@ -6,13 +8,6 @@ import { ArrowLeft } from "lucide-react";
 
 interface TagPageProps {
   params: Promise<{ tag: string }>;
-}
-
-export async function generateStaticParams() {
-  const tags = getTags();
-  return tags.map((tag) => ({
-    tag: tag.toLowerCase().replace(/\s+/g, "-"),
-  }));
 }
 
 export async function generateMetadata({ params }: TagPageProps): Promise<Metadata> {

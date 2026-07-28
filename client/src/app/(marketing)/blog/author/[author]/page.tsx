@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
@@ -8,14 +10,6 @@ import { ArrowLeft, Sparkles } from "lucide-react";
 
 interface AuthorPageProps {
   params: Promise<{ author: string }>;
-}
-
-export async function generateStaticParams() {
-  const posts = getAllPosts();
-  const authors = Array.from(new Set(posts.map((p) => p.author.slug)));
-  return authors.map((authorSlug) => ({
-    author: authorSlug,
-  }));
 }
 
 export async function generateMetadata({ params }: AuthorPageProps): Promise<Metadata> {

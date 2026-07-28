@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { Metadata } from "next";
 import Link from "next/link";
 import { getCategories, getPostsByCategory } from "@/lib/blog";
@@ -6,13 +8,6 @@ import { ArrowLeft } from "lucide-react";
 
 interface CategoryPageProps {
   params: Promise<{ category: string }>;
-}
-
-export async function generateStaticParams() {
-  const categories = getCategories();
-  return categories.map((cat) => ({
-    category: cat.toLowerCase().replace(/\s+/g, "-"),
-  }));
 }
 
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {

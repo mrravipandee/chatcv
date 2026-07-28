@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { Metadata } from "next";
 import { getAllPosts, getCategories, getTags } from "@/lib/blog";
 import BlogListingClient from "@/components/blog/BlogListingClient";

@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -9,14 +11,6 @@ import BlogCTA from "@/components/blog/BlogCTA";
 
 interface ResumeRolePageProps {
   params: Promise<{ role: string }>;
-}
-
-// Generate static params for compilation
-export async function generateStaticParams() {
-  const roles = getAllResumeRoles();
-  return roles.map((role) => ({
-    role: role.role,
-  }));
 }
 
 // Generate dynamic metadata
