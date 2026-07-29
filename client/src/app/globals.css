@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+
 .play-font {
   font-family: var(--font-play), sans-serif;
 }
