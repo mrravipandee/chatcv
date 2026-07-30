@@ -6,12 +6,14 @@ import { WebSocketServer, WebSocket } from "ws";
 import { app } from "./app";
 import { connectDB } from "./config/db";
 import { wsManager } from "./wa/ws.manager";
+import { seedDatabase } from "./utils/seeder";
 
 const PORT = process.env.PORT || 5001;
 
 const startServer = async () => {
   try {
     await connectDB();
+    await seedDatabase();
 
     // ── Create HTTP server wrapping Express ──────────────────────────────────
     const server = http.createServer(app);

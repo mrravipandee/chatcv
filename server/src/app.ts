@@ -6,6 +6,8 @@ import chatRoutes from "./modules/chat/chat.routes";
 import resumeRoutes from "./modules/resume/resume.routes";
 import latexRoutes from "./latex/latex.routes";
 import paymentRoutes from "./modules/payment/payment.routes";
+import adminRoutes from "./modules/admin/admin.routes";
+import visitorRoutes from "./modules/visitors/visitor.routes";
 
 export const app = express();
 
@@ -52,6 +54,8 @@ app.use("/api/chat", chatRoutes);
 app.use("/api/resume", resumeRoutes);
 app.use("/api/latex", latexRoutes);
 app.use("/api/payment", paymentRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/visitors", visitorRoutes);
 
 app.get("/health", (req: Request, res: Response) => {
   res.status(200).json({ status: "healthy", timestamp: new Date().toISOString() });
@@ -66,8 +70,18 @@ app.use((req: Request, res: Response) => {
   });
 });
 
+import { SystemError } from "./modules/errors/error.model";
+
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
   console.error("[ERROR]", error);
+
+  // Log exception in MongoDB SystemError collection for active admin analytics
+  SystemError.findOneAndUpdate(
+    { error: error.message, path: req.path, status: 'active' },
+    { $inc: { count: 1 } },
+    { upsert: true, new: true }
+  ).catch((err) => console.error('[ERROR_LOG_FAIL]', err));
+
   res.status(500).json({
     success: false,
     message: "Internal server error",

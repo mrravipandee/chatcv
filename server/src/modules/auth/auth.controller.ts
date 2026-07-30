@@ -94,6 +94,7 @@ export const getMeController = async (
         name: user.name || "",
         email: user.email,
         membership: user.membership,
+        role: (user as any).role || "user",
         chatTokensUsed: user.chatTokensUsed ?? 0,
         chatTokensLimit: user.chatTokensLimit ?? 5,
       },

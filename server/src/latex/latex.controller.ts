@@ -36,6 +36,8 @@ export const generateController = async (
   }
 };
 
+import { ResumeDownload } from "../modules/resume/models/resume-download.model";
+
 // GET /api/latex/pdf/:jobId
 // Returns compiled PDF binary
 export const downloadPdfController = (req: AuthRequest, res: Response) => {
@@ -56,6 +58,16 @@ export const downloadPdfController = (req: AuthRequest, res: Response) => {
       success: false,
       message: "PDF not found or expired. Please generate again.",
     });
+  }
+
+  // Record real-time resume download logs
+  if (req.user) {
+    ResumeDownload.create({
+      userId: req.user.id,
+      userEmail: req.user.email || "unknown@chatcv.com",
+      format: "PDF",
+      title: "AI Compiled Resume"
+    }).catch((err) => console.error("[DOWNLOAD_LOG_ERROR]", err));
   }
 
   res.setHeader("Content-Type", "application/pdf");

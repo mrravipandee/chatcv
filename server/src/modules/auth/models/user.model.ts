@@ -8,6 +8,7 @@ export interface IUser extends Document {
   googleId?: string;
   isVerified: boolean;
   membership: 'free' | 'premium';
+  role: 'user' | 'admin';
   plan: 'free' | 'pro';
   subscriptionStatus: 'active' | 'cancelled' | 'past_due' | 'none';
   chatTokensUsed: number;
@@ -56,6 +57,13 @@ const UserSchema = new Schema<IUser>(
       type: String,
       enum: ['free', 'premium'],
       default: 'free',
+    },
+
+    role: {
+      type: String,
+      enum: ['user', 'admin'],
+      default: 'user',
+      index: true,
     },
 
     plan: {

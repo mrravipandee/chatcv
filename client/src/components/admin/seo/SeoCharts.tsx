@@ -18,7 +18,7 @@ import { Monitor, Smartphone, Cpu, ShieldCheck, Gauge, HelpCircle } from 'lucide
 interface SeoChartsProps {
   chartData: SeoChartPoint[];
   coreWebVitals: CoreWebVitalsData;
-  demographics: {
+  demographics?: {
     searchQueries: QueryRecord[];
     countries: DemographicRecord[];
     devices: DemographicRecord[];

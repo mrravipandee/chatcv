@@ -133,6 +133,15 @@ export const loginUserService = async (payload: LoginInput) => {
   // Sync DB token count to Redis (non-blocking)
   syncTokensToRedis(user._id.toString(), user.chatTokensUsed).catch(() => {});
 
+  // Dynamically promote admin if configured in env
+  const adminEmails = process.env.ADMIN_EMAILS
+    ? process.env.ADMIN_EMAILS.split(",").map((e) => e.trim().toLowerCase())
+    : [];
+  if (adminEmails.includes(user.email.toLowerCase()) && user.role !== "admin") {
+    user.role = "admin";
+    await user.save();
+  }
+
   const jwtSecret = process.env.JWT_SECRET as Secret;
   const jwtExpiresIn = (process.env.JWT_EXPIRES || "7d") as SignOptions["expiresIn"];
 
@@ -141,6 +150,7 @@ export const loginUserService = async (payload: LoginInput) => {
       id: user._id,
       email: user.email,
       membership: user.membership,
+      role: user.role || "user",
     },
     jwtSecret,
     {
@@ -157,6 +167,7 @@ export const loginUserService = async (payload: LoginInput) => {
       name: user.name,
       email: user.email,
       membership: user.membership,
+      role: user.role || "user",
       chatTokensUsed: user.chatTokensUsed,
       chatTokensLimit: user.chatTokensLimit,
     },

@@ -251,6 +251,9 @@ export const metadata: Metadata = {
   },
 };
 
+import VisitorTracker from "@/components/VisitorTracker";
+import { Suspense } from "react";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -316,6 +319,9 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }}
         />
+        <Suspense fallback={null}>
+          <VisitorTracker />
+        </Suspense>
         {children}
       </body>
     </html>

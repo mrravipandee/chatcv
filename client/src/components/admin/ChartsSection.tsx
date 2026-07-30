@@ -21,6 +21,7 @@ import { HelpCircle, Eye, Users, FileText, Download, MessageSquare } from 'lucid
 interface ChartsSectionProps {
   data: ChartDataPoint[];
   isLoading: boolean;
+  onExportCSV?: () => void;
 }
 
 type MainChartType = 'visitors' | 'users' | 'resumes' | 'downloads' | 'aiMessages';
