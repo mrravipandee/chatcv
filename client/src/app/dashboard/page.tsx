@@ -60,6 +60,7 @@ export default function DashboardPage() {
   const [loadingResumes, setLoadingResumes] = useState(false);
   const [selectingResume, setSelectingResume] = useState(false);
   const [authChecking, setAuthChecking] = useState(true);
+  const didInitializeRef = useRef(false);
 
   const resumeIdRef = useRef('');
 
@@ -113,6 +114,9 @@ export default function DashboardPage() {
 
   // Initialize dashboard
   useEffect(() => {
+    if (didInitializeRef.current) return;
+    didInitializeRef.current = true;
+
     const init = async () => {
       const token = localStorage.getItem('token');
 
@@ -172,7 +176,8 @@ export default function DashboardPage() {
     };
 
     init();
-  }, [router, loadResumes]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // ── Handle resume upload success ─────────────────────────────────────────────
   // NOTE: useCallback MUST be declared here (before the early return) to obey Rules of Hooks

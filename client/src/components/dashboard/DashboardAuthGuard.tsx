@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getCurrentUser } from "@/lib/api";
 
@@ -11,8 +11,14 @@ export default function DashboardAuthGuard({
 }) {
   const router = useRouter();
   const [checking, setChecking] = useState(true);
+  const didCheckSession = useRef(false);
 
   useEffect(() => {
+    if (didCheckSession.current) return;
+    didCheckSession.current = true;
+
+    let cancelled = false;
+
     const validateSession = async () => {
       const token = localStorage.getItem("token");
       if (!token) {
@@ -27,22 +33,29 @@ export default function DashboardAuthGuard({
         return;
       }
 
-      setChecking(false);
+      if (!cancelled) {
+        setChecking(false);
+      }
     };
 
     validateSession();
+
+    return () => {
+      cancelled = true;
+    };
   }, [router]);
 
   return (
     <>
-      {children}
-      {checking && (
+      {checking ? (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black">
           <div className="text-center">
             <div className="mx-auto mb-4 h-10 w-10 animate-spin rounded-full border-2 border-[#00ff9c] border-t-transparent" />
             <p className="text-sm text-gray-400">Checking session...</p>
           </div>
         </div>
+      ) : (
+        children
       )}
     </>
   );

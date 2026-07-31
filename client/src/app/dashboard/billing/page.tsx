@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback, Suspense } from "react";
+import { useEffect, useRef, useState, useCallback, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Zap, Check, Loader2, MessageSquare, Crown, ArrowLeft, AlertCircle, ExternalLink } from "lucide-react";
 import {
@@ -23,6 +23,7 @@ function BillingContent() {
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [verifying, setVerifying] = useState(false);
+  const didInitializeRef = useRef(false);
 
   // ── Handle return from Dodo checkout page ────────────────────────────────────
   useEffect(() => {
@@ -79,6 +80,9 @@ function BillingContent() {
 
   // ── Load user + plans ─────────────────────────────────────────────────────────
   useEffect(() => {
+    if (didInitializeRef.current) return;
+    didInitializeRef.current = true;
+
     const init = async () => {
       const token = localStorage.getItem("token");
       if (!token) { router.replace("/login"); return; }
@@ -94,7 +98,8 @@ function BillingContent() {
       setLoading(false);
     };
     init();
-  }, [router]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // ── Purchase ──────────────────────────────────────────────────────────────────
   const handlePurchase = useCallback(async (planId: string) => {

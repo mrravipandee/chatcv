@@ -2,6 +2,16 @@ import { Response, NextFunction } from 'express';
 import { AuthRequest } from './auth.middleware';
 import { User } from '../modules/auth/models/user.model';
 
+const DEFAULT_ADMIN_EMAILS = ['imravipanday@gmail.com'];
+
+const getAdminEmails = () => {
+  const configuredEmails = process.env.ADMIN_EMAILS
+    ? process.env.ADMIN_EMAILS.split(',').map((e) => e.trim().toLowerCase())
+    : [];
+
+  return [...new Set([...configuredEmails, ...DEFAULT_ADMIN_EMAILS])];
+};
+
 export const adminMiddleware = async (
   req: AuthRequest,
   res: Response,
@@ -15,9 +25,7 @@ export const adminMiddleware = async (
       });
     }
 
-    const adminEmails = process.env.ADMIN_EMAILS
-      ? process.env.ADMIN_EMAILS.split(',').map((e) => e.trim().toLowerCase())
-      : [];
+    const adminEmails = getAdminEmails();
 
     const userEmail = req.user.email?.toLowerCase();
 

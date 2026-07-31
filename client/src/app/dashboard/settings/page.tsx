@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Sidebar from "@/components/dashboard/Sidebar";
 import Topbar from "@/components/dashboard/Topbar";
@@ -58,9 +58,13 @@ export default function SettingsPage() {
   const [savingPassword, setSavingPassword] = useState(false);
   const [passwordSuccess, setPasswordSuccess] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const didInitializeRef = useRef(false);
 
   // ── Initialization Hook ──────────────────────────────────────────────────────
   useEffect(() => {
+    if (didInitializeRef.current) return;
+    didInitializeRef.current = true;
+
     const init = async () => {
       const token = localStorage.getItem("token");
 
@@ -105,7 +109,8 @@ export default function SettingsPage() {
     };
 
     init();
-  }, [router]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // ── Profile Submit Handler ───────────────────────────────────────────────────
   const handleSaveProfile = async (e: React.FormEvent) => {
