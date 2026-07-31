@@ -18,7 +18,7 @@ import {
   getAdminPagesPerformance
 } from '@/lib/adminApi';
 import { StatCardData, ChartDataPoint, DemographicItem, TrafficSource, ActivityLog, RegisteredUser, ResumeDownload, FeedbackItem, ContactMessage, SystemError, TimeRange, PagePerformance } from '@/types/admin';
-import { Download, RefreshCw, Database, Wifi, AlertTriangle } from 'lucide-react';
+import { Download, RefreshCw, Database, Wifi, AlertTriangle, Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 export default function AdminDashboardPage() {
@@ -27,6 +27,7 @@ export default function AdminDashboardPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [liveSync, setLiveSync] = useState(true);
+  const [lastUpdated, setLastUpdated] = useState<string>('—');
 
   // Stats cards state
   const [statsCards, setStatsCards] = useState<StatCardData[]>([]);
@@ -299,6 +300,8 @@ export default function AdminDashboardPage() {
         }))
       );
 
+      setLastUpdated(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
+
       setIsLoading(false);
     } catch (err) {
       console.error('[Dashboard fetch err]', err);
@@ -369,7 +372,7 @@ export default function AdminDashboardPage() {
 
   if (hasError) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[400px] border border-zinc-200 rounded-xl bg-white p-6 dark:border-zinc-800 dark:bg-zinc-950 text-center space-y-4">
+      <div className="flex min-h-100 flex-col items-center justify-center rounded-xl border border-zinc-200 bg-white p-6 text-center space-y-4 dark:border-zinc-800 dark:bg-zinc-950">
         <AlertTriangle className="h-10 w-10 text-red-500" />
         <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-50">Failed to sync with API Server</h2>
         <p className="text-xs text-zinc-400 max-w-sm">
@@ -387,64 +390,95 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="space-y-6 px-6 py-6 pb-12 transition-colors duration-200">
-      
-      {/* Title Header Bar */}
-      <div className="flex flex-col gap-4 border-b border-zinc-200 pb-5 sm:flex-row sm:items-center sm:justify-between dark:border-zinc-900">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
-            Overview Dashboard
-          </h1>
-          <p className="text-xs text-zinc-400 dark:text-zinc-500">
-            Aggregated workspace metrics computed from actual MongoDB pipeline queries.
-          </p>
-        </div>
+      <section className="relative overflow-hidden rounded-2xl border border-zinc-200 bg-white px-6 py-6 shadow-2xs dark:border-zinc-900 dark:bg-zinc-950">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,255,156,0.12),transparent_32%),radial-gradient(circle_at_bottom_left,rgba(34,197,94,0.08),transparent_28%)]" />
+        <div className="relative flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-3xl space-y-4">
+            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-2xs font-semibold uppercase tracking-[0.2em] text-emerald-600 dark:text-emerald-400">
+              <Sparkles className="h-3.5 w-3.5" />
+              ChatCV Live Command Center
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-3xl">
+                Real-time resume platform activity, generated from live ChatCV APIs.
+              </h1>
+              <p className="mt-2 max-w-2xl text-sm text-zinc-500 dark:text-zinc-400">
+                Track registrations, resume creation, downloads, AI usage, support activity, and system health in one live view.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2 text-2xs text-zinc-500 dark:text-zinc-400">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 dark:border-zinc-800 dark:bg-zinc-900/70">
+                <Database className="h-3.5 w-3.5 text-emerald-500" />
+                API connected
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 dark:border-zinc-800 dark:bg-zinc-900/70">
+                <Wifi className={`h-3.5 w-3.5 ${liveSync ? 'animate-pulse text-emerald-500' : 'text-zinc-400'}`} />
+                {liveSync ? 'Live sync enabled' : 'Live sync paused'}
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 dark:border-zinc-800 dark:bg-zinc-900/70">
+                Last updated {lastUpdated}
+              </span>
+            </div>
+          </div>
 
-        {/* Controllers */}
-        <div className="flex flex-wrap items-center gap-2.5">
-          {/* Socket sync visualizer */}
-          <button
-            onClick={() => setLiveSync(!liveSync)}
-            className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-2xs font-semibold transition-all ${
-              liveSync
-                ? 'border-emerald-500/25 bg-emerald-500/5 text-emerald-600 dark:text-emerald-450'
-                : 'border-zinc-200 text-zinc-500 hover:bg-zinc-50 dark:border-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-900'
-            }`}
-          >
-            <Wifi className={`h-3.5 w-3.5 ${liveSync ? 'animate-pulse' : ''}`} />
-            {liveSync ? 'Real-Time Syncing' : 'Sync Paused'}
-          </button>
+          <div className="flex flex-wrap items-center gap-2.5">
+            <button
+              onClick={() => setLiveSync(!liveSync)}
+              className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-2xs font-semibold transition-all ${
+                liveSync
+                  ? 'border-emerald-500/25 bg-emerald-500/5 text-emerald-600 dark:text-emerald-450'
+                  : 'border-zinc-200 text-zinc-500 hover:bg-zinc-50 dark:border-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-900'
+              }`}
+            >
+              <Wifi className={`h-3.5 w-3.5 ${liveSync ? 'animate-pulse' : ''}`} />
+              {liveSync ? 'Real-Time Syncing' : 'Sync Paused'}
+            </button>
 
-          {/* Refresh button */}
-          <button
-            onClick={() => loadData(timeRange)}
-            disabled={isLoading}
-            className="inline-flex h-8.5 w-8.5 items-center justify-center rounded-lg border border-zinc-200 text-zinc-650 hover:bg-zinc-50 disabled:opacity-40 dark:border-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-900"
-          >
-            <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-          </button>
+            <button
+              onClick={() => loadData(timeRange)}
+              disabled={isLoading}
+              className="inline-flex h-8.5 w-8.5 items-center justify-center rounded-lg border border-zinc-200 text-zinc-650 hover:bg-zinc-50 disabled:opacity-40 dark:border-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-900"
+            >
+              <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+            </button>
 
-          {/* Date range picker */}
-          <div className="flex rounded-lg bg-zinc-100 p-0.5 dark:bg-zinc-900">
-            {([
-              { label: '7 Days', val: '7d' },
-              { label: '30 Days', val: '30d' },
-              { label: '90 Days', val: '90d' }
-            ] as Array<{ label: string; val: TimeRange }>).map((opt) => (
-              <button
-                key={opt.val}
-                onClick={() => setTimeRange(opt.val)}
-                className={`rounded-md px-3 py-1 text-2xs font-medium transition-all ${
-                  timeRange === opt.val
-                    ? 'bg-white text-zinc-950 shadow-3xs dark:bg-zinc-950 dark:text-zinc-50'
-                    : 'text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-250'
-                }`}
-              >
-                {opt.label}
-              </button>
-            ))}
+            <div className="flex rounded-lg bg-zinc-100 p-0.5 dark:bg-zinc-900">
+              {([
+                { label: '7 Days', val: '7d' },
+                { label: '30 Days', val: '30d' },
+                { label: '90 Days', val: '90d' }
+              ] as Array<{ label: string; val: TimeRange }>).map((opt) => (
+                <button
+                  key={opt.val}
+                  onClick={() => setTimeRange(opt.val)}
+                  className={`rounded-md px-3 py-1 text-2xs font-medium transition-all ${
+                    timeRange === opt.val
+                      ? 'bg-white text-zinc-950 shadow-3xs dark:bg-zinc-950 dark:text-zinc-50'
+                      : 'text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-250'
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      </section>
+
+      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        {[
+          { label: 'Registrations', value: statsCards.find((card) => card.id === 'total-users')?.value || '0', hint: 'Live account growth' },
+          { label: 'Resumes created', value: statsCards.find((card) => card.id === 'total-resumes')?.value || '0', hint: 'Compiled documents' },
+          { label: 'PDF downloads', value: statsCards.find((card) => card.id === 'total-downloads')?.value || '0', hint: 'Exports and shares' },
+          { label: 'AI chats', value: statsCards.find((card) => card.id === 'total-messages')?.value || '0', hint: 'Assistant interactions' }
+        ].map((item) => (
+          <div key={item.label} className="rounded-xl border border-zinc-200 bg-white p-4 shadow-2xs dark:border-zinc-900 dark:bg-zinc-950">
+            <p className="text-2xs font-semibold uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-500">{item.label}</p>
+            <p className="mt-2 text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">{item.value}</p>
+            <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">{item.hint}</p>
+          </div>
+        ))}
+      </section>
 
       {/* Stats Cards Row */}
       <OverviewCards stats={statsCards} isLoading={isLoading} />
@@ -483,7 +517,7 @@ export default function AdminDashboardPage() {
       <footer className="mt-12 flex items-center justify-between border-t border-zinc-200 pt-6 text-[10px] text-zinc-400 dark:border-zinc-900 dark:text-zinc-650">
         <div className="flex items-center gap-1.5">
           <Database className="h-3.5 w-3.5 text-[#00ff9c] animate-pulse" />
-          <span>Secured admin terminal console. Powered by MongoDB aggregation engines.</span>
+          <span>ChatCV live admin view. Powered by MongoDB aggregation engines and API telemetry.</span>
         </div>
         <div>
           <span>API Server: {process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'}</span>
