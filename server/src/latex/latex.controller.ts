@@ -4,60 +4,44 @@ import { generateLatexPdf } from "./latex.service";
 import { pdfStore } from "./pdf.store";
 import { buildLatex } from "./latex.builder";
 import { Resume } from "../modules/resume/models/resume.model";
+import { ResumeDownload } from "../modules/resume/models/resume-download.model";
+import { asyncHandler } from "../utils/asyncHandler";
+import { BadRequestError } from "../errors/BadRequestError";
+import { NotFoundError } from "../errors/NotFoundError";
 
 // POST /api/latex/generate
 // Body: { resumeId: string }
-// Starts background pipeline, returns jobId immediately
-export const generateController = async (
+export const generateController = asyncHandler(async (
   req: AuthRequest,
   res: Response
 ) => {
-  try {
-    const { resumeId } = req.body;
+  const { resumeId } = req.body;
 
-    if (!resumeId) {
-      return res.status(400).json({
-        success: false,
-        message: "resumeId is required",
-      });
-    }
-
-    const jobId = await generateLatexPdf(req.user.id, resumeId);
-
-    return res.status(200).json({
-      success: true,
-      data: { jobId },
-    });
-  } catch (err: any) {
-    return res.status(400).json({
-      success: false,
-      message: err.message,
-    });
+  if (!resumeId) {
+    throw new BadRequestError("resumeId is required");
   }
-};
 
-import { ResumeDownload } from "../modules/resume/models/resume-download.model";
+  const jobId = await generateLatexPdf(req.user!.id, resumeId);
+
+  return res.status(200).json({
+    success: true,
+    data: { jobId },
+  });
+});
 
 // GET /api/latex/pdf/:jobId
-// Returns compiled PDF binary
-export const downloadPdfController = (req: AuthRequest, res: Response) => {
+export const downloadPdfController = asyncHandler(async (req: AuthRequest, res: Response) => {
   const rawJobId = req.params.jobId;
   const jobId = Array.isArray(rawJobId) ? rawJobId[0] : rawJobId;
 
   if (!jobId) {
-    return res.status(400).json({
-      success: false,
-      message: "jobId is required",
-    });
+    throw new BadRequestError("jobId is required");
   }
 
   const pdfBuffer = pdfStore.get(jobId);
 
   if (!pdfBuffer) {
-    return res.status(404).json({
-      success: false,
-      message: "PDF not found or expired. Please generate again.",
-    });
+    throw new NotFoundError("PDF not found or expired. Please generate again.");
   }
 
   // Record real-time resume download logs
@@ -76,28 +60,23 @@ export const downloadPdfController = (req: AuthRequest, res: Response) => {
     `attachment; filename="resume_${jobId.slice(0, 8)}.pdf"`
   );
   return res.send(pdfBuffer);
-};
+});
 
 // GET /api/latex/preview/:resumeId
-// Returns raw LaTeX source for debugging
-export const previewLatexController = async (
+export const previewLatexController = asyncHandler(async (
   req: AuthRequest,
   res: Response
 ) => {
-  try {
-    const resume = await Resume.findOne({
-      _id: req.params.resumeId,
-      userId: req.user.id,
-    });
+  const resume = await Resume.findOne({
+    _id: req.params.resumeId,
+    userId: req.user!.id,
+  });
 
-    if (!resume) {
-      return res.status(404).json({ success: false, message: "Resume not found" });
-    }
-
-    const latex = buildLatex(resume.data as Record<string, any>);
-
-    return res.status(200).json({ success: true, data: { latex } });
-  } catch (err: any) {
-    return res.status(400).json({ success: false, message: err.message });
+  if (!resume) {
+    throw new NotFoundError("Resume not found");
   }
-};
+
+  const latex = buildLatex(resume.data as Record<string, any>);
+
+  return res.status(200).json({ success: true, data: { latex } });
+});

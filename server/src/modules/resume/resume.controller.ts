@@ -2,100 +2,64 @@ import { Response } from "express";
 import { AuthRequest } from "../../middlewares/auth.middleware";
 import { createResumeService, getMyResumesService } from "./resume.service";
 import { getResumeByIdService } from "./resume.service";
-import { updateResumeSchema } from "./resume.validation";
 import { updateResumeService } from "./resume.service";
+import { asyncHandler } from "../../utils/asyncHandler";
 
-export const createResumeController = async (
+export const createResumeController = asyncHandler(async (
   req: AuthRequest,
   res: Response
 ) => {
-  try {
-    const resume = await createResumeService(
-      req.user.id
-    );
+  const resume = await createResumeService(req.user!.id);
 
-    return res.status(201).json({
-      success: true,
-      message: "Resume created successfully",
-      data: resume,
-    });
-  } catch (error: any) {
-    return res.status(400).json({
-      success: false,
-      message: "Failed to create resume",
-    });
-  }
-};
+  return res.status(201).json({
+    success: true,
+    message: "Resume created successfully",
+    data: resume,
+  });
+});
 
-export const getMyResumesController = async (
+export const getMyResumesController = asyncHandler(async (
   req: AuthRequest,
   res: Response
 ) => {
-  try {
-    const resumes = await getMyResumesService(
-      req.user.id
-    );
+  const resumes = await getMyResumesService(req.user!.id);
 
-    return res.status(200).json({
-      success: true,
-      count: resumes.length,
-      data: resumes,
-    });
-  } catch (error: any) {
-    return res.status(400).json({
-      success: false,
-      message: "Failed to fetch resumes",
-    });
-  }
-};
+  return res.status(200).json({
+    success: true,
+    count: resumes.length,
+    data: resumes,
+  });
+});
 
-export const getResumeByIdController = async (
+export const getResumeByIdController = asyncHandler(async (
   req: AuthRequest,
   res: Response
 ) => {
-  try {
-    const resume = await getResumeByIdService(
-      req.user.id,
-      req.params.id as string
-    );
+  const resume = await getResumeByIdService(
+    req.user!.id,
+    req.params.id as string
+  );
 
-    return res.status(200).json({
-      success: true,
-      data: resume,
-    });
-  } catch (error: any) {
-    return res.status(404).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
+  return res.status(200).json({
+    success: true,
+    data: resume,
+  });
+});
 
-export const updateResumeController = async (
+export const updateResumeController = asyncHandler(async (
   req: AuthRequest,
   res: Response
 ) => {
-  try {
-    const validated = updateResumeSchema.parse(
-      req.body
-    );
+  // Validation is handled prior via validateBody middleware
+  const updated = await updateResumeService(
+    req.user!.id,
+    req.params.id as string,
+    req.body
+  );
 
-    const updated = await updateResumeService(
-      req.user.id,
-      req.params.id as string,
-      validated
-    );
-
-    return res.status(200).json({
-      success: true,
-      message: "Resume updated successfully",
-      data: updated,
-    });
-  } catch (error: any) {
-    return res.status(400).json({
-      success: false,
-      message:
-        error?.errors?.[0]?.message || error.message,
-    });
-  }
-};
+  return res.status(200).json({
+    success: true,
+    message: "Resume updated successfully",
+    data: updated,
+  });
+});

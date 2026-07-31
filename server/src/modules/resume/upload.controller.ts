@@ -3,11 +3,13 @@ import multer, { MulterError } from 'multer';
 import { AuthRequest } from '../../middlewares/auth.middleware';
 import { Resume, IResumeData } from './models/resume.model';
 import { setCachedResume } from '../../config/redis.client';
+import { GoogleGenAI } from '@google/genai';
+import { asyncHandler } from '../../utils/asyncHandler';
+import { BadRequestError } from '../../errors/BadRequestError';
+import { AppError } from '../../errors/AppError';
 
 import dotenv from 'dotenv';
 dotenv.config();
-
-import { GoogleGenAI } from '@google/genai';
 
 const MODEL = 'gemini-2.5-flash';
 
@@ -18,7 +20,6 @@ const pdfParse = require('pdf-parse') as (
 ) => Promise<{ text: string; numpages: number }>;
 
 // ── Multer — memory storage, 5 MB limit ──────────────────────────────────────
-
 const multerUpload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB
@@ -32,8 +33,7 @@ const multerUpload = multer({
   },
 });
 
-// ── Promisify multer so we can use try/catch properly in Express 5 ────────────
-
+// ── Promisify multer ──────────────────────────────────────────────────────────
 function runMulter(req: Request, res: Response): Promise<void> {
   return new Promise((resolve, reject) => {
     multerUpload.single('resume')(req, res, (err: unknown) => {
@@ -43,21 +43,20 @@ function runMulter(req: Request, res: Response): Promise<void> {
       }
       if (err instanceof MulterError) {
         if (err.code === 'LIMIT_FILE_SIZE') {
-          reject(new Error('File too large. Maximum size is 5 MB.'));
+          reject(new BadRequestError('File too large. Maximum size is 5 MB.'));
         } else {
-          reject(new Error(`Upload error: ${err.message}`));
+          reject(new BadRequestError(`Upload error: ${err.message}`));
         }
       } else if (err instanceof Error) {
-        reject(err);
+        reject(new BadRequestError(err.message));
       } else {
-        reject(new Error('Unknown upload error'));
+        reject(new BadRequestError('Unknown upload error'));
       }
     });
   });
 }
 
 // ── Extract text from uploaded file ──────────────────────────────────────────
-
 async function extractTextFromFile(file: Express.Multer.File): Promise<string> {
   if (file.mimetype === 'application/pdf') {
     try {
@@ -65,18 +64,16 @@ async function extractTextFromFile(file: Express.Multer.File): Promise<string> {
       return result.text;
     } catch (err) {
       console.error('[UPLOAD] pdf-parse error:', err);
-      throw new Error('Failed to parse PDF. Please try a text file instead.');
+      throw new AppError(422, 'UNPROCESSABLE_ENTITY', 'Failed to parse PDF. Please try a text file instead.');
     }
   }
-  // Plain text
   return file.buffer.toString('utf-8');
 }
 
 // ── Call AI to parse resume text → structured JSON ────────────────────────────
-
 async function extractResumeFromText(rawText: string): Promise<Partial<IResumeData>> {
   const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) throw new Error('GEMINI_API_KEY is not set');
+  if (!apiKey) throw new AppError(500, 'GEMINI_CONFIG_ERROR', 'GEMINI_API_KEY is not set');
 
   const prompt = `You are a resume parser. Extract structured resume data from the text below.
 
@@ -149,7 +146,6 @@ Return a JSON object with these fields (omit empty/unknown ones):
 
   const raw = response.text?.trim() || '{}';
 
-  // Strip markdown code fences if present
   const cleaned = raw
     .replace(/^```json\s*/i, '')
     .replace(/^```\s*/i, '')
@@ -167,44 +163,29 @@ Return a JSON object with these fields (omit empty/unknown ones):
 }
 
 // ── Controller ────────────────────────────────────────────────────────────────
-
-export const uploadResumeController = async (req: AuthRequest, res: Response) => {
-  // Step 1: Run multer manually (Express 5 compatible)
-  try {
-    await runMulter(req as Request, res);
-  } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : 'Upload failed';
-    console.error('[UPLOAD] Multer error:', message);
-    return res.status(400).json({ success: false, message });
-  }
+export const uploadResumeController = asyncHandler(async (req: AuthRequest, res: Response) => {
+  // Step 1: Run multer manually
+  await runMulter(req as Request, res);
 
   // Step 2: Validate file was received
   const file = (req as Request & { file?: Express.Multer.File }).file;
   if (!file) {
-    return res.status(400).json({
-      success: false,
-      message: 'No file received. Please attach a PDF or TXT file.',
-    });
+    throw new BadRequestError('No file received. Please attach a PDF or TXT file.');
   }
 
   console.log(`[UPLOAD] Received file: ${file.originalname} (${file.mimetype}, ${file.size} bytes)`);
 
-  const userId = req.user.id;
+  const userId = req.user!.id;
 
   // Step 3: Extract text
-  let rawText: string;
-  try {
-    rawText = await extractTextFromFile(file);
-  } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : 'Failed to read file';
-    return res.status(422).json({ success: false, message });
-  }
+  const rawText = await extractTextFromFile(file);
 
   if (!rawText || rawText.trim().length < 30) {
-    return res.status(422).json({
-      success: false,
-      message: 'File appears to be empty or unreadable. Please try a different file.',
-    });
+    throw new AppError(
+      422,
+      'UNPROCESSABLE_ENTITY',
+      'File appears to be empty or unreadable. Please try a different file.'
+    );
   }
 
   console.log(`[UPLOAD] Extracted ${rawText.length} characters of text`);
@@ -214,42 +195,35 @@ export const uploadResumeController = async (req: AuthRequest, res: Response) =>
   try {
     extractedData = await extractResumeFromText(rawText);
   } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : 'AI extraction failed';
-    console.error('[UPLOAD] Extraction error:', message);
-    return res.status(502).json({ success: false, message });
+    const msg = err instanceof Error ? err.message : 'AI extraction failed';
+    throw new AppError(502, 'BAD_GATEWAY', msg);
   }
 
   // Step 5: Save to DB
-  try {
-    const title =
-      typeof extractedData.name === 'string' && extractedData.name.trim()
-        ? extractedData.name.trim()
-        : typeof extractedData.role === 'string' && extractedData.role.trim()
-          ? extractedData.role.trim()
-          : 'Uploaded Resume';
+  const title =
+    typeof extractedData.name === 'string' && extractedData.name.trim()
+      ? extractedData.name.trim()
+      : typeof extractedData.role === 'string' && extractedData.role.trim()
+        ? extractedData.role.trim()
+        : 'Uploaded Resume';
 
-    const resume = await Resume.create({
-      userId,
-      title,
-      data: extractedData,
-    });
+  const resume = await Resume.create({
+    userId,
+    title,
+    data: extractedData,
+  });
 
-    // Cache (non-blocking)
-    setCachedResume(resume._id.toString(), extractedData).catch(() => {});
+  // Cache (non-blocking)
+  setCachedResume(resume._id.toString(), extractedData).catch(() => {});
 
-    console.log(`[UPLOAD] Resume created: ${resume._id}`);
+  console.log(`[UPLOAD] Resume created: ${resume._id}`);
 
-    return res.status(201).json({
-      success: true,
-      message: 'Resume extracted successfully!',
-      data: {
-        resumeId: resume._id.toString(),
-        resumeData: resume.data,
-      },
-    });
-  } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : 'Database error';
-    console.error('[UPLOAD] DB error:', message);
-    return res.status(500).json({ success: false, message });
-  }
-};
+  return res.status(201).json({
+    success: true,
+    message: 'Resume extracted successfully!',
+    data: {
+      resumeId: resume._id.toString(),
+      resumeData: resume.data,
+    },
+  });
+});

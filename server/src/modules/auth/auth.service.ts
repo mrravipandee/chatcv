@@ -7,6 +7,13 @@ import { sendEmail } from "../email/email.service";
 import { LoginInput } from "./auth.validation";
 import { syncTokensToRedis } from "../../config/redis.client";
 
+// Import custom errors
+import { ConflictError } from "../../errors/ConflictError";
+import { AuthenticationError } from "../../errors/AuthenticationError";
+import { ValidationError } from "../../errors/ValidationError";
+import { BadRequestError } from "../../errors/BadRequestError";
+import { NotFoundError } from "../../errors/NotFoundError";
+
 const generateOtp = (): string =>
   Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -16,7 +23,7 @@ export const registerUserService = async (payload: RegisterInput) => {
   const existingUser = await User.findOne({ email });
 
   if (existingUser) {
-    throw new Error("User already exists. Please login.");
+    throw new ConflictError("User already exists. Please login.");
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
@@ -79,11 +86,13 @@ export const verifyOtpService = async (payload: VerifyOtpInput) => {
   const pendingUser = await PendingUser.findOne({ email });
 
   if (!pendingUser) {
-    throw new Error("Verification expired. Please register again.");
+    throw new AuthenticationError("Verification expired. Please register again.");
   }
 
   if (pendingUser.otp !== otp) {
-    throw new Error("Invalid OTP");
+    throw new ValidationError("Invalid OTP", [
+      { field: "otp", message: "Invalid verification code provided" }
+    ]);
   }
 
   const newUser = await User.create({
@@ -114,11 +123,11 @@ export const loginUserService = async (payload: LoginInput) => {
   const user = await User.findOne({ email });
 
   if (!user) {
-    throw new Error("Invalid email or password");
+    throw new AuthenticationError("Invalid email or password");
   }
 
   if (user.provider !== "email") {
-    throw new Error("Please login with Google");
+    throw new BadRequestError("Please login with Google");
   }
 
   const isMatch = await bcrypt.compare(
@@ -127,7 +136,7 @@ export const loginUserService = async (payload: LoginInput) => {
   );
 
   if (!isMatch) {
-    throw new Error("Invalid email or password");
+    throw new AuthenticationError("Invalid email or password");
   }
 
   // Sync DB token count to Redis (non-blocking)
@@ -177,10 +186,14 @@ export const loginUserService = async (payload: LoginInput) => {
 export const updateProfileService = async (userId: string, name: string) => {
   const trimmedName = name.trim();
   if (trimmedName.length < 2) {
-    throw new Error("Name must be at least 2 characters");
+    throw new ValidationError("Name must be at least 2 characters", [
+      { field: "name", message: "Name must be at least 2 characters" }
+    ]);
   }
   if (trimmedName.length > 60) {
-    throw new Error("Name too long");
+    throw new ValidationError("Name too long", [
+      { field: "name", message: "Name must be 60 characters or less" }
+    ]);
   }
 
   const user = await User.findByIdAndUpdate(
@@ -190,7 +203,7 @@ export const updateProfileService = async (userId: string, name: string) => {
   );
 
   if (!user) {
-    throw new Error("User not found");
+    throw new NotFoundError("User not found");
   }
 
   return {
@@ -209,21 +222,23 @@ export const changePasswordService = async (
   newPass: string
 ) => {
   if (newPass.length < 6) {
-    throw new Error("New password must be at least 6 characters");
+    throw new ValidationError("New password must be at least 6 characters", [
+      { field: "newPassword", message: "Password must be at least 6 characters" }
+    ]);
   }
 
   const user = await User.findById(userId);
   if (!user) {
-    throw new Error("User not found");
+    throw new NotFoundError("User not found");
   }
 
   if (user.provider === "email" || user.passwordHash) {
     if (!user.passwordHash) {
-      throw new Error("Invalid account configuration");
+      throw new BadRequestError("Invalid account configuration");
     }
     const isMatch = await bcrypt.compare(currentPass, user.passwordHash);
     if (!isMatch) {
-      throw new Error("Current password incorrect");
+      throw new BadRequestError("Current password incorrect");
     }
   }
 

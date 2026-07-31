@@ -1,5 +1,6 @@
 import { Subscriber, ISubscriber } from "./subscriber.model";
 import { sendWelcomeEmail } from "../email/email.service";
+import { ConflictError } from "../../errors/ConflictError";
 
 interface AddSubscriberResult {
   message: string;
@@ -12,8 +13,7 @@ export const addSubscriber = async (email: string): Promise<AddSubscriberResult>
     const existing = await Subscriber.findOne({ email: email.toLowerCase().trim() });
 
     if (existing) {
-      const error = new Error("Email already subscribed");
-      throw error;
+      throw new ConflictError("Email already subscribed");
     }
 
     // Create new subscriber

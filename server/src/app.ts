@@ -72,25 +72,6 @@ app.use((req: Request, res: Response) => {
   });
 });
 
-import { SystemError } from "./modules/errors/error.model";
+import { errorMiddleware } from "./middlewares/error.middleware";
 
-app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error("[ERROR]", error);
-
-  // Log exception in MongoDB SystemError collection for active admin analytics
-  SystemError.findOneAndUpdate(
-    { error: error.message, path: req.path, status: 'active' },
-    { $inc: { count: 1 } },
-    { upsert: true, new: true }
-  ).catch((err) => console.error('[ERROR_LOG_FAIL]', err));
-
-  res.status(500).json({
-    success: false,
-    message: "Internal server error",
-    code: "INTERNAL_SERVER_ERROR",
-    details:
-      process.env.NODE_ENV === "development"
-        ? { error: error.message }
-        : undefined,
-  });
-});
+app.use(errorMiddleware);
