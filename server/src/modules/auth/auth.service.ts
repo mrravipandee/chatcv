@@ -7,16 +7,6 @@ import { sendEmail } from "../email/email.service";
 import { LoginInput } from "./auth.validation";
 import { syncTokensToRedis } from "../../config/redis.client";
 
-const DEFAULT_ADMIN_EMAILS = ["imravipanday@gmail.com"];
-
-const getAdminEmails = () => {
-  const configuredEmails = process.env.ADMIN_EMAILS
-    ? process.env.ADMIN_EMAILS.split(",").map((e) => e.trim().toLowerCase())
-    : [];
-
-  return [...new Set([...configuredEmails, ...DEFAULT_ADMIN_EMAILS])];
-};
-
 const generateOtp = (): string =>
   Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -144,7 +134,9 @@ export const loginUserService = async (payload: LoginInput) => {
   syncTokensToRedis(user._id.toString(), user.chatTokensUsed).catch(() => {});
 
   // Dynamically promote admin if configured in env
-  const adminEmails = getAdminEmails();
+  const adminEmails = process.env.ADMIN_EMAILS
+    ? process.env.ADMIN_EMAILS.split(",").map((e) => e.trim().toLowerCase())
+    : [];
   if (adminEmails.includes(user.email.toLowerCase()) && user.role !== "admin") {
     user.role = "admin";
     await user.save();
