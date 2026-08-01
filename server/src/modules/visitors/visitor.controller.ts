@@ -4,6 +4,7 @@ import { parseUserAgent } from '../../utils/ua-parser';
 import { getGeoIpProfile } from '../../utils/geoip';
 import { asyncHandler } from '../../utils/asyncHandler';
 import { BadRequestError } from '../../errors/BadRequestError';
+import { redisClient } from '../../config/redis.client';
 
 export const trackVisitorController = asyncHandler(async (req: Request, res: Response) => {
   const {
@@ -26,21 +27,32 @@ export const trackVisitorController = asyncHandler(async (req: Request, res: Res
     throw new BadRequestError('sessionId and path are required');
   }
 
-  // 1. Resolve IP and User Agent
-  const rawIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '127.0.0.1';
-  const ip = Array.isArray(rawIp) ? rawIp[0] : (rawIp as string).split(',')[0].trim();
-  const uaString = req.headers['user-agent'] || '';
-  const uaInfo = parseUserAgent(uaString);
+  const redisKey = `chatcv:visitor:session:${sessionId}`;
+  let sessionData: any = null;
+  let isNewSession = false;
 
-  // 2. Resolve Geolocation Profile
-  const geo = getGeoIpProfile(ip);
+  // 1. Try to fetch the session from Redis cache
+  if (redisClient) {
+    try {
+      const cached = await redisClient.get(redisKey);
+      if (cached) {
+        sessionData = JSON.parse(cached);
+      }
+    } catch (err) {
+      console.warn('[Redis] Error fetching visitor session cache:', err);
+    }
+  }
 
-  // 3. Search for existing session
-  let session = await VisitorSession.findOne({ ip, createdAt: { $gte: new Date(Date.now() - 30 * 60 * 1000) } }); // 30 minutes window
+  // 2. Cache Miss: Query MongoDB
+  if (!sessionData) {
+    const sessionDoc = await VisitorSession.findOne({ sessionId }).lean();
+    if (sessionDoc) {
+      sessionData = sessionDoc;
+    }
+  }
 
   const timestampStr = new Date().toLocaleTimeString('en-US', { hour12: false });
   const eventId = `evt-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
-
   const newEvent = {
     id: eventId,
     action: action || 'Page View',
@@ -49,34 +61,24 @@ export const trackVisitorController = asyncHandler(async (req: Request, res: Res
     detail
   };
 
-  if (session) {
-    // Update existing session
-    if (!session.pagesVisited.includes(path)) {
-      session.pagesVisited.push(path);
-    }
-    session.exitPage = path;
-    session.timeline.push(newEvent as any);
+  // 3. Cache & DB Miss: Initialize a new session
+  if (!sessionData) {
+    isNewSession = true;
     
-    if (action === 'Click' || action === 'Compile PDF' || action === 'Download') {
-      session.clicks += 1;
-    }
-    
-    if (scrollPercentage !== undefined) {
-      session.scrollPercentage = Math.max(session.scrollPercentage, scrollPercentage);
-    }
+    // Resolve IP, User Agent and Geolocation
+    const rawIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '127.0.0.1';
+    const ip = Array.isArray(rawIp) ? rawIp[0] : (rawIp as string).split(',')[0].trim();
+    const uaString = req.headers['user-agent'] || '';
+    const uaInfo = parseUserAgent(uaString);
+    const geo = getGeoIpProfile(ip);
 
-    // Calculate duration
-    const durationSec = Math.floor((Date.now() - session.createdAt.getTime()) / 1000);
-    session.sessionDurationSeconds = durationSec;
-    session.sessionDuration = `${Math.floor(durationSec / 60)}m ${durationSec % 60}s`;
-
-    await session.save();
-  } else {
-    // Determine if returning user
-    const pastSession = await VisitorSession.findOne({ ip, createdAt: { $lt: new Date(Date.now() - 30 * 60 * 1000) } });
+    // Determine if returning user (check MongoDB for past sessions from the same IP)
+    const pastSession = await VisitorSession.findOne({ ip, sessionId: { $ne: sessionId } }).lean();
     const userType = pastSession ? 'Returning' : 'New';
 
-    session = await VisitorSession.create({
+    const now = new Date();
+    sessionData = {
+      sessionId,
       ip,
       country: geo.country,
       state: geo.state,
@@ -106,18 +108,61 @@ export const trackVisitorController = asyncHandler(async (req: Request, res: Res
       utmCampaign,
       userType,
       isBot: uaInfo.isBot,
-      timeline: [newEvent]
-    });
+      timeline: [newEvent],
+      createdAt: now.toISOString(),
+      updatedAt: now.toISOString()
+    };
+  } else {
+    // 4. Update existing session
+    if (!sessionData.pagesVisited.includes(path)) {
+      sessionData.pagesVisited.push(path);
+    }
+    sessionData.exitPage = path;
+    sessionData.timeline.push(newEvent);
+
+    if (action === 'Click' || action === 'Compile PDF' || action === 'Download') {
+      sessionData.clicks = (sessionData.clicks || 0) + 1;
+    }
+
+    if (scrollPercentage !== undefined) {
+      sessionData.scrollPercentage = Math.max(sessionData.scrollPercentage || 0, scrollPercentage);
+    }
+
+    // Calculate session duration based on createdAt timestamp
+    const createdAtTime = new Date(sessionData.createdAt).getTime();
+    const durationSec = Math.max(0, Math.floor((Date.now() - createdAtTime) / 1000));
+    sessionData.sessionDurationSeconds = durationSec;
+    sessionData.sessionDuration = `${Math.floor(durationSec / 60)}m ${durationSec % 60}s`;
+    sessionData.updatedAt = new Date().toISOString();
   }
 
+  // 5. Update Redis cache with 30 minutes TTL (1800s)
+  if (redisClient) {
+    try {
+      await redisClient.setex(redisKey, 1800, JSON.stringify(sessionData));
+    } catch (err) {
+      console.warn('[Redis] Failed to write visitor session cache:', err);
+    }
+  }
+
+  // 6. Asynchronous Non-blocking DB write
+  VisitorSession.findOneAndUpdate(
+    { sessionId },
+    sessionData,
+    { upsert: true, new: true, setDefaultsOnInsert: true }
+  ).catch((err) => {
+    console.error('[DB Error] Non-blocking visitor session update failed:', err);
+  });
+
+  // 7. Respond immediately to keep response time minimal (< 5ms)
   return res.status(200).json({
     success: true,
     message: 'Telemetry logged successfully',
     data: {
-      sessionId: session._id,
-      ip: session.ip,
-      city: session.city,
-      country: session.country,
+      sessionId: sessionData.sessionId,
+      ip: sessionData.ip,
+      city: sessionData.city,
+      country: sessionData.country,
     }
   });
 });

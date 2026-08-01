@@ -11,12 +11,8 @@ import mongoose from 'mongoose';
 export const seedDatabase = async () => {
   try {
     const userCount = await User.countDocuments();
-    if (userCount > 0) {
-      console.log('[SEEDER] Database already contains records. Skipping seed.');
-      return;
-    }
-
-    console.log('[SEEDER] Database is empty. Commencing bootstrap seed...');
+    if (userCount === 0) {
+      console.log('[SEEDER] Database is empty. Commencing bootstrap seed...');
 
     // 1. Seed Users
     const usersData = [
@@ -93,62 +89,7 @@ export const seedDatabase = async () => {
     }
     console.log(`[SEEDER] Seeded ${msgCount} chat messages.`);
 
-    // 4. Seed Visitor Sessions
-    const visitorCities = [
-      { name: 'San Francisco', state: 'California', country: 'United States', lat: 37.7749, lng: -122.4194, tz: 'America/Los_Angeles', isp: 'Comcast Cable' },
-      { name: 'Bengaluru', state: 'Karnataka', country: 'India', lat: 12.9716, lng: 77.5946, tz: 'Asia/Kolkata', isp: 'Reliance Jio' },
-      { name: 'London', state: 'England', country: 'United Kingdom', lat: 51.5074, lng: -0.1278, tz: 'Europe/London', isp: 'British Telecom' },
-      { name: 'Berlin', state: 'Berlin', country: 'Germany', lat: 52.5200, lng: 13.4050, tz: 'Europe/Berlin', isp: 'Deutsche Telekom' },
-      { name: 'Tokyo', state: 'Tokyo', country: 'Japan', lat: 35.6762, lng: 139.6503, tz: 'Asia/Tokyo', isp: 'Softbank Corp' }
-    ];
 
-    for (let i = 0; i < 25; i++) {
-      const city = visitorCities[i % visitorCities.length];
-      const referrer = i % 3 === 0 ? 'https://www.google.com/' : i % 3 === 1 ? 'https://www.producthunt.com/' : 'Direct';
-      
-      const createdDate = new Date();
-      createdDate.setDate(createdDate.getDate() - Math.floor(Math.random() * 30));
-      
-      await VisitorSession.create({
-        ip: `192.168.${Math.floor(10 + Math.random() * 100)}.${Math.floor(1 + Math.random() * 250)}`,
-        country: city.country,
-        state: city.state,
-        city: city.name,
-        latitude: city.lat,
-        longitude: city.lng,
-        timezone: city.tz,
-        isp: city.isp,
-        browser: i % 2 === 0 ? 'Chrome' : 'Safari',
-        browserVersion: '124.0',
-        operatingSystem: i % 2 === 0 ? 'macOS' : 'Windows',
-        screenResolution: '1440x900',
-        deviceType: i % 4 === 0 ? 'Mobile' : 'Desktop',
-        language: 'en-US',
-        darkMode: i % 3 === 0,
-        connectionType: 'Wifi',
-        referrer,
-        landingPage: '/',
-        exitPage: i % 2 === 0 ? '/dashboard' : '/',
-        sessionDuration: '1m 45s',
-        sessionDurationSeconds: 105,
-        pagesVisited: ['/', '/dashboard'],
-        clicks: Math.floor(Math.random() * 8) + 2,
-        scrollPercentage: Math.floor(40 + Math.random() * 55),
-        utmSource: referrer !== 'Direct' ? (referrer.includes('google') ? 'google' : 'producthunt') : undefined,
-        utmMedium: referrer !== 'Direct' ? 'organic' : undefined,
-        utmCampaign: referrer !== 'Direct' ? 'summer_launch_2026' : undefined,
-        userType: Math.random() > 0.3 ? 'New' : 'Returning',
-        isBot: Math.random() > 0.95,
-        timeline: [
-          { id: `evt-${i}-1`, action: 'Page View', path: '/', timestamp: '12:04:12' },
-          { id: `evt-${i}-2`, action: 'Click', path: '/', timestamp: '12:04:30', detail: 'Clicked Start Button' },
-          { id: `evt-${i}-3`, action: 'Page View', path: '/dashboard', timestamp: '12:05:00' }
-        ],
-        createdAt: createdDate,
-        updatedAt: createdDate
-      });
-    }
-    console.log(`[SEEDER] Seeded 25 visitor sessions.`);
 
     // 5. Seed Downloads
     for (let i = 0; i < resumes.length; i++) {
@@ -199,8 +140,70 @@ export const seedDatabase = async () => {
       await ContactMessage.create(m);
     }
     console.log(`[SEEDER] Seeded support contact tickets.`);
-
     console.log('[SEEDER] Database bootstrap seed complete! 🚀');
+    }
+
+    // 8. Seed Visitor Sessions independently if empty
+    const visitorSessionCount = await VisitorSession.countDocuments();
+    if (visitorSessionCount === 0) {
+      console.log('[SEEDER] Visitor sessions are empty. Seeding sessions...');
+      const visitorCities = [
+        { name: 'San Francisco', state: 'California', country: 'United States', lat: 37.7749, lng: -122.4194, tz: 'America/Los_Angeles', isp: 'Comcast Cable' },
+        { name: 'Bengaluru', state: 'Karnataka', country: 'India', lat: 12.9716, lng: 77.5946, tz: 'Asia/Kolkata', isp: 'Reliance Jio' },
+        { name: 'London', state: 'England', country: 'United Kingdom', lat: 51.5074, lng: -0.1278, tz: 'Europe/London', isp: 'British Telecom' },
+        { name: 'Berlin', state: 'Berlin', country: 'Germany', lat: 52.5200, lng: 13.4050, tz: 'Europe/Berlin', isp: 'Deutsche Telekom' },
+        { name: 'Tokyo', state: 'Tokyo', country: 'Japan', lat: 35.6762, lng: 139.6503, tz: 'Asia/Tokyo', isp: 'Softbank Corp' }
+      ];
+
+      for (let i = 0; i < 25; i++) {
+        const city = visitorCities[i % visitorCities.length];
+        const referrer = i % 3 === 0 ? 'https://www.google.com/' : i % 3 === 1 ? 'https://www.producthunt.com/' : 'Direct';
+        
+        const createdDate = new Date();
+        createdDate.setDate(createdDate.getDate() - Math.floor(Math.random() * 30));
+        
+        await VisitorSession.create({
+          sessionId: `sess-seed-${i}`,
+          ip: `192.168.${Math.floor(10 + Math.random() * 100)}.${Math.floor(1 + Math.random() * 250)}`,
+          country: city.country,
+          state: city.state,
+          city: city.name,
+          latitude: city.lat,
+          longitude: city.lng,
+          timezone: city.tz,
+          isp: city.isp,
+          browser: i % 2 === 0 ? 'Chrome' : 'Safari',
+          browserVersion: '124.0',
+          operatingSystem: i % 2 === 0 ? 'macOS' : 'Windows',
+          screenResolution: '1440x900',
+          deviceType: i % 4 === 0 ? 'Mobile' : 'Desktop',
+          language: 'en-US',
+          darkMode: i % 3 === 0,
+          connectionType: 'Wifi',
+          referrer,
+          landingPage: '/',
+          exitPage: i % 2 === 0 ? '/dashboard' : '/',
+          sessionDuration: '1m 45s',
+          sessionDurationSeconds: 105,
+          pagesVisited: ['/', '/dashboard'],
+          clicks: Math.floor(Math.random() * 8) + 2,
+          scrollPercentage: Math.floor(40 + Math.random() * 55),
+          utmSource: referrer !== 'Direct' ? (referrer.includes('google') ? 'google' : 'producthunt') : undefined,
+          utmMedium: referrer !== 'Direct' ? 'organic' : undefined,
+          utmCampaign: referrer !== 'Direct' ? 'summer_launch_2026' : undefined,
+          userType: Math.random() > 0.3 ? 'New' : 'Returning',
+          isBot: Math.random() > 0.95,
+          timeline: [
+            { id: `evt-${i}-1`, action: 'Page View', path: '/', timestamp: '12:04:12' },
+            { id: `evt-${i}-2`, action: 'Click', path: '/', timestamp: '12:04:30', detail: 'Clicked Start Button' },
+            { id: `evt-${i}-3`, action: 'Page View', path: '/dashboard', timestamp: '12:05:00' }
+          ],
+          createdAt: createdDate,
+          updatedAt: createdDate
+        });
+      }
+      console.log(`[SEEDER] Seeded 25 visitor sessions.`);
+    }
   } catch (err) {
     console.error('[SEEDER] Failed to seed database:', err);
   }

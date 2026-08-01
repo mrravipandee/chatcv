@@ -9,6 +9,7 @@ export interface IVisitorEventLog {
 }
 
 export interface IVisitorSession extends Document {
+  sessionId: string;
   ip: string;
   country: string;
   state: string;
@@ -53,6 +54,7 @@ const VisitorEventLogSchema = new Schema<IVisitorEventLog>({
 
 const VisitorSessionSchema = new Schema<IVisitorSession>(
   {
+    sessionId: { type: String, required: true, index: true, unique: true },
     ip: { type: String, required: true, index: true },
     country: { type: String, default: 'Unknown', index: true },
     state: { type: String, default: 'Unknown' },
@@ -91,5 +93,6 @@ const VisitorSessionSchema = new Schema<IVisitorSession>(
 VisitorSessionSchema.index({ createdAt: 1 });
 VisitorSessionSchema.index({ country: 1, createdAt: 1 });
 VisitorSessionSchema.index({ isBot: 1, createdAt: 1 });
+VisitorSessionSchema.index({ updatedAt: -1 });
 
 export const VisitorSession = mongoose.model<IVisitorSession>('VisitorSession', VisitorSessionSchema);

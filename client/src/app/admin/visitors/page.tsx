@@ -172,23 +172,83 @@ export default function VisitorAnalyticsPage() {
     }
   };
 
+  const pollVisitorSessionsOnly = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+
+      const sessionsRes = await getAdminVisitorSessions(1, 15, '', '', 'All', 'All');
+
+      if (!sessionsRes.success) {
+        if (sessionsRes.code === 'UNAUTHORIZED') {
+          localStorage.removeItem('token');
+          router.push('/login');
+        }
+        return;
+      }
+
+      const rawSessionsList = (sessionsRes.data?.sessions || []) as any[];
+      const mappedSessions: VisitorSession[] = rawSessionsList.map((s) => ({
+        id: s._id,
+        ip: s.ip,
+        country: s.country,
+        state: s.state,
+        city: s.city,
+        latitude: s.latitude,
+        longitude: s.longitude,
+        timezone: s.timezone,
+        isp: s.isp,
+        browser: s.browser,
+        browserVersion: s.browserVersion,
+        operatingSystem: s.operatingSystem,
+        screenResolution: s.screenResolution,
+        deviceType: s.deviceType,
+        language: s.language,
+        darkMode: s.darkMode,
+        connectionType: s.connectionType,
+        referrer: s.referrer,
+        landingPage: s.landingPage,
+        exitPage: s.exitPage,
+        sessionDuration: s.sessionDuration,
+        sessionDurationSeconds: s.sessionDurationSeconds,
+        pagesVisited: s.pagesVisited,
+        clicks: s.clicks,
+        scrollPercentage: s.scrollPercentage,
+        utmSource: s.utmSource,
+        utmMedium: s.utmMedium,
+        utmCampaign: s.utmCampaign,
+        userType: s.userType,
+        isBot: s.isBot,
+        timeline: s.timeline.map((item: any) => ({
+          id: item.id,
+          action: item.action,
+          path: item.path,
+          timestamp: item.timestamp,
+          detail: item.detail
+        }))
+      }));
+      setSessions(mappedSessions);
+    } catch (err) {
+      console.error('[Visitor polling err]', err);
+    }
+  };
+
   // Initial load
   useEffect(() => {
     setIsLoading(true);
     loadVisitorData();
   }, []);
 
-  // WebSocket Live telemetry tracker sync
+  // WebSocket Live telemetry tracker sync (Optimized background polling)
   useEffect(() => {
     const interval = setInterval(() => {
       if (!liveSocketRef.current || isLoading || hasError) return;
-      loadVisitorData();
+      pollVisitorSessionsOnly();
     }, 10000); // sync logs every 10s
 
     return () => clearInterval(interval);
   }, [isLoading, hasError]);
 
-  // Manual refresh
   const handleReload = () => {
     setIsLoading(true);
     loadVisitorData();
