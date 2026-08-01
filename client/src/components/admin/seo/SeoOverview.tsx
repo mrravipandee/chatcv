@@ -94,7 +94,7 @@ export default function SeoOverview({ stats, technicalScore, isLoading }: SeoOve
           const changeColor = isDecrease
             ? 'text-red-500 bg-red-50 dark:bg-red-950/20'
             : isNeutral
-            ? 'text-zinc-505 bg-zinc-50 dark:bg-zinc-900/20'
+            ? 'text-zinc-500 bg-zinc-50 dark:bg-zinc-900/20'
             : 'text-emerald-500 bg-emerald-50 dark:bg-emerald-950/20';
 
           const chartColor = isDecrease ? '#ef4444' : '#10b981';
@@ -108,13 +108,13 @@ export default function SeoOverview({ stats, technicalScore, isLoading }: SeoOve
                 <span className="text-xs font-semibold tracking-tight text-zinc-500 uppercase dark:text-zinc-400">
                   {card.title}
                 </span>
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-100 bg-zinc-50/50 text-zinc-650 transition-colors group-hover:bg-zinc-100 dark:border-zinc-850 dark:bg-zinc-900 dark:text-zinc-400 dark:group-hover:bg-zinc-800">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-100 bg-zinc-50/50 text-zinc-600 transition-colors group-hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:group-hover:bg-zinc-800">
                   <IconRenderer name={card.icon} className="h-4.5 w-4.5" />
                 </div>
               </div>
 
               <div className="mt-3 flex items-baseline gap-2">
-                <span className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-55">
+                <span className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
                   {card.value}
                 </span>
                 <span className={`inline-flex items-center rounded-md px-1.5 py-0.5 text-2xs font-semibold ${changeColor}`}>
@@ -122,7 +122,7 @@ export default function SeoOverview({ stats, technicalScore, isLoading }: SeoOve
                 </span>
               </div>
 
-              <p className="mt-1 text-2xs text-zinc-400 line-clamp-1 dark:text-zinc-500">
+              <p className="mt-1 text-2xs text-zinc-400 line-clamp-1 dark:text-zinc-400">
                 {card.description}
               </p>
 

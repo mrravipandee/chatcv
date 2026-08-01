@@ -314,7 +314,7 @@ export default function Demographics({
                         <tr key={idx} className="hover:bg-zinc-50/40 dark:hover:bg-zinc-900/5">
                           <td className="py-2.5 font-mono text-zinc-700 dark:text-zinc-350">{page.path}</td>
                           <td className="py-2.5 text-right font-semibold text-zinc-900 dark:text-zinc-200">{page.views.toLocaleString()}</td>
-                          <td className="py-2.5 text-right text-zinc-650 dark:text-zinc-450">{page.uniqueVisitors.toLocaleString()}</td>
+                          <td className="py-2.5 text-right text-zinc-600 dark:text-zinc-350">{page.uniqueVisitors.toLocaleString()}</td>
                           <td className="py-2.5 text-right text-zinc-500 dark:text-zinc-400">{page.avgDuration}</td>
                         </tr>
                       ))}
@@ -343,7 +343,7 @@ export default function Demographics({
                         <tr key={idx} className="hover:bg-zinc-50/40 dark:hover:bg-zinc-900/5">
                           <td className="py-2.5 font-mono text-zinc-700 dark:text-zinc-350">{page.path}</td>
                           <td className="py-2.5 text-right font-semibold text-zinc-900 dark:text-zinc-200">{page.views.toLocaleString()}</td>
-                          <td className="py-2.5 text-right text-zinc-650 dark:text-zinc-450">{page.uniqueVisitors.toLocaleString()}</td>
+                          <td className="py-2.5 text-right text-zinc-600 dark:text-zinc-350">{page.uniqueVisitors.toLocaleString()}</td>
                           <td className="py-2.5 text-right text-zinc-500 dark:text-zinc-400">{page.avgDuration}</td>
                         </tr>
                       ))}

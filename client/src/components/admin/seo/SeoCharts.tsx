@@ -72,7 +72,7 @@ export default function SeoCharts({
           <div className="mt-1.5 space-y-1 text-xs">
             {payload.map((pld: any) => (
               <div key={pld.name} className="flex items-center gap-4 justify-between">
-                <span className="flex items-center gap-1.5 text-zinc-650 dark:text-zinc-300">
+                <span className="flex items-center gap-1.5 text-zinc-500 dark:text-zinc-300">
                   <span
                     className="h-2 w-2 rounded-full"
                     style={{ backgroundColor: pld.fill || pld.stroke }}
@@ -106,21 +106,21 @@ export default function SeoCharts({
   const getVitalColor = (value: number | string, type: 'lcp' | 'cls' | 'inp') => {
     if (type === 'cls') {
       const clsVal = Number(value);
-      if (clsVal <= 0.1) return 'text-emerald-500';
-      if (clsVal <= 0.25) return 'text-amber-500';
-      return 'text-red-500';
+      if (clsVal <= 0.1) return 'text-emerald-500 dark:text-emerald-400';
+      if (clsVal <= 0.25) return 'text-amber-500 dark:text-amber-400';
+      return 'text-red-500 dark:text-red-400';
     }
     if (type === 'lcp') {
       const lcpSec = parseFloat(value as string);
-      if (lcpSec <= 2.5) return 'text-emerald-500';
-      if (lcpSec <= 4.0) return 'text-amber-500';
-      return 'text-red-500';
+      if (lcpSec <= 2.5) return 'text-emerald-500 dark:text-emerald-400';
+      if (lcpSec <= 4.0) return 'text-amber-500 dark:text-amber-400';
+      return 'text-red-500 dark:text-red-400';
     }
     // INP
     const inpMs = parseInt((value as string).replace('ms', ''));
-    if (inpMs <= 200) return 'text-emerald-500';
-    if (inpMs <= 500) return 'text-amber-500';
-    return 'text-red-500';
+    if (inpMs <= 200) return 'text-emerald-500 dark:text-emerald-400';
+    if (inpMs <= 500) return 'text-amber-500 dark:text-amber-400';
+    return 'text-red-500 dark:text-red-400';
   };
 
   return (
@@ -217,7 +217,7 @@ export default function SeoCharts({
           <div className="flex rounded-lg bg-zinc-100 p-0.5 dark:bg-zinc-900">
             <button
               onClick={() => setSpeedTab('desktop')}
-              className={`rounded-md p-1.5 text-zinc-650 transition-colors ${
+              className={`rounded-md p-1.5 text-zinc-500 transition-colors ${
                 speedTab === 'desktop'
                   ? 'bg-white text-zinc-950 shadow-3xs dark:bg-zinc-950 dark:text-zinc-50'
                   : 'hover:text-zinc-900 dark:hover:text-zinc-200'
@@ -228,7 +228,7 @@ export default function SeoCharts({
             </button>
             <button
               onClick={() => setSpeedTab('mobile')}
-              className={`rounded-md p-1.5 text-zinc-650 transition-colors ${
+              className={`rounded-md p-1.5 text-zinc-500 transition-colors ${
                 speedTab === 'mobile'
                   ? 'bg-white text-zinc-950 shadow-3xs dark:bg-zinc-950 dark:text-zinc-50'
                   : 'hover:text-zinc-900 dark:hover:text-zinc-200'

@@ -18,7 +18,8 @@ import {
   Play,
   ArrowUpRight,
   TrendingDown,
-  Code
+  Code,
+  FileText
 } from 'lucide-react';
 
 interface TechnicalAuditProps {
@@ -191,26 +192,76 @@ export default function TechnicalAudit({
 
             {/* Render Suggestion Cards */}
             {!isStreaming && (
-              <div className="space-y-3">
-                {suggestions.map((sug) => (
-                  <div key={sug.id} className="relative group rounded-lg border border-zinc-100 bg-zinc-50/20 p-4 transition-colors hover:bg-zinc-50/50 dark:border-zinc-900 dark:bg-zinc-950/20 dark:hover:bg-zinc-900/20">
-                    <div className="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-100/50 pb-2 mb-2 dark:border-zinc-900/60">
-                      <div className="flex items-center gap-2">
-                        <span className={`rounded-sm px-1.5 py-0.5 text-4xs font-bold uppercase tracking-wider ${
-                          sug.impact === 'High' ? 'bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-400' :
-                          sug.impact === 'Medium' ? 'bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-400' :
-                          'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-400'
-                        }`}>
-                          {sug.impact} Impact
+              <div className="space-y-3.5">
+                {suggestions.map((sug) => {
+                  const isHigh = sug.impact === 'High';
+                  const isMedium = sug.impact === 'Medium';
+                  
+                  // Color configuration
+                  const cardBorderColor = isHigh
+                    ? 'border-red-100 hover:border-red-300 dark:border-red-950/40 dark:hover:border-red-900/60'
+                    : isMedium
+                    ? 'border-amber-100 hover:border-amber-300 dark:border-amber-950/40 dark:hover:border-amber-900/60'
+                    : 'border-blue-100 hover:border-blue-300 dark:border-blue-950/40 dark:hover:border-blue-900/60';
+                    
+                  const cardBgColor = isHigh
+                    ? 'bg-red-50/10 hover:bg-red-50/20 dark:bg-red-950/5 dark:hover:bg-red-950/10'
+                    : isMedium
+                    ? 'bg-amber-50/10 hover:bg-amber-50/20 dark:bg-amber-950/5 dark:hover:bg-amber-950/10'
+                    : 'bg-blue-50/10 hover:bg-blue-50/20 dark:bg-blue-950/5 dark:hover:bg-blue-950/10';
+
+                  const badgeColor = isHigh
+                    ? 'bg-red-100/60 text-red-700 dark:bg-red-950/80 dark:text-red-400'
+                    : isMedium
+                    ? 'bg-amber-100/60 text-amber-700 dark:bg-amber-950/80 dark:text-amber-400'
+                    : 'bg-blue-100/60 text-blue-700 dark:bg-blue-950/80 dark:text-blue-400';
+
+                  return (
+                    <div
+                      key={sug.id}
+                      className={`relative group rounded-xl border p-4.5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xs ${cardBorderColor} ${cardBgColor}`}
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-100/85 pb-2.5 mb-3.5 dark:border-zinc-900">
+                        <div className="flex items-center gap-2">
+                          <span className={`rounded-md px-2 py-0.5 text-4xs font-bold uppercase tracking-wider ${badgeColor}`}>
+                            {sug.impact} Impact
+                          </span>
+                          <span className="inline-flex items-center gap-1 rounded-md bg-zinc-100 px-2 py-0.5 text-4xs font-bold uppercase tracking-wider text-zinc-500 dark:bg-zinc-900 dark:text-zinc-400">
+                            {sug.category === 'Technical' ? (
+                              <Code className="h-3 w-3" />
+                            ) : sug.category === 'Content' ? (
+                              <FileText className="h-3 w-3" />
+                            ) : (
+                              <Sparkles className="h-3 w-3" />
+                            )}
+                            {sug.category}
+                          </span>
+                        </div>
+                        <span className="font-mono text-[10px] text-zinc-450 dark:text-zinc-500 bg-zinc-50 dark:bg-zinc-900/60 px-2 py-0.5 rounded">
+                          🎯 {sug.page}
                         </span>
-                        <span className="text-4xs text-zinc-400 font-bold uppercase tracking-wider">{sug.category}</span>
                       </div>
-                      <span className="font-mono text-[10px] text-zinc-450 dark:text-zinc-500">{sug.page}</span>
+                      
+                      <div className="flex items-start gap-3">
+                        <div className={`mt-0.5 flex h-7 w-7 items-center justify-center rounded-lg border bg-white shadow-3xs dark:bg-zinc-955 ${
+                          isHigh ? 'border-red-105 text-red-500 dark:border-red-950' :
+                          isMedium ? 'border-amber-105 text-amber-500 dark:border-amber-950' :
+                          'border-blue-105 text-blue-500 dark:border-blue-950'
+                        }`}>
+                          {isHigh ? <ShieldAlert className="h-4 w-4" /> : <AlertTriangle className="h-4 w-4" />}
+                        </div>
+                        <div className="space-y-1">
+                          <h5 className="text-sm font-bold text-zinc-900 dark:text-zinc-50 tracking-tight">
+                            {sug.title}
+                          </h5>
+                          <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                            {sug.action}
+                          </p>
+                        </div>
+                      </div>
                     </div>
-                    <h5 className="text-xs font-bold text-zinc-900 dark:text-zinc-100">{sug.title}</h5>
-                    <p className="mt-1 text-xs text-zinc-600 dark:text-zinc-400">{sug.action}</p>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>

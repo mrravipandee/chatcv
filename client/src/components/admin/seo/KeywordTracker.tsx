@@ -169,7 +169,7 @@ export default function KeywordTracker({ keywords, isLoading }: KeywordTrackerPr
                     {getPositionDeltaIndicator(item.position, item.previousPosition)}
                   </td>
                   {/* Search Volume */}
-                  <td className="py-3.5 px-4 text-right text-zinc-650 dark:text-zinc-400">
+                  <td className="py-3.5 px-4 text-right text-zinc-600 dark:text-zinc-300">
                     {item.volume.toLocaleString()}
                   </td>
                   {/* Difficulty */}
@@ -179,7 +179,7 @@ export default function KeywordTracker({ keywords, isLoading }: KeywordTrackerPr
                     </span>
                   </td>
                   {/* Estimated Traffic */}
-                  <td className="py-3.5 px-4 text-right font-semibold text-zinc-900 dark:text-zinc-250">
+                  <td className="py-3.5 px-4 text-right font-semibold text-zinc-900 dark:text-zinc-200">
                     {item.traffic.toLocaleString()}
                   </td>
                   {/* Targeted Landing Page */}

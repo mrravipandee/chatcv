@@ -252,7 +252,7 @@ export default function VisitorTable({ sessions, onPlayReplay, isLoading }: Visi
           <tbody className="divide-y divide-zinc-50 text-xs dark:divide-zinc-900/40">
             {paginatedSessions.length === 0 ? (
               <tr>
-                <td colSpan={8} className="py-12 text-center text-zinc-450 dark:text-zinc-550">
+                <td colSpan={8} className="py-12 text-center text-zinc-400 dark:text-zinc-500">
                   No visitor sessions matching the filter parameters.
                 </td>
               </tr>
@@ -269,7 +269,7 @@ export default function VisitorTable({ sessions, onPlayReplay, isLoading }: Visi
                       }`}
                     >
                       {/* IP and bot check */}
-                      <td className="py-3.5 px-6 font-semibold text-zinc-800 dark:text-zinc-250">
+                      <td className="py-3.5 px-6 font-semibold text-zinc-800 dark:text-zinc-200">
                         <div className="flex items-center gap-2">
                           <span className="font-mono">{vis.ip}</span>
                           {vis.isBot ? (
@@ -316,7 +316,7 @@ export default function VisitorTable({ sessions, onPlayReplay, isLoading }: Visi
                       </td>
 
                       {/* Clicks */}
-                      <td className="py-3.5 px-4 text-center font-bold text-zinc-900 dark:text-zinc-250">
+                      <td className="py-3.5 px-4 text-center font-bold text-zinc-900 dark:text-zinc-200">
                         {vis.clicks}
                       </td>
 
@@ -326,7 +326,7 @@ export default function VisitorTable({ sessions, onPlayReplay, isLoading }: Visi
                           <div className="h-1.5 w-12 rounded-full bg-zinc-100 dark:bg-zinc-900 overflow-hidden">
                             <div className="h-full bg-[#00ff9c]" style={{ width: `${vis.scrollPercentage}%` }} />
                           </div>
-                          <span className="font-mono text-3xs text-zinc-500">{vis.scrollPercentage}%</span>
+                          <span className="font-mono text-3xs text-zinc-500 dark:text-zinc-400">{vis.scrollPercentage}%</span>
                         </div>
                       </td>
 

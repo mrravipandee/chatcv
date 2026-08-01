@@ -536,9 +536,27 @@ export const getSeoDiagnostics = asyncHandler(async (req: Request, res: Response
 // 13. GET /api/admin/seo-suggestions
 export const getSeoSuggestions = asyncHandler(async (req: Request, res: Response) => {
   const suggestions = [
-    '🚀 Inject proper ALT text attributes to your template thumbnail images to improve Google Image crawling compliance.',
-    '🔗 Setup canonical tags config on /resume-examples/[role] paths to prevent duplicate metadata penalties.',
-    '⚡ Reduce initial bundle execution speeds on LCP loads by lazy-loading the Recharts widgets panels.'
+    {
+      title: 'Image Alt Text Compliance',
+      action: 'Inject proper ALT text attributes to your template thumbnail images to improve Google Image crawling compliance.',
+      impact: 'High',
+      category: 'Technical',
+      page: '/'
+    },
+    {
+      title: 'Canonical Tags Missing',
+      action: 'Setup canonical tags config on /resume-examples/[role] paths to prevent duplicate metadata penalties.',
+      impact: 'Medium',
+      category: 'Content',
+      page: '/resume-examples/[role]'
+    },
+    {
+      title: 'LCP Bundle Optimization',
+      action: 'Reduce initial bundle execution speeds on LCP loads by lazy-loading the Recharts widgets panels.',
+      impact: 'Medium',
+      category: 'Technical',
+      page: '/admin/seo'
+    }
   ];
 
   return res.status(200).json({
