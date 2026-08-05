@@ -34,12 +34,14 @@ export default function Footer() {
 
           {/* Direct Navigation */}
           <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-x-8 gap-y-4 max-w-lg">
-            {['Features', 'How it Works', 'Blog', 'Resume Examples', 'Waitlist'].map((item) => (
+            {['Features', 'How it Works', 'Demo', 'Blog', 'Resume Examples', 'Waitlist'].map((item) => (
               <Link 
                 key={item}
                 href={
                   item === 'Features'
                     ? "/features"
+                    : item === 'Demo'
+                    ? "/demo"
                     : item === 'Waitlist' 
                     ? "/subscribe" 
                     : item === 'Blog' 

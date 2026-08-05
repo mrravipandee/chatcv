@@ -30,9 +30,10 @@ export default function Navbar() {
 
                     {/* NAV LINKS */}
                     <div className="hidden md:flex gap-8 items-center">
-                        {['Features', 'How it Works', 'Blog'].map((item) => {
+                        {['Features', 'How it Works', 'Demo', 'Blog'].map((item) => {
                             const isFeatures = item === 'Features';
                             const isBlog = item === 'Blog';
+                            const isDemo = item === 'Demo';
                             const isWaitlist = item === 'Waitlist';
                             return (
                                 <Link
@@ -42,6 +43,8 @@ export default function Navbar() {
                                             ? "/features" 
                                             : isBlog 
                                             ? "/blog" 
+                                            : isDemo
+                                            ? "/demo"
                                             : isWaitlist 
                                             ? "/subscribe" 
                                             : `/#${item.toLowerCase().replace(/\s+/g, '')}`
