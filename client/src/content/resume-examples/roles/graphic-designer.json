@@ -1,0 +1,71 @@
+{
+  "role": "graphic-designer",
+  "title": "Graphic Designer Resume Examples & Guide (2026)",
+  "jobTitle": "Graphic Designer",
+  "industry": "Technology & Design",
+  "experienceLevel": "all",
+  "metaDescription": "Top Graphic Designer resume examples and ATS guide. Copy premium LaTeX template code, discover visual design skills, and write portfolio-focused bullet points.",
+  "summaryExamples": [
+    {
+      "title": "Entry Level Graphic Designer",
+      "text": "Creative Design graduate with strong foundations in layout hierarchy, color theory, and digital graphics. Expert in Adobe Creative Suite (Photoshop, Illustrator, InDesign) and Figma. Experience creating social media content, brand kits, and collaborating on UI projects."
+    },
+    {
+      "title": "Mid Level Graphic Designer",
+      "text": "Visual Designer with 5 years of professional experience crafting premium brand identities, print ads, and digital layouts. Skilled at translating complex business concepts into clean visual assets. Improved brand user engagement metrics by 25% through visual strategy overhaul."
+    },
+    {
+      "title": "Senior Graphic Designer",
+      "text": "Creative Director with 9+ years of experience managing visual design divisions, marketing budgets, and international brand refreshes. Expert in Adobe Creative Suite, UI/UX systems, and team leadership. Directed visuals for campaigns generating over $1.5M in trackable sales."
+    }
+  ],
+  "atsKeywords": [
+    "Graphic Design",
+    "Adobe Photoshop",
+    "Adobe Illustrator",
+    "Adobe InDesign",
+    "Figma & Sketch",
+    "Brand Identity Design",
+    "Typography & Layout",
+    "Color Theory",
+    "Vector Illustrations",
+    "Digital Marketing Graphics",
+    "UI/UX Design Systems",
+    "Print Production",
+    "Client Stakeholder Relations",
+    "Art Direction",
+    "Motion Graphics"
+  ],
+  "bulletPoints": [
+    {
+      "category": "Visual Asset Creation",
+      "points": [
+        "Designed 50+ custom digital assets, brand logos, and marketing banners weekly, improving social media click engagement by 20%.",
+        "Formulated cohesive brand guidelines and typography kits, ensuring visual consistency across all public web pages.",
+        "Refactored company presentation deck assets in Illustrator, boosting pitch proposal success rate by 15% with client partnerships.",
+        "Created high-fidelity mobile app screen mockups in Figma, working closely with developers to implement visual styles."
+      ]
+    },
+    {
+      "category": "Art Direction & Collaboration",
+      "points": [
+        "Supervised design print production for 10 regional campaigns, negotiating with suppliers to cut print costs by 12%.",
+        "Presented mockups and layout ideas to clients, integrating revision feedback quickly to maintain project delivery timelines.",
+        "Onboarded and mentored 3 junior graphic designers, auditing layouts to maintain quality standards."
+      ]
+    }
+  ],
+  "latexCode": "% --- LATEX RESUME TEMPLATE FOR GRAPHIC DESIGNERS ---\n\\documentclass[10pt,letterpaper]{article}\n\\usepackage[utf8]{charset}\n\\usepackage{geometry}\n\\geometry{letterpaper, margin=0.75in}\n\\usepackage{hyperref}\n\\usepackage{enumitem}\n\n\\begin{document}\n\\begin{center}\n    {\\Huge \\bf EMILY GREEN} \\\\\n    \\vspace{2pt}\n    New York, NY | (123) 456-7890 | emily.green@email.com | linkedin.com/in/emilygreen\n\\end{center}\n\n\\section*{PROFESSIONAL SUMMARY}\nCreative Visual Designer with 6 years of experience delivering branding assets and digital layouts. Specialized in Adobe Suite, vector illustration, and modern typography layouts.\n\n\\section*{TECHNICAL SKILLS}\n\\begin{itemize}[noitemsep,topsep=0pt]\n    \\item \\textbf{Design Software:} Photoshop, Illustrator, InDesign, Figma, AfterEffects\n    \\item \\textbf{Design Skills:} Branding, Vector Art, Print Design, Typography, Color Theory\n    \\item \\textbf{Web Tools:} HTML5, CSS3, WordPress, Webflow, Git\n\\end{itemize}\n\n\\section*{EXPERIENCE}\n\\textbf{Graphic Designer} \\hfill Jul 2021 - Present \\\\\nPixelMedia Design Agency, New York, NY\n\\begin{itemize}[noitemsep,topsep=2pt]\n    \\item Spearheaded rebranding campaign for a major retail customer, boosting visual outreach metrics by 30%.\n    \\item Built Figma UI design systems, cutting mockups delivery turnarounds by 2 days weekly.\n    \\item Coordinated print deliverables, ensuring layouts print cleanly with zero color offset defects.\n\\end{itemize}\n\n\\end{document}",
+  "faqs": [
+    {
+      "question": "Can a Graphic Designer resume be built in LaTeX?",
+      "answer": "Yes! While designers are tempted to use high-graphic resume templates, they often fail ATS parsing checks. A clean, structured, text-based LaTeX CV ensures your skills are parsed, while your portfolio link showcases your creative visuals."
+    },
+    {
+      "question": "Where should a designer put their portfolio link on their resume?",
+      "answer": "Place it right at the top next to your contact info (email and phone number). Make sure it is a clickable hyperlink so recruiters can open your visuals with one click."
+    }
+  ],
+  "relatedRoles": ["ui-ux-designer"],
+  "updatedDate": "2026-08-08T09:00:00Z"
+}

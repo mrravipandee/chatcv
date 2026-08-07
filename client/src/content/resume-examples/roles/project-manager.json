@@ -1,0 +1,71 @@
+{
+  "role": "project-manager",
+  "title": "Project Manager Resume Examples & Guide (2026)",
+  "jobTitle": "Project Manager",
+  "industry": "Business & Management",
+  "experienceLevel": "all",
+  "metaDescription": "Top Project Manager resume examples and ATS guide. Copy premium LaTeX template code, discover agile leadership skills, and write results-driven bullet points.",
+  "summaryExamples": [
+    {
+      "title": "Junior Project Manager",
+      "text": "Energetic Associate Project Manager with solid experience coordinating agile software sprints, cross-functional scheduling, and budget tracking. Certified Scrum Master (CSM) skilled in Jira, Confluence, and stakeholder relations. Dedicated to finishing complex tech projects on time and within scope."
+    },
+    {
+      "title": "Mid Level Project Manager",
+      "text": "Project Manager with 6+ years of experience leading complex IT and software product delivery cycles. Expert in Agile, Scrum, and Waterfall methodologies. Proven track record of managing $1M+ budgets and improving sprint planning velocities by 20% across multiple teams."
+    },
+    {
+      "title": "Senior Project Manager",
+      "text": "Senior Project Director / PMP with 12+ years of experience leading global tech operations, portfolio management, and system integrations. Master at coordinating cross-functional engineering teams, scope definition, and business risk audits. Managed budgets exceeding $5M with a history of on-time delivery."
+    }
+  ],
+  "atsKeywords": [
+    "Project Management",
+    "Agile & Scrum Methodologies",
+    "Waterfall Methodology",
+    "Sprint Planning & Retrospectives",
+    "Scope & Resource Management",
+    "Jira & Confluence",
+    "Asana / Trello",
+    "Budget Forecasting & Control",
+    "Risk Mitigation & Audits",
+    "Stakeholder Communications",
+    "Product Lifecycle (SDLC)",
+    "Cross-Functional Leadership",
+    "Scrum Master (CSM)",
+    "PMP Certification",
+    "Process Optimization"
+  ],
+  "bulletPoints": [
+    {
+      "category": "Project Delivery & Operations",
+      "points": [
+        "Coordinated agile development lifecycles for 3 cross-functional engineering teams, delivering a core mobile app release 2 weeks ahead of target launch date.",
+        "Facilitated daily standups, sprint planning, and retrospectives, boosting development team velocity by 18% over two quarters.",
+        "Managed resource allocation and project scope definitions for a $1.2M web design project, maintaining a 98% budget accuracy rate.",
+        "Identified and mitigated major project blockages early, reducing typical sprint delays by 30% through improved Jira workflow boards."
+      ]
+    },
+    {
+      "category": "Stakeholder Management",
+      "points": [
+        "Acted as primary liaison between executive leadership and 15 developers, keeping product delivery goals transparent and updates clear.",
+        "Negotiated third-party integrations and contracts, reducing software licensing overhead expenses by 15%.",
+        "Orchestrated client onboarding presentations and workshops, increasing customer onboarding satisfaction scores by 25%."
+      ]
+    }
+  ],
+  "latexCode": "% --- LATEX RESUME TEMPLATE FOR PROJECT MANAGERS ---\n\\documentclass[10pt,letterpaper]{article}\n\\usepackage[utf8]{charset}\n\\usepackage{geometry}\n\\geometry{letterpaper, margin=0.75in}\n\\usepackage{hyperref}\n\\usepackage{enumitem}\n\n\\begin{document}\n\\begin{center}\n    {\\Huge \\bf ROBERT DAVIS} \\\\\n    \\vspace{2pt}\n    Chicago, IL | (123) 456-7890 | robert.davis@email.com | linkedin.com/in/robertdavis\n\\end{center}\n\n\\section*{PROFESSIONAL SUMMARY}\nOrganized, PMP-certified Project Manager with 7 years of experience directing high-impact technical programs. Expert in agile sprint management, resource budgeting, and Jira workflows.\n\n\\section*{TECHNICAL SKILLS}\n\\begin{itemize}[noitemsep,topsep=0pt]\n    \\item \\textbf{Methodologies:} Agile, Scrum, Kanban, Waterfall, SDLC\n    \\item \\textbf{Tools:} Jira, Confluence, Asana, MS Project, Slack, Figma\n    \\item \\textbf{Certifications:} Project Management Professional (PMP), Certified Scrum Master (CSM)\n\\end{itemize}\n\n\\section*{EXPERIENCE}\n\\textbf{Project Manager} \\hfill Oct 2020 - Present \\\\\nInnoTech Corp, Chicago, IL\n\\begin{itemize}[noitemsep,topsep=2pt]\n    \\item Streamlined sprint retro flows, raising sprint deliverable rates from 72% to 91% within 6 months.\n    \\item Coordinated budget tracking for a $2M software cloud migration, cutting cost deviations by 10%.\n    \\item Supervised sprint plans for 20 developers, resolving resource conflicts across projects.\n\\end{itemize}\n\n\\end{document}",
+  "faqs": [
+    {
+      "question": "What certifications stand out on a Project Manager resume?",
+      "answer": "PMP (Project Management Professional) and CSM (Certified Scrum Master) are the gold standards. Listing these clearly in your resume header or skills section significantly increases recruiter calls."
+    },
+    {
+      "question": "How do you show agile leadership on a resume?",
+      "answer": "Describe your team size, meeting frequency, and improvements in productivity. Write about how you ran sprint plans, tracked sprint velocities, and resolved blocking tasks to keep deliverables on schedule."
+    }
+  ],
+  "relatedRoles": ["product-manager"],
+  "updatedDate": "2026-08-08T09:00:00Z"
+}

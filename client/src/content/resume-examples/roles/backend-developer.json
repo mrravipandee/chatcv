@@ -1,0 +1,71 @@
+{
+  "role": "backend-developer",
+  "title": "Backend Developer Resume Examples & Guide (2026)",
+  "jobTitle": "Backend Developer",
+  "industry": "Technology & Design",
+  "experienceLevel": "all",
+  "metaDescription": "Top Backend Developer resume examples and ATS guide. Copy premium LaTeX template code, discover server-side database skills, and write metrics-driven bullet points.",
+  "summaryExamples": [
+    {
+      "title": "Entry Level Backend Developer",
+      "text": "Highly motivated computer science graduate specializing in server-side software engineering. Practical experience designing relational databases, building REST APIs in Express/Node.js, and working with Python/SQL. Quick learner eager to optimize server performance and backend logic."
+    },
+    {
+      "title": "Mid Level Backend Developer",
+      "text": "Backend Engineer with 5 years of professional experience building highly secure, scalable server-side systems. Expert in Node.js, Python, PostgreSQL, and Redis caching. Proven track record of architecting databases that handle high concurrency with zero downtime."
+    },
+    {
+      "title": "Senior Backend Developer",
+      "text": "Senior Backend Architect with 9+ years of experience engineering distributed systems, microservices, and database schemas. Skilled in cloud migration (AWS/GCP), CI/CD automation, and messaging queues (RabbitMQ, Kafka). Led architecture refactoring that cut API latency by 60%."
+    }
+  ],
+  "atsKeywords": [
+    "Backend Development",
+    "Node.js",
+    "Express.js",
+    "Python & Django",
+    "Database Design",
+    "PostgreSQL / MongoDB",
+    "RESTful API Development",
+    "Microservices Architecture",
+    "Redis Caching",
+    "Message Queues (Kafka/RabbitMQ)",
+    "Docker & Kubernetes",
+    "AWS Cloud Services",
+    "Server-Side Security",
+    "Unit Testing (Mocha/Jest)",
+    "CI/CD Pipeline Automation"
+  ],
+  "bulletPoints": [
+    {
+      "category": "API Development & Architecture",
+      "points": [
+        "Designed and deployed clean, secure RESTful APIs using Node.js and Express, supporting 50k+ active mobile app connections daily.",
+        "Refactored relational database queries and built proper indexes in PostgreSQL, resulting in a 40% reduction in search query latency.",
+        "Implemented Redis caching layers for frequently requested server endpoints, cutting database transaction loads by 65%.",
+        "Containerized core backend microservices using Docker, streamlining developer onboarding and cloud deployments."
+      ]
+    },
+    {
+      "category": "System Security & Scale",
+      "points": [
+        "Integrated JWT authentication systems and role-based access control (RBAC), securing user session validation routes.",
+        "Designed message-driven event logic using Apache Kafka, decoupling backend workers to handle sudden system write spikes.",
+        "Established automatic server health checks and monitoring logs using Prometheus, maintaining a 99.98% runtime uptime guarantee."
+      ]
+    }
+  ],
+  "latexCode": "% --- LATEX RESUME TEMPLATE FOR BACKEND DEVELOPERS ---\n\\documentclass[10pt,letterpaper]{article}\n\\usepackage[utf8]{charset}\n\\usepackage{geometry}\n\\geometry{letterpaper, margin=0.75in}\n\\usepackage{hyperref}\n\\usepackage{enumitem}\n\n\\begin{document}\n\\begin{center}\n    {\\Huge \\bf MARK SMITH} \\\\\n    \\vspace{2pt}\n    Austin, TX | (123) 456-7890 | mark.smith@email.com | linkedin.com/in/marksmith\n\\end{center}\n\n\\section*{PROFESSIONAL SUMMARY}\nResults-oriented Backend Developer with 6 years of experience designing robust server-side architectures. Specialized in Node.js, SQL databases, and AWS. Passionate about API efficiency and performance tuning.\n\n\\section*{TECHNICAL SKILLS}\n\\begin{itemize}[noitemsep,topsep=0pt]\n    \\item \\textbf{Languages:} Node.js, Python, Golang, SQL, Bash\n    \\item \\textbf{Databases & Cache:} PostgreSQL, MongoDB, Redis, Elasticsearch\n    \\item \\textbf{Infrastructure & Tools:} AWS (EC2, S3, RDS), Docker, Git, CI/CD, Kafka\n\\end{itemize}\n\n\\section*{EXPERIENCE}\n\\textbf{Backend Developer} \\hfill Sep 2021 - Present \\\\\nCloudStack Solutions, Austin, TX\n\\begin{itemize}[noitemsep,topsep=2pt]\n    \\item Migrated monolithic API systems to a microservice architecture, reducing deployment build cycles by 50%.\n    \\item Formulated custom database backup and sync automation scripts, preventing data loss risks.\n    \\item Optimized API routing query logic, decreasing average API response latency by 120ms.\n\\end{itemize}\n\n\\end{document}",
+  "faqs": [
+    {
+      "question": "What technical skills belong on a Backend Developer resume?",
+      "answer": "Backend resumes must focus heavily on database systems (SQL vs NoSQL), primary programming languages (Python, Go, Node.js), API design principles, and server scaling tools (Docker, AWS)."
+    },
+    {
+      "question": "How can I show database performance improvements on my resume?",
+      "answer": "Use metrics! Instead of writing 'optimized database query loops,' write 'implemented indexes and restructured queries in PostgreSQL, reducing query fetch times by 40%.'"
+    }
+  ],
+  "relatedRoles": ["software-engineer", "frontend-developer"],
+  "updatedDate": "2026-08-08T09:00:00Z"
+}

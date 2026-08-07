@@ -1,0 +1,71 @@
+{
+  "role": "data-analyst",
+  "title": "Data Analyst Resume Examples & Guide (2026)",
+  "jobTitle": "Data Analyst",
+  "industry": "Technology & Design",
+  "experienceLevel": "all",
+  "metaDescription": "Top Data Analyst resume examples and ATS guide. Copy premium LaTeX template code, discover SQL/BI dashboard skills, and write metrics-driven bullet points.",
+  "summaryExamples": [
+    {
+      "title": "Entry Level Data Analyst",
+      "text": "Detail-oriented business analytics graduate with professional foundations in SQL querying, Python scripting, and Excel. Practical experience gathering data, performing predictive statistical tests, and building Tableau dashboards. Eager to solve complex database problems and track company performance metrics."
+    },
+    {
+      "title": "Mid Level Data Analyst",
+      "text": "Data Analyst with 5 years of experience translating massive datasets into actionable strategic recommendations. Expert in SQL, Python (Pandas/NumPy), Tableau, and PowerBI. Developed customer churn model that saved a key subscription service $300k in monthly revenue."
+    },
+    {
+      "title": "Senior Data Analyst",
+      "text": "Senior Business Intelligence Analyst with 9+ years of experience leading analytics teams, building data warehouses, and establishing KPI frameworks. Expert in advanced SQL optimization, cloud analytics (Snowflake/BigQuery), and data architecture. Partnered with executives to drive a 15% improvement in operational efficiency."
+    }
+  ],
+  "atsKeywords": [
+    "Data Analysis",
+    "SQL (Structured Query Language)",
+    "Python & R Scripting",
+    "Tableau",
+    "PowerBI",
+    "Business Intelligence (BI)",
+    "Data Warehousing",
+    "Snowflake / Google BigQuery",
+    "Statistical Modeling",
+    "Data Visualizations",
+    "A/B Testing Methodologies",
+    "Data Wrangling & Cleaning",
+    "Pandas & NumPy",
+    "KPI Dashboard Design",
+    "Predictive Modeling"
+  ],
+  "bulletPoints": [
+    {
+      "category": "Data Wrangling & Visualizations",
+      "points": [
+        "Wrote complex, optimized SQL queries to query databases containing 10M+ transaction records, cutting data prep times by 30%.",
+        "Developed interactive Tableau dashboards for executive leadership, consolidating key operations data and tracking daily business KPIs.",
+        "Performed intensive data cleaning using Python (Pandas), eliminating bad customer record tags to improve modeling accuracy by 15%.",
+        "Designed and analyzed A/B test setups for product features, presenting metrics results that increased user landing page conversion rates by 8%."
+      ]
+    },
+    {
+      "category": "Business Intelligence & Impact",
+      "points": [
+        "Uncovered patterns in sales funnel records, presenting a recommendation that boosted recurring subscription revenue by 12% ($140k/yr).",
+        "Automated recurring reports using scheduled Python scripts, saving the marketing division 10 hours of manual spreadsheet compiling weekly.",
+        "Collaborated with data engineers to migrate legacy databases to Snowflake, ensuring data pipelines run smoothly."
+      ]
+    }
+  ],
+  "latexCode": "% --- LATEX RESUME TEMPLATE FOR DATA ANALYSTS ---\n\\documentclass[10pt,letterpaper]{article}\n\\usepackage[utf8]{charset}\n\\usepackage{geometry}\n\\geometry{letterpaper, margin=0.75in}\n\\usepackage{hyperref}\n\\usepackage{enumitem}\n\n\\begin{document}\n\\begin{center}\n    {\\Huge \\bf SARAH MILLER} \\\\\n    \\vspace{2pt}\n    Atlanta, GA | (123) 456-7890 | sarah.miller@email.com | linkedin.com/in/sarahmiller\n\\end{center}\n\n\\section*{PROFESSIONAL SUMMARY}\nDetail-oriented Data Analyst with 5 years of experience delivering metrics-driven business solutions. Expert in SQL, Python, and Tableau dashboards. Dedicated to clean data pipelines and dashboard efficiency.\n\n\\section*{TECHNICAL SKILLS}\n\\begin{itemize}[noitemsep,topsep=0pt]\n    \\item \\textbf{Languages:} SQL, Python (Pandas, NumPy), R, Excel\n    \\item \\textbf{BI & Visualizations:} Tableau, PowerBI, Google Looker Studio, matplotlib\n    \\item \\textbf{Databases & Tools:} PostgreSQL, Snowflake, BigQuery, Git, dbt\n\\end{itemize}\n\n\\section*{EXPERIENCE}\n\\textbf{Data Analyst} \\hfill May 2021 - Present \\\\\nRetailFlow Analytics, Atlanta, GA\n\\begin{itemize}[noitemsep,topsep=2pt]\n    \\item Architected Tableau KPI dashboards, reducing team report compiling time by 8 hours per week.\n    \\item Audited user click patterns, suggesting funnel layout tweaks that increased conversion checkouts by 14%.\n    \\item Optimised legacy SQL queries, cutting raw report runtime by 45%.\n\\end{itemize}\n\n\\end{document}",
+  "faqs": [
+    {
+      "question": "What is the best resume format for a Data Analyst?",
+      "answer": "A clean, single-column text format (like LaTeX) is best. It ensures that complex SQL queries or database terminology are parsed perfectly by the ATS scanner."
+    },
+    {
+      "question": "How do I show business value on a Data Analyst resume?",
+      "answer": "Connect your data insights to money saved or revenue earned. Instead of 'Analyzed user data,' write 'Analyzed user drop-off trends, presenting recommendation that decreased cart abandonment by 12%.'"
+    }
+  ],
+  "relatedRoles": ["data-scientist"],
+  "updatedDate": "2026-08-08T09:00:00Z"
+}

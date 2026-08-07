@@ -122,7 +122,14 @@ function renderBlock(block: ContentBlock, index: number) {
       return (
         <div key={index} className="my-10 rounded-2xl overflow-hidden border border-white/10 bg-zinc-950">
           <div className="relative aspect-video w-full">
-            <img src={block.src} alt={block.alt || ""} className="object-cover w-full h-full" />
+            <Image
+              src={block.src || ""}
+              alt={block.alt || ""}
+              fill
+              sizes="(max-width: 768px) 100vw, 800px"
+              className="object-cover"
+              loading="lazy"
+            />
           </div>
           {block.caption && (
             <p className="text-xs text-zinc-500 text-center py-3 bg-zinc-950/80 border-t border-white/5 font-mono">

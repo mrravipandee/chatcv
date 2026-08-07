@@ -1,0 +1,71 @@
+{
+  "role": "frontend-developer",
+  "title": "Frontend Developer Resume Examples & Guide (2026)",
+  "jobTitle": "Frontend Developer",
+  "industry": "Technology & Design",
+  "experienceLevel": "all",
+  "metaDescription": "Top Frontend Developer resume examples and ATS guide. Copy premium LaTeX template code, find industry-standard UI/UX skills, and write high-impact bullet points.",
+  "summaryExamples": [
+    {
+      "title": "Entry Level Frontend Developer",
+      "text": "Passionate Frontend Developer graduate with strong coding foundations in HTML5, CSS3, JavaScript (ES6+), and React. Enthusiastic about creating highly responsive, interactive user experiences. Experience building responsive personal projects and collaborating in Git workflows."
+    },
+    {
+      "title": "Mid Level Frontend Developer",
+      "text": "Frontend Engineer with 4+ years of professional experience building high-performance web applications using React, Next.js, and Tailwind CSS. Dedicated to user-centric design, optimizing Web Vitals, and implementing pixel-perfect UI. Improved mobile conversion rates by 22% through interface performance audits."
+    },
+    {
+      "title": "Senior Frontend Developer",
+      "text": "Senior Frontend Developer with 8+ years of experience leading UI teams and designing client-side architectures for enterprise SaaS apps. Expert in state management (Redux, Zustand), performance tuning, and design systems. Successfully migrated legacy angular systems to Next.js, cutting page load time by 45%."
+    }
+  ],
+  "atsKeywords": [
+    "Frontend Development",
+    "React.js",
+    "Next.js",
+    "TypeScript",
+    "JavaScript (ES6+)",
+    "HTML5 & CSS3",
+    "Tailwind CSS",
+    "State Management",
+    "Zustand / Redux",
+    "Responsive Web Design",
+    "Web Performance Tuning",
+    "RESTful API Integration",
+    "Jest / React Testing Library",
+    "Git & GitHub",
+    "UI/UX Design Systems"
+  ],
+  "bulletPoints": [
+    {
+      "category": "UI Development & Architecture",
+      "points": [
+        "Architected modular React/Next.js dashboard interfaces, reducing code duplication by 35% through reusable UI component libraries.",
+        "Implemented pixel-perfect responsive layouts based on Figma designs, achieving 100% layout consistency across mobile, tablet, and desktop screens.",
+        "Optimized client-side rendering pathways and image delivery pipelines, improving Google Lighthouse performance score from 68 to 96.",
+        "Integrated dynamic RESTful and GraphQL APIs, managing asynchronous state transitions efficiently with React Query."
+      ]
+    },
+    {
+      "category": "Collaboration & Optimization",
+      "points": [
+        "Collaborated closely with UX designers to refine customer checkout flows, resulting in a 14% drop in cart abandonment rates.",
+        "Championed accessibility compliance (WCAG 2.1 AA) across core public web pages, expanding accessible user base by 8%.",
+        "Wrote comprehensive unit and integration tests using Jest and Cypress, raising code test coverage from 60% to 92% and reducing production bugs."
+      ]
+    }
+  ],
+  "latexCode": "% --- LATEX RESUME TEMPLATE FOR FRONTEND DEVELOPERS ---\n\\documentclass[10pt,letterpaper]{article}\n\\usepackage[utf8]{charset}\n\\usepackage{geometry}\n\\geometry{letterpaper, margin=0.75in}\n\\usepackage{hyperref}\n\\usepackage{enumitem}\n\n\\begin{document}\n\\begin{center}\n    {\\Huge \\bf JANE DOE} \\\\\n    \\vspace{2pt}\n    Seattle, WA | (123) 456-7890 | jane.doe@email.com | linkedin.com/in/janedoe\n\\end{center}\n\n\\section*{PROFESSIONAL SUMMARY}\nPerformance-driven Frontend Developer with 5 years of experience building modern web applications. Specialized in React, Next.js, and TypeScript. Expert in responsive layout design and Core Web Vitals optimization.\n\n\\section*{TECHNICAL SKILLS}\n\\begin{itemize}[noitemsep,topsep=0pt]\n    \\item \\textbf{Languages:} JavaScript (ES6+), TypeScript, HTML5, CSS3, SQL\n    \\item \\textbf{Frameworks & Libraries:} React, Next.js, Redux, Zustand, TailwindCSS, Jest\n    \\item \\textbf{Developer Tools:} Git, Webpack, Vite, Docker, Chrome DevTools, Figma\n\\end{itemize}\n\n\\section*{EXPERIENCE}\n\\textbf{Frontend Developer} \\hfill Mar 2022 - Present \\\\\nWebStudio Partners, Seattle, WA\n\\begin{itemize}[noitemsep,topsep=2pt]\n    \\item Led frontend development for a premium SaaS checkout app, increasing client conversion by 18%.\n    \\item Refactored state management system to Zustand, eliminating unnecessary re-renders and reducing load lag by 25%.\n    \\item Developed automated testing suite with Cypress, reducing regression QA time by 40%.\n\\end{itemize}\n\n\\end{document}",
+  "faqs": [
+    {
+      "question": "Which framework is best for a Frontend Developer resume?",
+      "answer": "React and Next.js are currently the most in-demand frontend frameworks. Highlighting projects built with these libraries is crucial to passing modern tech recruiter checks."
+    },
+    {
+      "question": "Should a Frontend Developer resume link to a portfolio?",
+      "answer": "Absolutely. Providing links to your live web applications, GitHub repositories, and interactive design portfolios is essential for frontend roles to verify coding quality."
+    }
+  ],
+  "relatedRoles": ["software-engineer", "ui-ux-designer"],
+  "updatedDate": "2026-08-08T09:00:00Z"
+}
