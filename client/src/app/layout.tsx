@@ -242,7 +242,10 @@ export const metadata: Metadata = {
   },
 
   verification: {
-    google: "1XnLLnxNOnoegYOvO9BGs1Ld1gDXj18RsKLtySms5G0",
+    google: [
+      "fqIb9N9PwZQifwrYQYFh7CCEZr5yyfDKNQP155lDXVI",
+      "1XnLLnxNOnoegYOvO9BGs1Ld1gDXj18RsKLtySms5G0",
+    ],
   },
 
   manifest: "/manifest.json",
