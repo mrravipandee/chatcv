@@ -8,6 +8,7 @@ import latexRoutes from "./latex/latex.routes";
 import paymentRoutes from "./modules/payment/payment.routes";
 import adminRoutes from "./modules/admin/admin.routes";
 import visitorRoutes from "./modules/visitors/visitor.routes";
+import { publicBlogRouter, adminBlogRouter } from "./modules/blog/blog.routes";
 
 export const app = express();
 
@@ -57,7 +58,9 @@ app.use("/api/resume", resumeRoutes);
 app.use("/api/latex", latexRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/admin/blogs", adminBlogRouter);
 app.use("/api/visitors", visitorRoutes);
+app.use("/api/blogs", publicBlogRouter);
 
 app.get("/health", (req: Request, res: Response) => {
   res.status(200).json({ status: "healthy", timestamp: new Date().toISOString() });

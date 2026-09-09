@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 import { Metadata } from "next";
 import { getAllPosts, getCategories, getTags } from "@/lib/blog";
@@ -18,10 +18,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function BlogListingPage() {
-  const posts = getAllPosts();
-  const categories = getCategories();
-  const tags = getTags();
+export default async function BlogListingPage() {
+  const [posts, categories, tags] = await Promise.all([
+    getAllPosts(),
+    getCategories(),
+    getTags(),
+  ]);
 
   return (
     <main className="bg-black min-h-screen">

@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 import { Metadata } from "next";
 import Link from "next/link";
@@ -14,7 +14,7 @@ interface AuthorPageProps {
 
 export async function generateMetadata({ params }: AuthorPageProps): Promise<Metadata> {
   const resolvedParams = await params;
-  const posts = getAllPosts();
+  const posts = await getAllPosts();
   const authorSlug = resolvedParams.author;
   const post = posts.find((p) => p.author.slug === authorSlug);
   
@@ -59,7 +59,7 @@ export async function generateMetadata({ params }: AuthorPageProps): Promise<Met
 export default async function AuthorPage({ params }: AuthorPageProps) {
   const resolvedParams = await params;
   const authorSlug = resolvedParams.author;
-  const posts = getAllPosts();
+  const posts = await getAllPosts();
   
   // Find first post to retrieve author metadata
   const authorPost = posts.find((p) => p.author.slug === authorSlug);
@@ -68,7 +68,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
   }
 
   const author = authorPost.author;
-  const authorPosts = getPostsByAuthor(authorSlug);
+  const authorPosts = await getPostsByAuthor(authorSlug);
   const baseUrl = "https://resumebuilder-chatcv.vercel.app";
   const canonicalUrl = `${baseUrl}/blog/author/${authorSlug}`;
 

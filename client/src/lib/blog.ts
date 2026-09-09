@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { BlogPost, ProgrammaticResumeRole } from '../types/blog';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
 const BLOG_DIR = path.join(process.cwd(), 'src/content/blog/posts');
 const ROLE_DIR = path.join(process.cwd(), 'src/content/resume-examples/roles');
 
@@ -12,11 +13,9 @@ function ensureDirectoryExists(dirPath: string) {
   }
 }
 
-/**
- * Editorial Blog Utilities
- */
+// ── Local Disk Fallback Helpers ─────────────────────────────────────────────
 
-export function getAllPosts(): BlogPost[] {
+export function getLocalAllPosts(): BlogPost[] {
   ensureDirectoryExists(BLOG_DIR);
   try {
     const files = fs.readdirSync(BLOG_DIR);
@@ -37,95 +36,206 @@ export function getAllPosts(): BlogPost[] {
       }
     }
 
-    // Sort by publishDate descending (newest first)
     return posts.sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime());
   } catch (error) {
-    console.error('Error reading blog posts directory:', error);
+    console.error('Error reading local blog posts directory:', error);
     return [];
   }
 }
 
-export function getPostBySlug(slug: string): BlogPost | undefined {
-  const posts = getAllPosts();
+export function getLocalPostBySlug(slug: string): BlogPost | undefined {
+  const posts = getLocalAllPosts();
   return posts.find((p) => p.slug === slug);
 }
 
-export function getFeaturedPost(): BlogPost | undefined {
-  const posts = getAllPosts();
+// ── Production Dynamic API Loaders with Next.js ISR & Fallback ──────────────
+
+export async function getAllPosts(options?: {
+  page?: number;
+  limit?: number;
+  category?: string;
+  tag?: string;
+  search?: string;
+}): Promise<BlogPost[]> {
+  try {
+    const params = new URLSearchParams();
+    if (options?.page) params.set('page', String(options.page));
+    if (options?.limit) params.set('limit', String(options.limit));
+    else params.set('limit', '100');
+    if (options?.category) params.set('category', options.category);
+    if (options?.tag) params.set('tag', options.tag);
+    if (options?.search) params.set('search', options.search);
+
+    const url = `${API_BASE_URL}/api/blogs?${params.toString()}`;
+    const res = await fetch(url, {
+      next: { tags: ['blogs'], revalidate: 3600 },
+      signal: AbortSignal.timeout(4000),
+    });
+
+    if (res.ok) {
+      const json = await res.json();
+      if (Array.isArray(json.data) && json.data.length > 0) {
+        return json.data;
+      }
+    }
+  } catch (error) {
+    // Graceful fallback to local disk if backend is unreachable during build
+    console.warn('[Blog] Backend API unavailable, using local fallback posts:', (error as any)?.message);
+  }
+
+  return getLocalAllPosts();
+}
+
+export async function getPostBySlug(slug: string): Promise<BlogPost | undefined> {
+  try {
+    const url = `${API_BASE_URL}/api/blogs/${encodeURIComponent(slug)}`;
+    const res = await fetch(url, {
+      next: { tags: ['blogs', `blog-${slug}`], revalidate: 3600 },
+      signal: AbortSignal.timeout(4000),
+    });
+
+    if (res.ok) {
+      const json = await res.json();
+      if (json.data) {
+        return json.data;
+      }
+    } else if (res.status === 404) {
+      return undefined;
+    }
+  } catch (error) {
+    console.warn(`[Blog] Backend API unavailable for slug '${slug}', using local fallback`);
+  }
+
+  return getLocalPostBySlug(slug);
+}
+
+export async function getFeaturedPost(): Promise<BlogPost | undefined> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/blogs/featured`, {
+      next: { tags: ['blogs'], revalidate: 3600 },
+      signal: AbortSignal.timeout(4000),
+    });
+
+    if (res.ok) {
+      const json = await res.json();
+      if (json.data) return json.data;
+    }
+  } catch (error) {}
+
+  const posts = await getAllPosts();
   return posts.find((p) => p.featured) || posts[0];
 }
 
-export function getLatestPosts(limit = 6): BlogPost[] {
-  const posts = getAllPosts();
+export async function getLatestPosts(limit = 6): Promise<BlogPost[]> {
+  const posts = await getAllPosts({ limit });
   return posts.slice(0, limit);
 }
 
-export function getCategories(): string[] {
-  const posts = getAllPosts();
+export async function getCategories(): Promise<string[]> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/blogs/meta/categories`, {
+      next: { tags: ['blogs'], revalidate: 3600 },
+      signal: AbortSignal.timeout(4000),
+    });
+
+    if (res.ok) {
+      const json = await res.json();
+      if (Array.isArray(json.data)) {
+        return json.data.map((c: any) => (typeof c === 'string' ? c : c.name));
+      }
+    }
+  } catch (error) {}
+
+  const posts = await getAllPosts();
   const categories = new Set<string>();
   posts.forEach((p) => {
-    if (p.category) {
-      categories.add(p.category.trim());
-    }
+    if (p.category) categories.add(p.category.trim());
   });
   return Array.from(categories);
 }
 
-export function getTags(): string[] {
-  const posts = getAllPosts();
+export async function getTags(): Promise<string[]> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/blogs/meta/tags`, {
+      next: { tags: ['blogs'], revalidate: 3600 },
+      signal: AbortSignal.timeout(4000),
+    });
+
+    if (res.ok) {
+      const json = await res.json();
+      if (Array.isArray(json.data)) {
+        return json.data.map((t: any) => (typeof t === 'string' ? t : t.name));
+      }
+    }
+  } catch (error) {}
+
+  const posts = await getAllPosts();
   const tags = new Set<string>();
   posts.forEach((p) => {
-    p.tags.forEach((t) => tags.add(t.trim()));
+    p.tags?.forEach((t) => tags.add(t.trim()));
   });
   return Array.from(tags);
 }
 
-export function getPostsByCategory(category: string): BlogPost[] {
-  const posts = getAllPosts();
+export async function getPostsByCategory(category: string): Promise<BlogPost[]> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/blogs?category=${encodeURIComponent(category)}`, {
+      next: { tags: ['blogs'], revalidate: 3600 },
+      signal: AbortSignal.timeout(4000),
+    });
+
+    if (res.ok) {
+      const json = await res.json();
+      if (Array.isArray(json.data)) return json.data;
+    }
+  } catch (error) {}
+
+  const posts = await getAllPosts();
   const normalizedCategory = category.toLowerCase().trim();
-  return posts.filter((p) => p.category.toLowerCase().trim() === normalizedCategory);
+  return posts.filter((p) => p.category?.toLowerCase().trim() === normalizedCategory);
 }
 
-export function getPostsByTag(tag: string): BlogPost[] {
-  const posts = getAllPosts();
+export async function getPostsByTag(tag: string): Promise<BlogPost[]> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/blogs?tag=${encodeURIComponent(tag)}`, {
+      next: { tags: ['blogs'], revalidate: 3600 },
+      signal: AbortSignal.timeout(4000),
+    });
+
+    if (res.ok) {
+      const json = await res.json();
+      if (Array.isArray(json.data)) return json.data;
+    }
+  } catch (error) {}
+
+  const posts = await getAllPosts();
   const normalizedTag = tag.toLowerCase().trim();
-  return posts.filter((p) => p.tags.some((t) => t.toLowerCase().trim() === normalizedTag));
+  return posts.filter((p) => p.tags?.some((t) => t.toLowerCase().trim() === normalizedTag));
 }
 
-export function getPostsByAuthor(authorSlug: string): BlogPost[] {
-  const posts = getAllPosts();
+export async function getPostsByAuthor(authorSlug: string): Promise<BlogPost[]> {
+  const posts = await getAllPosts();
   const normalizedAuthor = authorSlug.toLowerCase().trim();
-  return posts.filter((p) => p.author.slug.toLowerCase().trim() === normalizedAuthor);
+  return posts.filter((p) => p.author?.slug?.toLowerCase().trim() === normalizedAuthor);
 }
 
-export function getRelatedPosts(currentPost: BlogPost, limit = 3): BlogPost[] {
-  const allPosts = getAllPosts();
-  
-  // Exclude current post
+export async function getRelatedPosts(currentPost: BlogPost, limit = 3): Promise<BlogPost[]> {
+  const allPosts = await getAllPosts();
   const otherPosts = allPosts.filter((p) => p.slug !== currentPost.slug);
 
-  // Score posts based on matching tags or category
   const scoredPosts = otherPosts.map((post) => {
     let score = 0;
-    
-    // Explicit relation defined in post
     if (currentPost.relatedPostsSlugs?.includes(post.slug)) {
       score += 10;
     }
-    
-    // Same category
-    if (post.category.toLowerCase() === currentPost.category.toLowerCase()) {
+    if (post.category?.toLowerCase() === currentPost.category?.toLowerCase()) {
       score += 5;
     }
-    
-    // Intersecting tags
-    const commonTags = post.tags.filter((tag) => currentPost.tags.includes(tag));
+    const commonTags = post.tags?.filter((tag) => currentPost.tags?.includes(tag)) || [];
     score += commonTags.length * 2;
-    
     return { post, score };
   });
 
-  // Filter out zero score, sort by score descending, and limit
   return scoredPosts
     .filter((sp) => sp.score > 0)
     .sort((a, b) => b.score - a.score)
@@ -133,21 +243,19 @@ export function getRelatedPosts(currentPost: BlogPost, limit = 3): BlogPost[] {
     .slice(0, limit);
 }
 
-export function searchPosts(query: string): BlogPost[] {
+export async function searchPosts(query: string): Promise<BlogPost[]> {
   if (!query) return getAllPosts();
-  
-  const posts = getAllPosts();
+
+  const posts = await getAllPosts();
   const searchTerms = query.toLowerCase().split(/\s+/);
-  
+
   return posts.filter((post) => {
-    const searchString = `${post.title} ${post.subtitle} ${post.excerpt} ${post.category} ${post.tags.join(' ')} ${post.author.name}`.toLowerCase();
+    const searchString = `${post.title} ${post.subtitle || ''} ${post.excerpt} ${post.category} ${(post.tags || []).join(' ')} ${post.author?.name || ''}`.toLowerCase();
     return searchTerms.every((term) => searchString.includes(term));
   });
 }
 
-/**
- * Programmatic Resume Examples Utilities
- */
+// ── Programmatic Resume Examples Utilities (Preserved Unchanged) ────────────
 
 export function getAllResumeRoles(): ProgrammaticResumeRole[] {
   ensureDirectoryExists(ROLE_DIR);
@@ -184,8 +292,7 @@ export function getResumeRole(roleSlug: string): ProgrammaticResumeRole | undefi
 export function getRelatedResumeRoles(currentRole: ProgrammaticResumeRole, limit = 4): ProgrammaticResumeRole[] {
   const allRoles = getAllResumeRoles();
   const otherRoles = allRoles.filter((r) => r.role !== currentRole.role);
-  
-  // Score by industry similarity or explicit matching
+
   const scored = otherRoles.map((role) => {
     let score = 0;
     if (role.industry.toLowerCase() === currentRole.industry.toLowerCase()) {

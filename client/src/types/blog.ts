@@ -50,26 +50,29 @@ export interface SEOData {
 }
 
 export interface BlogPost {
-  id: string;
+  id?: string;
+  _id?: string;
   slug: string;
   title: string;
-  subtitle: string;
+  subtitle?: string;
   excerpt: string;
   category: string;
   tags: string[];
   author: BlogAuthor;
   publishDate: string;
-  updatedDate: string;
+  updatedDate?: string;
   readingTime: number; // in minutes
   featuredImage: string;
-  imageAltText: string;
+  imageAltText?: string;
   content: ContentBlock[];
   faqs?: FAQItem[];
   cta?: PostCTA;
-  relatedPostsSlugs: string[];
+  relatedPostsSlugs?: string[];
   seo: SEOData;
   featured: boolean;
-  draft: boolean;
+  draft?: boolean;
+  status?: 'draft' | 'published' | 'archived';
+  views?: number;
   language: string;
 }
 

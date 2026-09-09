@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -15,9 +15,16 @@ interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
 }
 
+export async function generateStaticParams() {
+  const posts = await getAllPosts();
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
+
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
   const resolvedParams = await params;
-  const post = getPostBySlug(resolvedParams.slug);
+  const post = await getPostBySlug(resolvedParams.slug);
   if (!post) return {};
 
   const baseUrl = "https://resumebuilder-chatcv.vercel.app";
@@ -174,20 +181,20 @@ function renderBlock(block: ContentBlock, index: number) {
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const resolvedParams = await params;
-  const post = getPostBySlug(resolvedParams.slug);
+  const post = await getPostBySlug(resolvedParams.slug);
 
   if (!post) {
     notFound();
   }
 
-  const allPosts = getAllPosts();
+  const allPosts = await getAllPosts();
   const currentIndex = allPosts.findIndex((p) => p.slug === post.slug);
   
   // Dynamic navigation (paginated older/newer posts)
   const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
   const prevPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
 
-  const relatedPosts = getRelatedPosts(post, 3);
+  const relatedPosts = await getRelatedPosts(post, 3);
   const formattedPublishDate = new Date(post.publishDate).toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",

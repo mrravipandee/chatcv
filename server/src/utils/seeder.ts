@@ -6,6 +6,9 @@ import { ResumeDownload } from '../modules/resume/models/resume-download.model';
 import { SystemError } from '../modules/errors/error.model';
 import { Feedback } from '../modules/feedback/feedback.model';
 import { ContactMessage } from '../modules/contact/contact.model';
+import { Blog } from '../modules/blog/blog.model';
+import fs from 'fs';
+import path from 'path';
 import mongoose from 'mongoose';
 
 export const seedDatabase = async () => {
@@ -203,6 +206,75 @@ export const seedDatabase = async () => {
         });
       }
       console.log(`[SEEDER] Seeded 25 visitor sessions.`);
+    }
+
+    // 9. Seed Blog Posts if empty
+    const blogCount = await Blog.countDocuments();
+    if (blogCount === 0) {
+      console.log('[SEEDER] Blog collection is empty. Checking for posts to seed...');
+      const candidatePaths = [
+        path.resolve(__dirname, '../../../client/src/content/blog/posts'),
+        path.resolve(process.cwd(), '../client/src/content/blog/posts'),
+        path.resolve(process.cwd(), 'client/src/content/blog/posts'),
+      ];
+
+      let postsDir = candidatePaths.find((p) => fs.existsSync(p));
+
+      if (postsDir) {
+        const files = fs.readdirSync(postsDir).filter((f) => f.endsWith('.json'));
+        let seededBlogCount = 0;
+
+        for (const file of files) {
+          try {
+            const raw = fs.readFileSync(path.join(postsDir, file), 'utf-8');
+            const data = JSON.parse(raw);
+
+            // Compute reading time if missing
+            let readingTime = data.readingTime;
+            if (!readingTime && Array.isArray(data.content)) {
+              let words = 0;
+              data.content.forEach((b: any) => {
+                if (b.text) words += b.text.split(/\s+/).filter(Boolean).length;
+                if (Array.isArray(b.items)) {
+                  b.items.forEach((it: string) => (words += it.split(/\s+/).filter(Boolean).length));
+                }
+              });
+              readingTime = Math.max(1, Math.ceil(words / 200));
+            }
+
+            await Blog.create({
+              title: data.title,
+              slug: data.slug,
+              subtitle: data.subtitle || '',
+              excerpt: data.excerpt,
+              category: data.category,
+              tags: data.tags || [],
+              author: data.author,
+              status: data.draft ? 'draft' : 'published',
+              publishDate: data.publishDate ? new Date(data.publishDate) : new Date(),
+              updatedDate: data.updatedDate ? new Date(data.updatedDate) : new Date(),
+              readingTime: readingTime || 5,
+              featuredImage: data.featuredImage,
+              imageAltText: data.imageAltText || data.title,
+              content: data.content || [],
+              faqs: data.faqs || [],
+              cta: data.cta,
+              relatedPostsSlugs: data.relatedPostsSlugs || [],
+              seo: data.seo || {},
+              featured: !!data.featured,
+              language: data.language || 'en',
+              views: Math.floor(Math.random() * 250) + 25,
+            });
+
+            seededBlogCount++;
+          } catch (postErr) {
+            console.error(`[SEEDER] Error seeding blog file ${file}:`, postErr);
+          }
+        }
+        console.log(`[SEEDER] Seeded ${seededBlogCount} blog posts successfully.`);
+      } else {
+        console.warn('[SEEDER] Blog posts directory not found in candidate paths.');
+      }
     }
   } catch (err) {
     console.error('[SEEDER] Failed to seed database:', err);

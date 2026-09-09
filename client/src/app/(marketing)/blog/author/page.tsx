@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 import { Metadata } from "next";
 import Link from "next/link";
@@ -31,8 +31,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AuthorsIndexPage() {
-  const posts = getAllPosts();
+export default async function AuthorsIndexPage() {
+  const posts = await getAllPosts();
   
   // Find all unique authors by mapping them
   const uniqueAuthorsMap = new Map<string, typeof posts[0]["author"]>();

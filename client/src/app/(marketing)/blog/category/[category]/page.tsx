@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 import { Metadata } from "next";
 import Link from "next/link";
@@ -51,12 +51,12 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const rawCategory = resolvedParams.category;
   
   // Find category matching slugified param
-  const allCategories = getCategories();
+  const allCategories = await getCategories();
   const matchedCategory = allCategories.find(
     (c) => c.toLowerCase().replace(/\s+/g, "-") === rawCategory
   ) || rawCategory;
 
-  const posts = getPostsByCategory(matchedCategory);
+  const posts = await getPostsByCategory(matchedCategory);
 
   const baseUrl = "https://resumebuilder-chatcv.vercel.app";
   const canonicalUrl = `${baseUrl}/blog/category/${rawCategory}`;
