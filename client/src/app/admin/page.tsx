@@ -28,6 +28,7 @@ export default function AdminDashboardPage() {
   const [hasError, setHasError] = useState(false);
   const [liveSync, setLiveSync] = useState(true);
   const [lastUpdated, setLastUpdated] = useState<string>('—');
+  const [avgSessionDuration, setAvgSessionDuration] = useState<string>('1m 25s');
 
   // Stats cards state
   const [statsCards, setStatsCards] = useState<StatCardData[]>([]);
@@ -214,12 +215,16 @@ export default function AdminDashboardPage() {
         operatingSystems: demoData.operatingSystems || []
       });
 
+      if (rawStats.avgSessionDuration) {
+        setAvgSessionDuration(rawStats.avgSessionDuration);
+      }
+
       setTrafficSources(
         trafficData.map((t: any) => ({
           source: t.source,
           sessions: t.visitors,
           visitors: t.visitors,
-          bounceRate: '35%',
+          bounceRate: typeof t.bounceRate === 'number' ? `${t.bounceRate}%` : (t.bounceRate || '0%'),
           conversionRate: `${t.conversionRate}%`
         }))
       );
@@ -230,7 +235,7 @@ export default function AdminDashboardPage() {
           path: p.path,
           views: p.views,
           uniqueVisitors: p.visitors,
-          avgDuration: p.time
+          avgDuration: p.time || rawStats.avgSessionDuration || '1m 25s'
         }))
       );
 
@@ -239,7 +244,7 @@ export default function AdminDashboardPage() {
           path: e.path,
           views: e.views,
           uniqueVisitors: e.views,
-          avgDuration: '1m 10s'
+          avgDuration: rawStats.avgSessionDuration || '1m 25s'
         }))
       );
 
@@ -496,7 +501,7 @@ export default function AdminDashboardPage() {
         trafficSources={trafficSources}
         mostVisitedPages={mostVisitedPages}
         topLandingPages={topLandingPages}
-        avgSessionDuration="2m 15s"
+        avgSessionDuration={avgSessionDuration}
         isLoading={isLoading}
       />
 

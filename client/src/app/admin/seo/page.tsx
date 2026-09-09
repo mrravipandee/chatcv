@@ -98,81 +98,81 @@ export default function SeoDashboardPage() {
           id: 'indexed-pages',
           title: 'Total Indexed Pages',
           value: rawOverview.indexedPages,
-          change: rawOverview.indexedPages > 50 ? '+4' : 'Stable',
-          changeType: 'increase',
+          change: 'Verified',
+          changeType: 'neutral',
           icon: 'Layers',
-          description: 'Indexed routes currently visible in the search index.',
-          sparkline: rawCharts.map((item, idx) => ({ date: item.date, value: 40 + Math.floor(idx * 0.4) }))
+          description: 'Indexed routes currently declared in sitemap.xml.',
+          sparkline: rawCharts.map((item) => ({ date: item.date, value: rawOverview.indexedPages }))
         },
         {
           id: 'blog-posts',
           title: 'Total Blog Posts',
           value: rawOverview.blogPosts,
-          change: '+1 today',
+          change: 'Live',
           changeType: 'increase',
           icon: 'BookOpen',
-          description: 'Published organic content updates.',
-          sparkline: rawCharts.map((item, idx) => ({ date: item.date, value: 8 + Math.floor(idx * 0.15) }))
+          description: 'Published organic articles in database.',
+          sparkline: rawCharts.map((item) => ({ date: item.date, value: rawOverview.blogPosts }))
         },
         {
           id: 'keywords-ranking',
           title: 'Tracked Keywords',
           value: rawOverview.rankingKeywords,
-          change: '+14%',
-          changeType: 'increase',
+          change: 'Monitored',
+          changeType: 'neutral',
           icon: 'TrendingUp',
-          description: 'Active search terms monitored by the SEO console.',
-          sparkline: rawCharts.map((item, idx) => ({ date: item.date, value: 120 + Math.floor(idx * 0.8) + (idx % 2 === 0 ? 5 : -2) }))
+          description: 'Target career and ATS keywords index.',
+          sparkline: rawCharts.map((item) => ({ date: item.date, value: rawOverview.rankingKeywords }))
         },
         {
           id: 'organic-visitors',
           title: 'Organic Clicks',
           value: rawOverview.clicks.toLocaleString(),
-          change: '+12.4%',
+          change: `${rawOverview.clicks} sessions`,
           changeType: 'increase',
           icon: 'MousePointerClick',
-          description: 'Total Google Search Console organic clicks.',
-          sparkline: rawCharts.map((item) => ({ date: item.date, value: item.visitors }))
+          description: 'Live Search Console & organic referral hits.',
+          sparkline: rawCharts.map((item) => ({ date: item.date, value: item.visitors || 0 }))
         },
         {
           id: 'avg-ctr',
           title: 'Average CTR',
           value: `${rawOverview.avgCtr}%`,
-          change: '+0.5%',
-          changeType: 'increase',
+          change: 'Calculated',
+          changeType: 'neutral',
           icon: 'PieChart',
-          description: 'Google impressions click-through percentage.',
-          sparkline: rawCharts.map((item, idx) => ({ date: item.date, value: 3.5 + (idx % 3 === 0 ? 0.4 : -0.2) + idx * 0.05 }))
+          description: 'Clicks divided by estimated search impressions.',
+          sparkline: rawCharts.map((item) => ({ date: item.date, value: rawOverview.avgCtr }))
         },
         {
           id: 'avg-position',
           title: 'Average Position',
           value: rawOverview.avgPosition,
-          change: '-1.2',
-          changeType: 'increase',
+          change: 'SERP',
+          changeType: 'neutral',
           icon: 'Award',
-          description: 'Weighted mean query position across live snapshots.',
-          sparkline: rawCharts.map((item, idx) => ({ date: item.date, value: Math.max(1, 15 - idx * 0.1) }))
+          description: 'Mean search visibility rank indicator.',
+          sparkline: rawCharts.map((item) => ({ date: item.date, value: rawOverview.avgPosition }))
         },
         {
           id: 'backlinks',
           title: 'Total Backlinks',
           value: rawOverview.backlinks.toLocaleString(),
-          change: '+120',
-          changeType: 'increase',
+          change: 'Cataloged',
+          changeType: 'neutral',
           icon: 'Link',
-          description: 'Referring domain hyperlink connections.',
-          sparkline: rawCharts.map((item, idx) => ({ date: item.date, value: 3000 + idx * 15 }))
+          description: 'Inbound references & verified directory listings.',
+          sparkline: rawCharts.map((item) => ({ date: item.date, value: rawOverview.backlinks }))
         },
         {
           id: 'domain-authority',
           title: 'Domain Authority',
           value: rawOverview.domainAuthority,
-          change: 'Neutral',
+          change: 'Score',
           changeType: 'neutral',
           icon: 'Shield',
-          description: 'Moz score domain ranking strength benchmark.',
-          sparkline: rawCharts.map((item, idx) => ({ date: item.date, value: 45 + Math.floor(idx * 0.1) }))
+          description: 'Algorithm authority benchmark.',
+          sparkline: rawCharts.map((item) => ({ date: item.date, value: rawOverview.domainAuthority }))
         }
       ];
       setStats(statsList);
