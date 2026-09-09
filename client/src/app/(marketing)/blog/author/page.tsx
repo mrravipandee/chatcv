@@ -127,7 +127,7 @@ export default async function AuthorsIndexPage() {
         {/* Authors Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {authors.map((author) => {
-            const authorPosts = getPostsByAuthor(author.slug);
+            const authorPosts = posts.filter((p) => p.author?.slug === author.slug);
 
             return (
               <div

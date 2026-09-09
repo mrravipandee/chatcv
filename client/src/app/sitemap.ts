@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next";
 import { getAllPosts, getCategories, getTags, getAllResumeRoles } from "../lib/blog";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://resumebuilder-chatcv.vercel.app";
 
   // 1. Static Pages
@@ -57,7 +57,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   // 2. Dynamic Blog Posts
-  const posts = getAllPosts();
+  const [posts, categories, tags] = await Promise.all([
+    getAllPosts(),
+    getCategories(),
+    getTags(),
+  ]);
+
   const blogSitemaps: MetadataRoute.Sitemap = posts.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
     lastModified: new Date(post.updatedDate || post.publishDate),
@@ -66,7 +71,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   // 3. Categories Archive Pages
-  const categories = getCategories();
   const categorySitemaps: MetadataRoute.Sitemap = categories.map((cat) => ({
     url: `${baseUrl}/blog/category/${cat.toLowerCase().replace(/\s+/g, "-")}`,
     lastModified: new Date(),
@@ -75,7 +79,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   // 4. Tags Archive Pages
-  const tags = getTags();
   const tagSitemaps: MetadataRoute.Sitemap = tags.map((tag) => ({
     url: `${baseUrl}/blog/tag/${tag.toLowerCase().replace(/\s+/g, "-")}`,
     lastModified: new Date(),

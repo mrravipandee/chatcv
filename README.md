@@ -40,6 +40,8 @@ Click PDF → LaTeX compiled → downloaded to your machine
 - 💾 **Auto-save** — chat history and resume data persisted
 - 🔐 **Auth** — JWT-based login with OTP email verification
 - 💳 **Free / Premium plans** — free tier with one chat session
+- 📰 **Dynamic Blog System** — SSR & ISR blog engine backed by MongoDB with on-demand cache revalidation, category/tag filtering, and automated database seeding
+- 🛡️ **Admin CMS & SEO Console** — full blog management with draft protection, role-based authorization, and real-time SEO diagnostics
 
 ---
 
@@ -64,13 +66,34 @@ Click PDF → LaTeX compiled → downloaded to your machine
 ## SEO & Search Indexing Architecture
 
 To achieve premium search engine visibility, ChatCV features a dedicated growth engineering framework:
+- **Dynamic Blog Engine**: SSR and ISR rendered articles with 1-hour cache tags, on-demand revalidation (`/api/revalidate`), and zero client JavaScript waterfall.
 - **Index Guarding**: All private routes under `/dashboard/` and `/login`/`/register`/`/verify-otp` layout files are strictly configured with `noindex, nofollow` metadata headers.
-- **Client-Server Metadata Separation**: The waitlist page `/subscribe` is refactored into a Server page that exports dynamic search metadata wrapping a dynamic client form layout.
-- **Dynamic Site maps & Robots**: Auto-aligns allowed crawl rules. The sitemap dynamically generates public post links and career example directories while excluding forbidden routes to keep GSC clean of errors.
-- **JSON-LD Schema Markup**: The root HTML template dynamically registers:
+- **Client-Server Metadata Separation**: The waitlist page `/subscribe` and blog pages export dynamic search metadata wrapping interactive client components.
+- **Dynamic Sitemaps & Robots**: Auto-aligns allowed crawl rules. The sitemap dynamically generates public post links and career example directories while excluding drafts and forbidden routes.
+- **JSON-LD Schema Markup**: The root HTML and article templates dynamically register:
+  - **Article / NewsArticle Schema**: Enhanced rich snippets for blog posts.
+  - **BreadcrumbList Schema**: Structured hierarchical navigation.
   - **Organization Schema**: Connects ChatCV with brand assets.
   - **WebSite Schema**: Adds Sitelinks Searchbox compatibility.
   - **SoftwareApplication Schema**: Drives rich visual product search cards.
+
+---
+
+## Blog API Reference
+
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| `GET` | `/api/blogs` | List published blog posts (paginated, filtered by category/tag/search) | Public |
+| `GET` | `/api/blogs/:slug` | Get single published article with related posts & view count | Public |
+| `GET` | `/api/blogs/meta/categories` | Get all blog categories with article counts | Public |
+| `GET` | `/api/blogs/meta/tags` | Get all blog tags with article counts | Public |
+| `GET` | `/api/blogs/featured` | Get currently featured blog post | Public |
+| `GET` | `/api/admin/blogs` | List all blogs (drafts, published, archived) | Admin JWT |
+| `POST` | `/api/admin/blogs` | Create a new blog post | Admin JWT |
+| `GET` | `/api/admin/blogs/:id` | Get blog post by ID for editing | Admin JWT |
+| `PUT` | `/api/admin/blogs/:id` | Update existing blog post | Admin JWT |
+| `PATCH` | `/api/admin/blogs/:id/status` | Update publication status (`draft` / `published` / `archived`) | Admin JWT |
+| `DELETE` | `/api/admin/blogs/:id` | Delete blog post | Admin JWT |
 
 ---
 
@@ -78,24 +101,36 @@ To achieve premium search engine visibility, ChatCV features a dedicated growth 
 
 ```
 chatcv/
-├── client/                         # Next.js frontend
+├── client/                         # Next.js 16 frontend (App Router)
 │   └── src/
 │       ├── app/
+│       │   ├── (marketing)/
+│       │   │   ├── blog/           # Dynamic SSR/ISR Blog routes
+│       │   │   │   ├── [slug]/     # Dynamic article page + SEO metadata
+│       │   │   │   ├── category/   # Category index & dynamic category pages
+│       │   │   │   ├── tag/        # Tag cloud & dynamic tag pages
+│       │   │   │   └── author/     # Author directories & profiles
+│       │   │   └── resume-examples/ # Programmatic career resume guides
+│       │   ├── admin/              # Protected admin control console
+│       │   ├── api/
+│       │   │   └── revalidate/     # On-demand Next.js cache revalidation
 │       │   ├── dashboard/          # Main resume workspace
-│       │   ├── login/
-│       │   └── register/
+│       │   ├── sitemap.ts          # Real-time dynamic XML sitemap
+│       │   └── feed.xml/           # Dynamic RSS 2.0 feed
 │       ├── components/
-│       │   └── dashboard/
-│       │       ├── ChatPanel.tsx   # Chat UI
-│       │       ├── ResumePreview.tsx # Live preview + PDF/LaTeX export
-│       │       └── Sidebar.tsx     # Resume list + navigation
+│       │   ├── blog/               # Blog cards, reading progress, TOC
+│       │   └── dashboard/          # ChatPanel, ResumePreview, Sidebar
 │       └── lib/
-│           └── api.ts              # API client with retry logic
+│           ├── api.ts              # API client with retry logic
+│           ├── blog.ts             # Dynamic blog loader with ISR + fallback
+│           └── blogAdminApi.ts     # Admin blog management API client
 │
-└── server/                         # Express backend
+└── server/                         # Express 5 backend
     └── src/
         ├── modules/
+        │   ├── admin/              # Admin metrics, SEO audits, logs
         │   ├── auth/               # Register, OTP verify, login
+        │   ├── blog/               # Blog model, routes, controller, service
         │   ├── chat/               # AI chat service + Gemini integration
         │   └── resume/             # Resume CRUD
         ├── latex/
@@ -103,7 +138,9 @@ chatcv/
         │   ├── latex.compiler.ts   # ytotech API caller
         │   ├── latex.service.ts    # PDF pipeline orchestrator
         │   └── pdf.store.ts        # In-memory PDF store (10min TTL)
-        └── ws/
+        ├── utils/
+        │   └── seeder.ts           # Automatic database bootstrap seeder
+        └── wa/
             └── ws.manager.ts       # WebSocket connection manager
 ```
 

@@ -1,19 +1,19 @@
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 import { Metadata } from "next";
 import Link from "next/link";
-import { getTags, getPostsByTag } from "@/lib/blog";
-import { Tag, ArrowLeft, BookOpen, ChevronRight } from "lucide-react";
+import { getTags, getAllPosts } from "@/lib/blog";
+import { Tag, ArrowLeft, ChevronRight } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Blog Tags | ChatCV Career Advice Hub",
-  description: "Explore all keywords, categories, and topics across the ChatCV career and resume building blog. Find specific topics ranging from ATS keywords to LaTeX tips.",
+  title: "All Blog Tags & Topics | ChatCV Career Advice Hub",
+  description: "Explore all technical keywords, ATS guide tags, interview strategies, and LaTeX tips across our article database.",
   alternates: {
     canonical: "https://resumebuilder-chatcv.vercel.app/blog/tag",
   },
   openGraph: {
-    title: "Blog Tags | ChatCV Career Advice Hub",
-    description: "Explore all keywords, categories, and topics across the ChatCV career and resume building blog.",
+    title: "All Blog Tags & Topics | ChatCV Career Advice Hub",
+    description: "Explore all technical keywords, ATS guide tags, and interview strategies across our article database.",
     url: "https://resumebuilder-chatcv.vercel.app/blog/tag",
     type: "website",
     siteName: "ChatCV",
@@ -21,8 +21,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Blog Tags | ChatCV Career Advice Hub",
-    description: "Explore all keywords, categories, and topics across the ChatCV career and resume building blog.",
+    title: "All Blog Tags & Topics | ChatCV Career Advice Hub",
+    description: "Explore all technical keywords, ATS guide tags, and interview strategies across our article database.",
   },
   robots: {
     index: true,
@@ -30,8 +30,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function TagsIndexPage() {
-  const tags = getTags();
+export default async function TagsIndexPage() {
+  const [tags, allPosts] = await Promise.all([
+    getTags(),
+    getAllPosts(),
+  ]);
   const baseUrl = "https://resumebuilder-chatcv.vercel.app";
   const canonicalUrl = `${baseUrl}/blog/tag`;
 
@@ -79,8 +82,10 @@ export default function TagsIndexPage() {
 
   // Sort tags by post counts descending
   const tagsWithCounts = tags.map((tag) => {
-    const posts = getPostsByTag(tag);
-    return { tag, count: posts.length };
+    const count = allPosts.filter(
+      (p) => p.tags?.some((t) => t.toLowerCase().trim() === tag.toLowerCase().trim())
+    ).length;
+    return { tag, count };
   }).sort((a, b) => b.count - a.count);
 
   return (

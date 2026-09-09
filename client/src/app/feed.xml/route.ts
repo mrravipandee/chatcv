@@ -1,7 +1,7 @@
 import { getAllPosts } from "@/lib/blog";
 
 export async function GET() {
-  const posts = getAllPosts();
+  const posts = await getAllPosts();
   const baseUrl = "https://resumebuilder-chatcv.vercel.app";
 
   const itemsXml = posts

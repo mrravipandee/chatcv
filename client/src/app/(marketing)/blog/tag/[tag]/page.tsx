@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 import { Metadata } from "next";
 import Link from "next/link";
@@ -48,12 +48,12 @@ export default async function TagPage({ params }: TagPageProps) {
   const rawTag = resolvedParams.tag;
 
   // Find tags matching slugified param
-  const allTags = getTags();
+  const allTags = await getTags();
   const matchedTag = allTags.find(
     (t) => t.toLowerCase().replace(/\s+/g, "-") === rawTag
   ) || rawTag;
 
-  const posts = getPostsByTag(matchedTag);
+  const posts = await getPostsByTag(matchedTag);
 
   const baseUrl = "https://resumebuilder-chatcv.vercel.app";
   const canonicalUrl = `${baseUrl}/blog/tag/${rawTag}`;

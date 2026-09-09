@@ -1,19 +1,19 @@
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 import { Metadata } from "next";
 import Link from "next/link";
-import { getCategories, getPostsByCategory } from "@/lib/blog";
+import { getCategories, getAllPosts } from "@/lib/blog";
 import { FolderOpen, ChevronRight, ArrowLeft, BookOpen } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Blog Categories | ChatCV Career Advice Hub",
-  description: "Browse our career guides, resume templates, and ATS optimization advice organized by categories like AI Resume Builder, LaTeX Resumes, and Interview Tips.",
+  title: "Blog Topic Categories | ChatCV Career Advice Hub",
+  description: "Browse all career, resume optimization, and ATS topics. Find tutorials and expert deep dives arranged by subject category.",
   alternates: {
     canonical: "https://resumebuilder-chatcv.vercel.app/blog/category",
   },
   openGraph: {
-    title: "Blog Categories | ChatCV Career Advice Hub",
-    description: "Browse our career guides, resume templates, and ATS optimization advice organized by category.",
+    title: "Blog Topic Categories | ChatCV Career Advice Hub",
+    description: "Browse all career, resume optimization, and ATS topics.",
     url: "https://resumebuilder-chatcv.vercel.app/blog/category",
     type: "website",
     siteName: "ChatCV",
@@ -21,8 +21,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Blog Categories | ChatCV Career Advice Hub",
-    description: "Browse our career guides, resume templates, and ATS optimization advice organized by category.",
+    title: "Blog Topic Categories | ChatCV Career Advice Hub",
+    description: "Browse all career, resume optimization, and ATS topics.",
   },
   robots: {
     index: true,
@@ -42,8 +42,11 @@ function getCategoryDescription(category: string): string {
   return descriptions[category.toLowerCase()] || `Explore expert guides, deep dives, and tips in our ${category} editorial hub.`;
 }
 
-export default function CategoriesIndexPage() {
-  const categories = getCategories();
+export default async function CategoriesIndexPage() {
+  const [categories, allPosts] = await Promise.all([
+    getCategories(),
+    getAllPosts(),
+  ]);
   const baseUrl = "https://resumebuilder-chatcv.vercel.app";
   const canonicalUrl = `${baseUrl}/blog/category`;
 
@@ -127,7 +130,9 @@ export default function CategoriesIndexPage() {
         {/* Categories Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {categories.map((cat) => {
-            const posts = getPostsByCategory(cat);
+            const posts = allPosts.filter(
+              (p) => p.category?.toLowerCase().trim() === cat.toLowerCase().trim()
+            );
             const categorySlug = cat.toLowerCase().replace(/\s+/g, "-");
             const desc = getCategoryDescription(cat);
 
