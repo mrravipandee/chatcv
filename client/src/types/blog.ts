@@ -73,6 +73,8 @@ export interface BlogPost {
   draft?: boolean;
   status?: 'draft' | 'published' | 'archived';
   views?: number;
+  createdAt?: string;
+  updatedAt?: string;
   language: string;
 }
 

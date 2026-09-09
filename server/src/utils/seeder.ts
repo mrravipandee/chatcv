@@ -263,7 +263,7 @@ export const seedDatabase = async () => {
               seo: data.seo || {},
               featured: !!data.featured,
               language: data.language || 'en',
-              views: Math.floor(Math.random() * 250) + 25,
+              views: 0,
             });
 
             seededBlogCount++;

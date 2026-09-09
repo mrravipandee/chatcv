@@ -64,13 +64,15 @@ export const getTags = asyncHandler(async (req: Request, res: Response) => {
 // ── Admin Controllers ───────────────────────────────────────────────────────
 
 export const getAdminBlogs = asyncHandler(async (req: Request, res: Response) => {
-  const { page, limit, status, search } = req.query;
+  const { page, limit, status, search, sortBy, sortOrder } = req.query;
 
   const result = await blogService.getAdminBlogs({
     page: page ? Number(page) : undefined,
     limit: limit ? Number(limit) : undefined,
     status: status as string,
     search: search as string,
+    sortBy: sortBy as string,
+    sortOrder: sortOrder as 'asc' | 'desc',
   });
 
   res.status(200).json({

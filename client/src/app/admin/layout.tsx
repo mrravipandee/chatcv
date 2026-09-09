@@ -18,7 +18,8 @@ import {
   ChevronDown,
   Terminal,
   LineChart,
-  Activity
+  Activity,
+  BookOpen
 } from 'lucide-react';
 
 interface SidebarItem {
@@ -74,6 +75,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       label: 'SEO Dashboard',
       href: '/admin/seo',
       icon: <LineChart className="h-4.5 w-4.5" />
+    },
+    {
+      label: 'Blog Management',
+      href: '/admin/blog',
+      icon: <BookOpen className="h-4.5 w-4.5" />
     },
     {
       label: 'Visitor Analytics',

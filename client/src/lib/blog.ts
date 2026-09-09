@@ -75,7 +75,11 @@ export async function getAllPosts(options?: {
     if (res.ok) {
       const json = await res.json();
       if (Array.isArray(json.data) && json.data.length > 0) {
-        return json.data;
+        return json.data.sort(
+          (a: BlogPost, b: BlogPost) =>
+            new Date(b.publishDate || (b as any).createdAt || 0).getTime() -
+            new Date(a.publishDate || (a as any).createdAt || 0).getTime()
+        );
       }
     }
   } catch (error) {

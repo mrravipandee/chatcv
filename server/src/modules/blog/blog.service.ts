@@ -180,6 +180,8 @@ export const getAdminBlogs = async (options: {
   limit?: number;
   status?: string;
   search?: string;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
 }) => {
   const page = Math.max(1, Number(options.page) || 1);
   const limit = Math.min(100, Math.max(1, Number(options.limit) || 20));
@@ -201,9 +203,13 @@ export const getAdminBlogs = async (options: {
     ];
   }
 
+  const sortField = options.sortBy || 'publishDate';
+  const sortDirection = options.sortOrder === 'asc' ? 1 : -1;
+  const sortQuery: any = { [sortField]: sortDirection, createdAt: -1 };
+
   const [blogs, total] = await Promise.all([
     Blog.find(query)
-      .sort({ updatedAt: -1 })
+      .sort(sortQuery)
       .skip(skip)
       .limit(limit)
       .lean(),

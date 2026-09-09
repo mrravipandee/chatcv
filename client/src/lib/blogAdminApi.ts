@@ -60,13 +60,17 @@ export async function getAdminBlogs(
   page: number = 1,
   limit: number = 20,
   status: string = 'all',
-  search: string = ''
+  search: string = '',
+  sortBy: string = 'publishDate',
+  sortOrder: 'asc' | 'desc' = 'desc'
 ): Promise<ApiResponse<any>> {
   const query = new URLSearchParams({
     page: String(page),
     limit: String(limit),
     status,
     search,
+    sortBy,
+    sortOrder,
   }).toString();
 
   return fetchAdminBlog(`/api/admin/blogs?${query}`);

@@ -83,9 +83,18 @@ export default function BlogListingClient({
     setNewsletterEmail("");
   };
 
+  // Strict descending date sort (current/newest first, previous follow)
+  const sortedPosts = useMemo(() => {
+    return [...initialPosts].sort(
+      (a, b) =>
+        new Date(b.publishDate || (b as any).createdAt || 0).getTime() -
+        new Date(a.publishDate || (a as any).createdAt || 0).getTime()
+    );
+  }, [initialPosts]);
+
   // Filter posts based on search query, category, and tag
   const filteredPosts = useMemo(() => {
-    return initialPosts.filter((post) => {
+    return sortedPosts.filter((post) => {
       const matchesSearch =
         post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -102,12 +111,12 @@ export default function BlogListingClient({
 
       return matchesSearch && matchesCategory && matchesTag;
     });
-  }, [initialPosts, searchQuery, selectedCategory, selectedTag]);
+  }, [sortedPosts, searchQuery, selectedCategory, selectedTag]);
 
-  // Extract featured post
+  // Extract featured post (current newest featured post or newest post)
   const featuredPost = useMemo(() => {
-    return initialPosts.find((p) => p.featured) || initialPosts[0];
-  }, [initialPosts]);
+    return sortedPosts.find((p) => p.featured) || sortedPosts[0];
+  }, [sortedPosts]);
 
   // Remaining posts for grid (excluding featured)
   const gridPosts = useMemo(() => {
