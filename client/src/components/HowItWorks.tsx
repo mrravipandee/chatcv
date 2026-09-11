@@ -1,111 +1,98 @@
 "use client";
 
+import React from "react";
 import { motion } from "framer-motion";
-import { MessageSquareText, Sparkles, Download, CheckCircle2 } from "lucide-react";
+import { MessageSquare, Sparkles, Download, ArrowRight, Check } from "lucide-react";
+import { Badge, Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui";
 
 export default function HowItWorks() {
   const steps = [
     {
-      icon: <MessageSquareText size={24} />,
-      title: "Tell Your Story",
-      desc: "Share your skills, experience, and career goals through a natural, intuitive chat interface.",
-      accent: "#00ff9c"
+      step: "01",
+      icon: <MessageSquare className="w-5 h-5 text-emerald-400" />,
+      title: "Chat Your Background",
+      desc: "Speak naturally. Tell the AI about your projects, internships, metrics, or career pivots in plain conversational English.",
+      badge: "No forms required",
     },
     {
-      icon: <Sparkles size={24} />,
-      title: "AI Builds Resume",
-      desc: "ChatCV intelligently transforms your conversation into a polished, ATS-optimized masterpiece.",
-      accent: "#c1ff23"
+      step: "02",
+      icon: <Sparkles className="w-5 h-5 text-teal-400" />,
+      title: "AI Compiles in LaTeX",
+      desc: "ChatCV formats your experience with Google's XYZ formula, mathematically aligning margins and headers in pure LaTeX.",
+      badge: "ATS Guaranteed",
     },
     {
-      icon: <Download size={24} />,
-      title: "Download & Apply",
-      desc: "Export your professional resume as a PDF and start landing interviews with confidence.",
-      accent: "#00ff9c"
+      step: "03",
+      icon: <Download className="w-5 h-5 text-cyan-400" />,
+      title: "Instant PDF Export",
+      desc: "Download high-resolution PDFs or copy raw .tex code with 100% Workday and Greenhouse parse rates guaranteed.",
+      badge: "One-click download",
     },
   ];
 
   return (
-    <section
-      id="how"
-      className="relative overflow-hidden bg-[#050505] px-6 py-32 text-white"
-    >
-      {/* Background Decorative Elements */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute left-[10%] top-[20%] h-96 w-96 rounded-full bg-[#00ff9c]/5 blur-[120px]" />
-        <div className="absolute right-[10%] bottom-[20%] h-96 w-96 rounded-full bg-[#c1ff23]/5 blur-[120px]" />
+    <section id="how" className="relative py-28 px-4 sm:px-6 bg-[#030712] text-white overflow-hidden">
+      {/* Subtle Background Glow */}
+      <div className="absolute inset-0 pointer-events-none -z-10">
+        <div className="absolute top-1/2 right-10 -translate-y-1/2 w-96 h-96 bg-emerald-500/10 blur-[130px] rounded-full" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-7xl">
-        {/* Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="mx-auto max-w-3xl text-center mb-20"
-        >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#00ff9c]/20 bg-[#00ff9c]/5 text-[#00ff9c] text-xs font-bold uppercase tracking-widest mb-6">
-            <CheckCircle2 size={14} />
-            The Process
+      <div className="max-w-6xl mx-auto">
+        
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="inline-block mb-3">
+            <Badge variant="glow" withDot>
+              How It Works
+            </Badge>
           </div>
-
-          <h2 className="text-4xl font-extrabold sm:text-5xl md:text-6xl tracking-tight">
-            Resume creation, <br />
-            <span className="bg-linear-to-r from-[#00ff9c] to-[#c1ff23] bg-clip-text text-transparent">
-              reinvented.
-            </span>
+          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
+            From raw experience to top-tier resume in 3 simple steps.
           </h2>
-
-          <p className="mt-6 text-zinc-400 text-lg max-w-xl mx-auto leading-relaxed">
-            Forget complex builders. Experience the simplest way to create a career-defining resume.
+          <p className="mt-4 text-sm sm:text-base text-zinc-400 max-w-xl mx-auto leading-relaxed">
+            Engineered by senior software developers to eliminate formatting headaches and maximize your interview callback rate.
           </p>
-        </motion.div>
+        </div>
 
-        {/* Steps Grid */}
-        <div className="grid gap-8 md:grid-cols-3 relative">
-          {/* Subtle connecting line for desktop */}
-          <div className="hidden md:block absolute top-1/2 left-0 w-full h-px bg-linear-to-r from-transparent via-zinc-800 to-transparent -z-10" />
-
-          {steps.map((step, index) => (
+        {/* 3 Step Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+          {steps.map((item, idx) => (
             <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
+              key={item.step}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.2, duration: 0.8 }}
-              className="group relative rounded-[2.5rem] border border-white/5 bg-zinc-900/20 p-10 backdrop-blur-3xl transition-all duration-500 hover:border-[#00ff9c]/30 hover:bg-zinc-900/40"
+              transition={{ delay: idx * 0.12, duration: 0.5 }}
+              whileHover={{ y: -4 }}
             >
-              {/* Shine Effect */}
-              <div className="absolute inset-0 rounded-[2.5rem] overflow-hidden">
-                <div className="absolute inset-0 translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-linear-to-r from-transparent via-white/5 to-transparent" />
-              </div>
-
-              {/* Icon Container */}
-              <div 
-                className="relative mb-8 flex h-16 w-16 items-center justify-center rounded-2xl text-black shadow-xl transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
-                style={{ background: `linear-gradient(135deg, #00ff9c, #c1ff23)` }}
-              >
-                {step.icon}
-                {/* Number Badge */}
-                <div className="absolute -top-2 -right-2 h-6 w-6 rounded-full bg-black border border-white/10 text-[#00ff9c] text-[10px] font-bold flex items-center justify-center">
-                  0{index + 1}
-                </div>
-              </div>
-
-              <h3 className="text-2xl font-bold mb-4 group-hover:text-[#00ff9c] transition-colors">
-                {step.title}
-              </h3>
-
-              <p className="text-zinc-500 leading-relaxed group-hover:text-zinc-300 transition-colors">
-                {step.desc}
-              </p>
-
-              {/* Bottom Glow */}
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-1 bg-linear-to-r from-transparent via-[#00ff9c]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <Card className="h-full flex flex-col justify-between border-zinc-800/80 bg-zinc-900/40 hover:border-emerald-500/40 hover:bg-zinc-900/70 transition-all duration-300">
+                <CardHeader>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="p-2.5 rounded-xl bg-zinc-800/80 border border-zinc-700/60">
+                      {item.icon}
+                    </div>
+                    <span className="text-2xl font-mono font-extrabold text-zinc-700">
+                      {item.step}
+                    </span>
+                  </div>
+                  <CardTitle className="text-lg font-bold">{item.title}</CardTitle>
+                  <CardDescription className="mt-2 text-xs sm:text-sm">
+                    {item.desc}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="pt-4 border-t border-zinc-800/60 flex items-center justify-between text-xs text-zinc-400">
+                    <span className="text-emerald-400 font-medium flex items-center gap-1">
+                      <Check className="w-3.5 h-3.5" /> {item.badge}
+                    </span>
+                    <ArrowRight className="w-3.5 h-3.5 text-zinc-600" />
+                  </div>
+                </CardContent>
+              </Card>
             </motion.div>
           ))}
         </div>
+
       </div>
     </section>
   );

@@ -2,8 +2,18 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageSquare, Rocket, AlertCircle, CheckCircle2, Loader2, ArrowLeft } from "lucide-react";
+import {
+  MessageSquare,
+  AlertCircle,
+  CheckCircle2,
+  ArrowLeft,
+  Sparkles,
+  ShieldCheck,
+  Zap,
+} from "lucide-react";
 import { subscribeToNewsletter } from "@/lib/api";
+import { useAppStore } from "@/lib/store/useAppStore";
+import { Button, Badge, Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui";
 
 type SubmissionState = "idle" | "loading" | "success" | "error";
 
@@ -13,16 +23,21 @@ interface ErrorState {
 }
 
 export default function ChatCVWaitlist() {
+  const { isWaitlistJoined, userEmail, setWaitlistJoined, addCredits } = useAppStore();
   const [email, setEmail] = useState("");
-  const [submissionState, setSubmissionState] = useState<SubmissionState>("idle");
+  const [submissionState, setSubmissionState] = useState<SubmissionState>(
+    isWaitlistJoined ? "success" : "idle"
+  );
   const [errorState, setErrorState] = useState<ErrorState | null>(null);
-  const [successMessage, setSuccessMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState(
+    isWaitlistJoined ? `Spot confirmed for ${userEmail}!` : ""
+  );
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!email.trim()) {
-      setErrorState({ message: "Please enter your email address" });
+      setErrorState({ message: "Please enter a valid email address" });
       return;
     }
 
@@ -34,14 +49,10 @@ export default function ChatCVWaitlist() {
 
       if (response.success) {
         setSubmissionState("success");
-        setSuccessMessage(response.message);
+        setSuccessMessage(response.message || "Your early access spot is reserved!");
+        setWaitlistJoined(email);
+        addCredits(10);
         setEmail("");
-        
-        // Auto-reset after 5 seconds to allow for UX recovery
-        setTimeout(() => {
-          setSubmissionState("idle");
-          setSuccessMessage("");
-        }, 5000);
       } else {
         setSubmissionState("error");
         setErrorState({
@@ -52,7 +63,7 @@ export default function ChatCVWaitlist() {
     } catch (error) {
       setSubmissionState("error");
       setErrorState({
-        message: error instanceof Error ? error.message : "An unexpected error occurred",
+        message: error instanceof Error ? error.message : "An unexpected network error occurred",
         code: "UNKNOWN_ERROR",
       });
     }
@@ -61,168 +72,122 @@ export default function ChatCVWaitlist() {
   const isLoading = submissionState === "loading";
 
   return (
-    <main className="relative min-h-screen w-full flex items-center justify-center bg-[#050505] text-white overflow-hidden p-6 pt-36 pb-20 font-sans">
+    <main className="relative min-h-screen w-full flex items-center justify-center bg-[#030712] text-white overflow-hidden p-4 pt-32 pb-20">
       
-      {/* Dynamic Animated Background Blobs */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <motion.div
-          animate={{
-            scale: isLoading ? [1, 1.05, 1] : [1, 1.2, 1],
-            opacity: isLoading ? 0.4 : [0.3, 0.5, 0.3],
-          }}
-          transition={{ duration: isLoading ? 2 : 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-1/4 -left-20 w-96 h-96 bg-[#00ff9c]/10 rounded-full blur-[120px]"
-        />
-        <motion.div
-          animate={{
-            scale: isLoading ? [1.05, 1, 1.05] : [1.2, 1, 1.2],
-            opacity: isLoading ? 0.3 : [0.2, 0.4, 0.2],
-          }}
-          transition={{ duration: isLoading ? 2 : 10, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-1/4 -right-20 w-96 h-96 bg-[#c1ff23]/10 rounded-full blur-[120px]"
-        />
+      {/* Background Glow */}
+      <div className="absolute inset-0 pointer-events-none -z-10">
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-emerald-500/15 blur-[150px] rounded-full" />
       </div>
 
-      {/* Main Content Card */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-10 w-full max-w-lg"
-      >
-        <div className="bg-zinc-900/40 backdrop-blur-3xl border border-white/5 p-8 md:p-12 rounded-[2.5rem] shadow-[0_0_50px_-12px_rgba(0,0,0,0.5)] text-center relative overflow-hidden">
+      <div className="w-full max-w-md">
+        <Card className="border-zinc-800/80 bg-zinc-950/80 backdrop-blur-2xl p-6 sm:p-8 text-center shadow-2xl relative overflow-hidden">
           
-          {/* Subtle Inner Glow */}
-          <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-transparent via-[#00ff9c]/20 to-transparent" />
+          {/* Shimmer line */}
+          <div className="pointer-events-none absolute inset-x-8 top-0 h-px bg-linear-to-r from-transparent via-emerald-400/50 to-transparent" />
 
           <AnimatePresence mode="wait">
             {submissionState === "success" ? (
               <motion.div
                 key="success"
-                initial={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
-                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 className="py-6"
               >
-                <div className="mb-8 inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-linear-to-br from-[#00ff9c] to-[#c1ff23] p-px shadow-[0_0_30px_rgba(0,255,156,0.2)]">
-                  <div className="w-full h-full bg-[#050505] rounded-[23px] flex items-center justify-center">
-                    <CheckCircle2 className="w-10 h-10 text-[#00ff9c]" />
-                  </div>
+                <div className="mb-4 inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
+                  <CheckCircle2 className="w-7 h-7" />
                 </div>
 
-                <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-4 text-white">
-                  You&apos;re on the list!
+                <h2 className="text-2xl font-extrabold tracking-tight text-white mb-2">
+                  You&apos;re on the VIP list!
                 </h2>
 
-                <p className="text-zinc-400 text-lg mb-8 leading-relaxed max-w-xs mx-auto">
-                  {successMessage || "We've reserved your spot in the future of career building."}
+                <p className="text-zinc-400 text-xs sm:text-sm mb-6 leading-relaxed">
+                  {successMessage || "We've reserved your early access pass plus 10 free AI generation credits."}
                 </p>
 
-                <button 
-                  onClick={() => setSubmissionState("idle")}
-                  className="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-[#00ff9c] transition-colors"
-                >
-                  <ArrowLeft size={14} /> Back to form
-                </button>
-              </motion.div>
-            ) : (
-              <motion.div 
-                key="form" 
-                initial={{ opacity: 0 }} 
-                animate={{ opacity: 1 }} 
-                exit={{ opacity: 0 }}
-              >
-                {/* Branding Icon */}
-                <div className="mb-8 inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-linear-to-br from-[#00ff9c] to-[#c1ff23] p-px">
-                  <div className="w-full h-full bg-[#050505] rounded-[15px] flex items-center justify-center group">
-                    <MessageSquare className="w-6 h-6 text-white group-hover:text-[#00ff9c] transition-colors" />
-                  </div>
+                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-300 font-semibold mb-6">
+                  <Zap className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>+10 Free Credits Credited</span>
                 </div>
 
-                <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-4 bg-linear-to-b from-white to-zinc-500 bg-clip-text text-transparent leading-tight">
-                  Build Your Resume <br /> by Chatting
+                <div>
+                  <button
+                    onClick={() => setSubmissionState("idle")}
+                    className="text-xs text-zinc-500 hover:text-white transition-colors cursor-pointer flex items-center justify-center gap-1 mx-auto"
+                  >
+                    <ArrowLeft className="w-3.5 h-3.5" /> Submit another email
+                  </button>
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="form"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <div className="mb-4 inline-block">
+                  <Badge variant="glow" withDot>
+                    Early Access Allocation
+                  </Badge>
+                </div>
+
+                <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white leading-tight mb-2">
+                  Build Your Resume <br />
+                  <span className="bg-linear-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
+                    By Chatting
+                  </span>
                 </h1>
 
-                <p className="text-zinc-400 text-lg mb-10 leading-relaxed">
-                  Join early users and get exclusive access <br className="hidden md:block" /> to ChatCV when we launch.
+                <p className="text-zinc-400 text-xs sm:text-sm mb-6 leading-relaxed">
+                  Join candidates preparing for 2026 hiring rounds. Get 10 free generation credits upon launch.
                 </p>
 
-                {/* Error Logic */}
-                <AnimatePresence>
-                  {errorState && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      className="mb-6 overflow-hidden"
-                    >
-                      <div className="p-4 rounded-2xl bg-red-500/5 border border-red-500/20 flex items-start gap-3 text-left">
-                        <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
-                        <div>
-                          <p className="text-red-200 text-sm font-semibold">{errorState.message}</p>
-                          {errorState.code === "RATE_LIMIT_EXCEEDED" && (
-                            <p className="text-red-400/60 text-[11px] mt-1">
-                              Security limit: 5 attempts per 24 hours.
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="relative group">
-                    <input
-                      required
-                      type="email"
-                      placeholder="Enter your email"
-                      value={email}
-                      onChange={(e) => {
-                        setEmail(e.target.value);
-                        setErrorState(null);
-                      }}
-                      disabled={isLoading}
-                      className="w-full bg-zinc-950/50 border border-zinc-800 rounded-2xl px-6 py-4 outline-none transition-all duration-300 focus:border-[#00ff9c] focus:ring-1 focus:ring-[#00ff9c]/50 placeholder:text-zinc-700 disabled:opacity-50"
-                    />
+                {errorState && (
+                  <div className="mb-4 p-3 rounded-xl bg-red-500/10 border border-red-500/25 flex items-start gap-2 text-left">
+                    <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                    <p className="text-red-200 text-xs font-medium">{errorState.message}</p>
                   </div>
+                )}
 
-                  <motion.button
-                    whileHover={isLoading ? {} : { scale: 1.02, boxShadow: "0 0 30px rgba(0, 255, 156, 0.2)" }}
-                    whileTap={isLoading ? {} : { scale: 0.98 }}
-                    type="submit"
+                <form onSubmit={handleSubmit} className="space-y-3">
+                  <input
+                    required
+                    type="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      setErrorState(null);
+                    }}
                     disabled={isLoading}
-                    className="w-full py-4 rounded-2xl font-black text-black bg-linear-to-r from-[#00ff9c] to-[#c1ff23] transition-all duration-500 disabled:opacity-50 flex items-center justify-center gap-3"
+                    className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-white outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400/30 placeholder:text-zinc-600 disabled:opacity-50"
+                  />
+
+                  <Button
+                    type="submit"
+                    variant="glow"
+                    size="lg"
+                    className="w-full text-sm"
+                    isLoading={isLoading}
                   >
-                    {isLoading ? (
-                      <>
-                        <Loader2 className="w-5 h-5 animate-spin" />
-                        <span>Reserving Spot...</span>
-                      </>
-                    ) : (
-                      <>
-                        <span>Join Waitlist</span>
-                        <Rocket className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-                      </>
-                    )}
-                  </motion.button>
+                    Reserve Free Spot
+                  </Button>
                 </form>
 
-                <p className="mt-8 text-zinc-600 text-xs font-medium tracking-wide">
-                  NO SPAM • EARLY BIRD ACCESS • ZERO STRESS
-                </p>
+                <div className="mt-6 pt-4 border-t border-zinc-800/80 flex items-center justify-between text-xs text-zinc-500">
+                  <span className="flex items-center gap-1">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                    Zero Spam Guarantee
+                  </span>
+                  <span>Free • No Card Needed</span>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
-        </div>
-      </motion.div>
 
-      {/* Footer Branding */}
-      <div className="absolute bottom-8 left-0 right-0 flex flex-col items-center gap-2 z-10">
-        <div className="h-px w-12 bg-zinc-800 mb-2" />
-        <p className="text-zinc-600 text-[10px] tracking-[0.2em] uppercase font-bold">
-          Powered by ChatCV Engine
-        </p>
+        </Card>
       </div>
     </main>
   );

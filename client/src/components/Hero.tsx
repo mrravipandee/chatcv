@@ -1,164 +1,289 @@
 "use client";
 
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, Sparkles, Terminal } from "lucide-react";
+import {
+  ArrowRight,
+  Sparkles,
+  CheckCircle2,
+  Star,
+  Terminal,
+  Bot,
+  FileCheck,
+  Zap,
+  Copy,
+  Check,
+} from "lucide-react";
+import { Button, Badge, Card, AnimatedGradientText } from "@/components/ui";
 
 export default function Hero() {
+  const [copied, setCopied] = useState(false);
+  const [activeRole, setActiveRole] = useState<"dev" | "pm" | "ai">("dev");
+
+  const roles = {
+    dev: {
+      input: "Write my experience as a Fullstack Dev with React, Node.js & AWS.",
+      output: "Architected microservices handling 2.4M daily requests with 99.99% uptime.",
+      score: 99,
+      tags: ["React 19", "Node.js", "AWS", "vLLM"],
+    },
+    pm: {
+      input: "I led product roadmap for a B2B SaaS onboarding flow.",
+      output: "Redesigned onboarding funnels, lifting free-to-paid conversion by 34% in Q3.",
+      score: 98,
+      tags: ["Product Strategy", "PLG", "SQL", "A/B Testing"],
+    },
+    ai: {
+      input: "I built RAG pipelines and fine-tuned LLMs on internal data.",
+      output: "Deployed hybrid vector-BM25 RAG pipeline, cutting inference latency by 45%.",
+      score: 99,
+      tags: ["PyTorch", "RAG", "vLLM", "CUDA"],
+    },
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(roles[activeRole].output);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
-    <section className="relative min-h-screen overflow-hidden bg-[#050505] text-white flex items-center">
-      {/* Background Polish */}
-      <div className="absolute inset-0 z-0">
-        <motion.div 
+    <section className="relative min-h-screen pt-32 pb-20 px-4 sm:px-6 flex flex-col items-center justify-center overflow-hidden bg-[#030712] text-white">
+      {/* Animated Subtle Background Glows */}
+      <div className="absolute inset-0 pointer-events-none -z-10">
+        <motion.div
           animate={{
-            scale: [1, 1.1, 1],
+            scale: [1, 1.15, 1],
             opacity: [0.15, 0.25, 0.15],
           }}
-          transition={{ duration: 10, repeat: Infinity }}
-          className="absolute top-20 left-[10%] h-100 w-100 rounded-full bg-[#00ff9c] blur-[120px]" 
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-emerald-500/20 blur-[140px] rounded-full"
         />
-        <motion.div 
-          animate={{
-            scale: [1.1, 1, 1.1],
-            opacity: [0.1, 0.2, 0.1],
-          }}
-          transition={{ duration: 12, repeat: Infinity }}
-          className="absolute bottom-20 right-[10%] h-100 w-100 rounded-full bg-[#c1ff23] blur-[120px]" 
-        />
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(#ffffff0a_1px,transparent_1px)] [background-size:24px_24px] opacity-40" />
       </div>
 
-      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col items-center justify-between px-6 py-24 lg:flex-row lg:gap-14">
+      <div className="max-w-5xl mx-auto text-center flex flex-col items-center">
         
-        {/* Left Content */}
+        {/* Animated Announcement Pill (shadcn style) */}
         <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="w-full text-center lg:w-1/2 lg:text-left"
+          initial={{ opacity: 0, y: -15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mb-8"
         >
-          {/* Badge */}
-          <motion.div 
-            whileHover={{ scale: 1.05 }}
-            className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-[#00ff9c] backdrop-blur-xl"
-          >
-            <Sparkles size={14} className="animate-pulse" />
-            <span>Next-Gen AI Resume Builder</span>
-          </motion.div>
-
-          {/* Heading */}
-          <h1 className="text-5xl font-extrabold tracking-tight sm:text-6xl lg:text-7xl">
-            Build Your Resume <br />
-            <span className="bg-linear-to-r from-[#00ff9c] via-[#c1ff23] to-[#00ff9c] bg-clip-text text-transparent bg-size-[200%_auto] animate-gradient">
-              By Chatting
-            </span>
-          </h1>
-
-          {/* Subheading */}
-          <p className="mt-8 max-w-xl text-lg leading-relaxed text-zinc-400 sm:text-xl mx-auto lg:mx-0">
-            Stop struggling with templates. Just describe your work history to our AI and get a professional, ATS-optimized resume in minutes.
-          </p>
-
-          {/* CTA Buttons */}
-          <div className="mt-10 flex flex-col items-center gap-5 sm:flex-row lg:items-start">
-            <Link
-              href="/subscribe"
-              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-2xl bg-[#00ff9c] px-8 py-4 font-bold text-black transition-all hover:shadow-[0_0_30px_rgba(0,255,156,0.5)]"
-            >
-              <span className="relative z-10 flex items-center gap-2">
-                Join Waitlist <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+          <Link href="/subscribe">
+            <div className="group inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/80 px-4 py-1.5 text-xs text-zinc-300 backdrop-blur-xl transition-all duration-300 hover:border-emerald-500/40 hover:bg-zinc-850">
+              <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="font-medium text-white">ChatCV 2.0 is live</span>
+              <span className="text-zinc-500">•</span>
+              <span className="text-zinc-400 group-hover:text-emerald-400 transition-colors flex items-center gap-1">
+                Build ATS resumes by chatting <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
               </span>
-            </Link>
-
-            <Link
-              href="#features"
-              className="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-8 py-4 font-semibold text-white transition-all hover:bg-white/10 hover:border-white/20"
-            >
-              Explore Features
-            </Link>
-          </div>
+            </div>
+          </Link>
         </motion.div>
 
-        {/* Right Side - Interactive Mockup */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9, rotateY: 10 }}
-          animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-          transition={{ duration: 1, ease: "easeOut" }}
-          className="mt-16 w-full lg:mt-0 lg:w-1/2 perspective-1000"
+        {/* Headline */}
+        <motion.h1
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white leading-[1.1] max-w-4xl"
         >
-          <div className="relative group rounded-3xl border border-white/10 bg-zinc-900/40 p-6 shadow-2xl backdrop-blur-3xl transform-gpu transition-transform hover:rotate-1 hover:-translate-y-2">
+          Create an ATS-proof resume <br />
+          <AnimatedGradientText>by simply chatting.</AnimatedGradientText>
+        </motion.h1>
+
+        {/* Subheading */}
+        <motion.p
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mt-6 text-base sm:text-xl text-zinc-400 max-w-2xl leading-relaxed"
+        >
+          Stop struggling with clunky templates. Talk to our career AI to transform your raw experience into mathematical LaTeX precision guaranteed to pass ATS screens.
+        </motion.p>
+
+        {/* Action Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mt-9 flex flex-col sm:flex-row items-center gap-3.5 w-full sm:w-auto"
+        >
+          <Link href="/subscribe" className="w-full sm:w-auto">
+            <Button
+              variant="glow"
+              size="lg"
+              className="w-full sm:w-auto text-base"
+              rightIcon={<ArrowRight className="w-4 h-4" />}
+            >
+              Start Building Free
+            </Button>
+          </Link>
+
+          <Link href="/demo" className="w-full sm:w-auto">
+            <Button
+              variant="outline"
+              size="lg"
+              className="w-full sm:w-auto text-base text-zinc-300 hover:text-white"
+            >
+              Watch 2-Min Demo
+            </Button>
+          </Link>
+        </motion.div>
+
+        {/* Social Proof Avatars & 5-Star Rating */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="mt-10 flex flex-wrap items-center justify-center gap-4 text-xs text-zinc-400"
+        >
+          <div className="flex -space-x-2">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div
+                key={i}
+                className="h-7 w-7 rounded-full border-2 border-[#030712] bg-zinc-800 bg-cover bg-center"
+                style={{ backgroundImage: `url('https://i.pravatar.cc/80?img=${i + 15}')` }}
+              />
+            ))}
+          </div>
+
+          <div className="flex items-center gap-1 text-amber-400">
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+            ))}
+          </div>
+
+          <span>
+            Trusted by <strong className="text-white">40,000+ candidates</strong> placed at Google, Stripe, Meta
+          </span>
+        </motion.div>
+
+        {/* Interactive Animated Product Showcase Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.45 }}
+          className="mt-16 w-full max-w-4xl relative"
+        >
+          {/* Subtle Outer Glow Frame */}
+          <div className="absolute -inset-1 rounded-3xl bg-linear-to-r from-emerald-500/30 via-teal-500/20 to-cyan-500/30 blur-xl opacity-50" />
+
+          <div className="relative rounded-2xl border border-zinc-800/90 bg-zinc-950/80 backdrop-blur-2xl shadow-2xl p-4 sm:p-6 text-left overflow-hidden">
             
-            {/* Mockup Header */}
-            <div className="mb-6 flex items-center justify-between border-b border-white/5 pb-4">
-              <div className="flex gap-2">
-                <div className="h-3 w-3 rounded-full bg-red-500/50" />
-                <div className="h-3 w-3 rounded-full bg-yellow-500/50" />
-                <div className="h-3 w-3 rounded-full bg-[#00ff9c]/50" />
+            {/* Window Header + Role Switcher */}
+            <div className="flex flex-wrap items-center justify-between pb-4 mb-5 border-b border-zinc-800/80 gap-3">
+              <div className="flex items-center gap-2">
+                <div className="flex gap-1.5">
+                  <div className="h-3 w-3 rounded-full bg-red-500/80" />
+                  <div className="h-3 w-3 rounded-full bg-amber-500/80" />
+                  <div className="h-3 w-3 rounded-full bg-emerald-500/80" />
+                </div>
+                <span className="text-xs font-mono text-zinc-400 flex items-center gap-1.5 ml-2">
+                  <Terminal className="w-3.5 h-3.5 text-emerald-400" />
+                  chatcv-assistant.tsx
+                </span>
               </div>
-              <div className="text-[10px] uppercase tracking-widest text-zinc-500 font-mono flex items-center gap-2">
-                <Terminal size={12} /> AI Session Active
+
+              {/* Role Switcher Pill */}
+              <div className="flex items-center gap-1 bg-zinc-900/90 p-1 rounded-xl border border-zinc-800 text-xs">
+                {(["dev", "pm", "ai"] as const).map((r) => (
+                  <button
+                    key={r}
+                    onClick={() => setActiveRole(r)}
+                    className={`px-3 py-1 rounded-lg font-medium transition-all duration-200 cursor-pointer ${
+                      activeRole === r
+                        ? "bg-zinc-800 text-emerald-300 shadow-sm"
+                        : "text-zinc-400 hover:text-white"
+                    }`}
+                  >
+                    {r === "dev" ? "Engineer" : r === "pm" ? "Product Mgr" : "AI Specialist"}
+                  </button>
+                ))}
               </div>
             </div>
 
-            {/* Chat Flow */}
-            <div className="space-y-6">
-              <motion.div 
-                initial={{ opacity: 0, x: 20 }}
+            {/* Simulated Animated Conversation */}
+            <div className="space-y-4">
+              {/* User Prompt */}
+              <motion.div
+                key={`user-${activeRole}`}
+                initial={{ opacity: 0, x: 10 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.5 }}
-                className="ml-auto max-w-[80%] rounded-2xl rounded-tr-sm bg-[#00ff9c] px-4 py-3 text-sm font-semibold text-black shadow-lg"
+                className="flex items-start justify-end gap-3"
               >
-                Write a resume for a Full Stack Dev role with Node.js and React.
+                <div className="max-w-md rounded-2xl rounded-tr-xs bg-emerald-500/15 border border-emerald-500/30 px-4 py-2.5 text-xs sm:text-sm text-emerald-200 shadow-sm">
+                  {roles[activeRole].input}
+                </div>
+                <div className="h-8 w-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 text-xs font-bold border border-emerald-500/30">
+                  You
+                </div>
               </motion.div>
 
-              <motion.div 
-                initial={{ opacity: 0, x: -20 }}
+              {/* AI Response */}
+              <motion.div
+                key={`ai-${activeRole}`}
+                initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1 }}
-                className="max-w-[85%] rounded-2xl rounded-tl-sm bg-zinc-800/80 px-4 py-3 text-sm text-zinc-200 border border-white/5"
+                transition={{ delay: 0.15 }}
+                className="flex items-start gap-3"
               >
-                <div className="flex items-center gap-2 mb-2">
-                  <Sparkles size={14} className="text-[#00ff9c]" />
-                  <span className="font-bold text-[11px] uppercase text-[#00ff9c]">ChatCV AI</span>
+                <div className="h-8 w-8 rounded-full bg-zinc-800 text-emerald-400 flex items-center justify-center shrink-0 border border-zinc-700">
+                  <Bot className="w-4 h-4" />
                 </div>
-                Perfect. I&apos;ve optimized your experience for ATS. Here is your preview!
-              </motion.div>
+                <div className="flex-1 max-w-xl rounded-2xl rounded-tl-xs bg-zinc-900/80 border border-zinc-800/80 p-4 shadow-sm space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5" />
+                      ATS Optimized (Score: {roles[activeRole].score}/100)
+                    </span>
+                    <button
+                      onClick={handleCopy}
+                      className="text-xs text-zinc-400 hover:text-white flex items-center gap-1 transition-colors cursor-pointer"
+                    >
+                      {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                      <span>{copied ? "Copied" : "Copy"}</span>
+                    </button>
+                  </div>
 
-              {/* Floating Resume Preview Card */}
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.5 }}
-                className="mt-4 rounded-xl bg-white p-5 shadow-2xl overflow-hidden"
-              >
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <div className="h-4 w-32 bg-zinc-200 rounded-md mb-2" />
-                    <div className="h-2 w-48 bg-zinc-100 rounded-sm" />
+                  {/* High impact bullet */}
+                  <div className="p-3 rounded-xl bg-zinc-950/70 border border-zinc-800 text-xs sm:text-sm text-zinc-200 leading-relaxed font-mono">
+                    • {roles[activeRole].output}
                   </div>
-                  <div className="h-8 w-8 rounded-full bg-[#00ff9c]/20 flex items-center justify-center">
-                    <CheckCircleIcon />
+
+                  {/* Keyword Tags */}
+                  <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                    <span className="text-[10px] text-zinc-500 mr-1">ATS Keywords:</span>
+                    {roles[activeRole].tags.map((tag) => (
+                      <Badge key={tag} variant="secondary" className="text-[10px] py-0 px-2">
+                        {tag}
+                      </Badge>
+                    ))}
                   </div>
-                </div>
-                <div className="space-y-2">
-                  <div className="h-1.5 w-full bg-zinc-100 rounded" />
-                  <div className="h-1.5 w-[90%] bg-zinc-100 rounded" />
-                  <div className="h-1.5 w-[40%] bg-[#00ff9c]/30 rounded" />
                 </div>
               </motion.div>
             </div>
+
+            {/* Bottom Status Ribbon */}
+            <div className="mt-6 pt-4 border-t border-zinc-800/60 flex flex-wrap items-center justify-between gap-3 text-xs text-zinc-400">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                <span>Passes Workday, Greenhouse & Lever parser benchmarks</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="flex items-center gap-1 text-emerald-400 font-medium">
+                  <Zap className="w-3 h-3" /> LaTeX Engine Active
+                </span>
+              </div>
+            </div>
+
           </div>
         </motion.div>
+
       </div>
     </section>
-  );
-}
-
-// Simple internal icon for the resume preview
-function CheckCircleIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff9c" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-      <polyline points="20 6 9 17 4 12" />
-    </svg>
   );
 }
