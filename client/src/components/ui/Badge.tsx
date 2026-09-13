@@ -23,7 +23,7 @@ function Badge({
     destructive: "border-red-500/30 bg-red-500/10 text-red-400",
     outline: "border-zinc-800 text-zinc-300 bg-zinc-950/40",
     success: "border-emerald-500/30 bg-emerald-500/10 text-emerald-400",
-    glow: "border-emerald-500/40 bg-emerald-500/15 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.25)]",
+    glow: "border-[#00ff9c]/30 bg-[#00ff9c]/10 text-[#00ff9c] shadow-[0_0_15px_rgba(0,255,156,0.2)]",
   };
 
   return (
@@ -37,8 +37,8 @@ function Badge({
     >
       {withDot && (
         <span className="relative flex h-1.5 w-1.5">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-          <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00ff9c] opacity-75" />
+          <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#00ff9c]" />
         </span>
       )}
       {icon && <span className="shrink-0">{icon}</span>}

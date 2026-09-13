@@ -52,7 +52,7 @@ export function SectionHeader({
       >
         {title}{" "}
         {gradientText && (
-          <span className="bg-linear-to-r from-emerald-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-[#00ff9c] via-teal-300 to-[#00ff9c] bg-clip-text text-transparent">
             {gradientText}
           </span>
         )}

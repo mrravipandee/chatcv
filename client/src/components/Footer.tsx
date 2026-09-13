@@ -3,70 +3,124 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ShieldCheck, Heart } from "lucide-react";
+import { ShieldCheck, ArrowUpRight } from "lucide-react";
 
 export default function Footer() {
-  const links = [
-    { label: "Features", href: "/features" },
-    { label: "How It Works", href: "/#how" },
-    { label: "Demo", href: "/demo" },
-    { label: "Pricing & Credits", href: "/#pricing" },
-    { label: "Resume Examples", href: "/resume-examples" },
-    { label: "Blog", href: "/blog" },
-    { label: "Join Waitlist", href: "/subscribe" },
+  const currentYear = new Date().getFullYear();
+
+  const productLinks = [
+    { label: "Features", href: "#features" },
+    { label: "How It Works", href: "#how-it-works" },
+    { label: "Product Preview", href: "#showcase" },
+    { label: "Pricing & Plans", href: "#pricing" },
+    { label: "FAQ", href: "#faq" },
+  ];
+
+  const resourceLinks = [
+    { label: "Engineering Blog", href: "/blog" },
+    { label: "Resume Examples Directory", href: "/resume-examples" },
+    { label: "Interactive Demo", href: "/demo" },
+    { label: "RSS Feed", href: "/feed.xml" },
+  ];
+
+  const workspaceLinks = [
+    { label: "Start Building Free", href: "/register" },
+    { label: "Sign In", href: "/login" },
+    { label: "Workspace Dashboard", href: "/dashboard" },
+    { label: "Early Access Updates", href: "/subscribe" },
   ];
 
   return (
-    <footer className="relative border-t border-white/[0.08] bg-[#05070a] px-6 py-16 text-zinc-400 overflow-hidden">
-      {/* Top subtle line glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 h-px w-full max-w-4xl bg-linear-to-r from-transparent via-emerald-400/30 to-transparent" />
-
-      <div className="max-w-7xl mx-auto">
+    <footer className="relative border-t border-white/[0.08] bg-[#05070a] px-4 sm:px-6 lg:px-8 py-16 text-zinc-400">
+      <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-white/[0.06]">
-          
           {/* Brand Info */}
           <div className="md:col-span-5 space-y-4">
-            <Link href="/" className="flex items-center gap-2">
+            <Link href="/" className="inline-block">
               <Image
                 src="/chatcv.svg"
-                alt="ChatCV logo"
+                alt="ChatCV Logo"
                 width={100}
                 height={26}
                 className="h-7 w-auto object-contain"
               />
             </Link>
-            <p className="text-xs sm:text-sm text-zinc-400 max-w-sm leading-relaxed">
-              The modern conversational AI resume builder. Engineered with mathematical LaTeX typesetting to guarantee 100% ATS parser compliance.
+            <p className="text-xs sm:text-sm text-zinc-400 max-w-sm leading-relaxed font-normal">
+              The conversational AI resume builder. Engineered with deterministic LaTeX typesetting to deliver clean, ATS-compliant resumes in seconds.
             </p>
-            <div className="flex items-center gap-2 text-xs text-emerald-400/90 font-medium">
-              <ShieldCheck className="w-4 h-4 text-emerald-400" />
-              <span>Client-side persistent caching & privacy protection</span>
+            <div className="flex items-center gap-2 text-xs text-[#00ff9c] font-medium pt-1">
+              <ShieldCheck className="w-4 h-4 text-[#00ff9c]" />
+              <span>Standard single-column vector output • Overleaf compatible</span>
             </div>
           </div>
 
-          {/* Navigation Links */}
-          <div className="md:col-span-7 flex flex-wrap gap-x-8 gap-y-3.5 items-center md:justify-end">
-            {links.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className="text-xs sm:text-sm text-zinc-400 hover:text-white transition-colors"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
+          {/* Navigation Links Columns */}
+          <div className="md:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8">
+            {/* Product */}
+            <div>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-white mb-3">
+                Product
+              </h4>
+              <ul className="space-y-2 text-xs sm:text-sm">
+                {productLinks.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      className="text-zinc-400 hover:text-white transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
+            {/* Resources */}
+            <div>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-white mb-3">
+                Resources
+              </h4>
+              <ul className="space-y-2 text-xs sm:text-sm">
+                {resourceLinks.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      className="text-zinc-400 hover:text-white transition-colors flex items-center gap-1"
+                    >
+                      <span>{link.label}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Workspace */}
+            <div>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-white mb-3">
+                Workspace
+              </h4>
+              <ul className="space-y-2 text-xs sm:text-sm">
+                {workspaceLinks.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      className="text-zinc-400 hover:text-white transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
 
         {/* Bottom Credits & Copyright */}
-        <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-400">
-          <p>© {new Date().getFullYear()} ChatCV AI. All rights reserved.</p>
-
-          <div className="flex items-center gap-1.5 text-zinc-400">
-            <span>Built with</span>
-            <Heart className="w-3.5 h-3.5 text-emerald-400 fill-emerald-400/20" />
-            <span>for job seekers worldwide</span>
+        <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
+          <p>© {currentYear} ChatCV. All rights reserved.</p>
+          <div className="flex items-center gap-6">
+            <span>Deterministic pdflatex engine</span>
+            <span>Zero table traps</span>
           </div>
         </div>
       </div>

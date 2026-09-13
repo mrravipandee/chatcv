@@ -33,8 +33,8 @@ const variantStyles = {
     "bg-zinc-800/80 text-zinc-100 hover:bg-zinc-700/80 border border-zinc-700/50",
   ghost:
     "hover:bg-zinc-800/50 text-zinc-300 hover:text-white border border-transparent",
-  link: "text-emerald-400 underline-offset-4 hover:underline border-none p-0 h-auto",
-  glow: "relative bg-emerald-500 hover:bg-emerald-400 text-black font-semibold shadow-[0_0_25px_rgba(16,185,129,0.4)] hover:shadow-[0_0_35px_rgba(16,185,129,0.6)] border border-emerald-300/40",
+  link: "text-[#00ff9c] underline-offset-4 hover:underline border-none p-0 h-auto",
+  glow: "relative bg-[#00ff9c] hover:bg-[#00e68c] text-black font-semibold shadow-[0_0_25px_rgba(0,255,156,0.35)] hover:shadow-[0_0_35px_rgba(0,255,156,0.55)] border border-[#00ff9c]/50",
 };
 
 const sizeStyles = {
