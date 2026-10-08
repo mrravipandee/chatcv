@@ -1,6 +1,9 @@
 import { Resume } from "./models/resume.model";
 import mongoose from "mongoose";
 import { UpdateResumeInput } from "./resume.validation";
+import { BadRequestError } from "../../errors/BadRequestError";
+import { NotFoundError } from "../../errors/NotFoundError";
+import { setCachedResume, invalidateResumeCache } from "../../config/redis.client";
 
 export const createResumeService = async (
   userId: string
@@ -39,7 +42,7 @@ export const getResumeByIdService = async (
   resumeId: string
 ) => {
   if (!mongoose.Types.ObjectId.isValid(resumeId)) {
-    throw new Error("Invalid resume id");
+    throw new BadRequestError("Invalid resume id");
   }
 
   const resume = await Resume.findOne({
@@ -48,7 +51,7 @@ export const getResumeByIdService = async (
   });
 
   if (!resume) {
-    throw new Error("Resume not found");
+    throw new NotFoundError("Resume not found");
   }
 
   return resume;
@@ -60,7 +63,7 @@ export const updateResumeService = async (
   payload: UpdateResumeInput
 ) => {
   if (!mongoose.Types.ObjectId.isValid(resumeId)) {
-    throw new Error("Invalid resume id");
+    throw new BadRequestError("Invalid resume id");
   }
 
   const updated = await Resume.findOneAndUpdate(
@@ -77,7 +80,14 @@ export const updateResumeService = async (
   );
 
   if (!updated) {
-    throw new Error("Resume not found");
+    throw new NotFoundError("Resume not found");
+  }
+
+  // Invalidate and sync Redis cache with latest resume data
+  if (updated.data) {
+    setCachedResume(resumeId, updated.data).catch(() => {});
+  } else {
+    invalidateResumeCache(resumeId).catch(() => {});
   }
 
   return updated;

@@ -10,6 +10,7 @@ import { AuthRequest } from "../../middlewares/auth.middleware";
 import { User } from "./models/user.model";
 import { asyncHandler } from "../../utils/asyncHandler";
 import { NotFoundError } from "../../errors/NotFoundError";
+import { BadRequestError } from "../../errors/BadRequestError";
 
 export const registerUserController = asyncHandler(
   async (req: AuthRequest, res: Response) => {
@@ -64,7 +65,7 @@ export const updateProfileController = asyncHandler(
   async (req: AuthRequest, res: Response) => {
     const { name } = req.body as { name?: string };
     if (!name) {
-      throw new NotFoundError("Name is required");
+      throw new BadRequestError("Name is required");
     }
 
     const updatedUser = await updateProfileService(req.user!.id, name);
@@ -84,7 +85,7 @@ export const changePasswordController = asyncHandler(
     };
 
     if (!newPassword) {
-      throw new NotFoundError("New password is required");
+      throw new BadRequestError("New password is required");
     }
 
     const result = await changePasswordService(

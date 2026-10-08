@@ -9,6 +9,7 @@ import paymentRoutes from "./modules/payment/payment.routes";
 import adminRoutes from "./modules/admin/admin.routes";
 import visitorRoutes from "./modules/visitors/visitor.routes";
 import { publicBlogRouter, adminBlogRouter } from "./modules/blog/blog.routes";
+import { errorMiddleware } from "./middlewares/error.middleware";
 
 export const app = express();
 
@@ -74,7 +75,5 @@ app.use((req: Request, res: Response) => {
     path: req.path,
   });
 });
-
-import { errorMiddleware } from "./middlewares/error.middleware";
 
 app.use(errorMiddleware);

@@ -2,6 +2,10 @@ import DodoPayments from 'dodopayments';
 import { User } from '../auth/models/user.model';
 import { Payment, PlanId } from './payment.model';
 import { syncTokensToRedis } from '../../config/redis.client';
+import { BadRequestError } from '../../errors/BadRequestError';
+import { NotFoundError } from '../../errors/NotFoundError';
+import { AuthorizationError } from '../../errors/AuthorizationError';
+import { AppError } from '../../errors/AppError';
 
 // ── Plan config ───────────────────────────────────────────────────────────────
 
@@ -36,7 +40,7 @@ export const PLANS: Plan[] = [
 
 function getPlan(planId: string): Plan {
   const plan = PLANS.find((p) => p.id === planId);
-  if (!plan) throw new Error(`Invalid plan: ${planId}`);
+  if (!plan) throw new BadRequestError(`Invalid plan: ${planId}`);
   return plan;
 }
 
@@ -44,7 +48,7 @@ function getPlan(planId: string): Plan {
 
 function getDodoClient(): DodoPayments {
   const apiKey = process.env.DODO_PAYMENTS_API_KEY || process.env.DODO_API_KEY;
-  if (!apiKey) throw new Error('DODO_PAYMENTS_API_KEY is not set in environment');
+  if (!apiKey) throw new AppError(500, 'PAYMENT_CONFIG_ERROR', 'DODO_PAYMENTS_API_KEY is not set in environment');
 
   const env = process.env.NODE_ENV === 'production' ? 'live_mode' : 'test_mode';
 
@@ -62,7 +66,7 @@ export async function createPaymentOrderService(userId: string, planId: string) 
 
   // Fetch user email for prefill
   const user = await User.findById(userId).select('email name').lean();
-  if (!user) throw new Error('User not found');
+  if (!user) throw new NotFoundError('User not found');
 
   // Create a Dodo Payments checkout session
   const session = await (dodo as any).checkoutSessions.create({
@@ -114,8 +118,8 @@ export async function completePaymentService(
 }> {
   const payment = await Payment.findOne({ orderId: sessionId });
 
-  if (!payment) throw new Error('Payment record not found');
-  if (payment.userId.toString() !== userId) throw new Error('Access denied');
+  if (!payment) throw new NotFoundError('Payment record not found');
+  if (payment.userId.toString() !== userId) throw new AuthorizationError('Access denied');
 
   if (payment.status === 'success') {
     return { success: true, message: 'Payment already processed', alreadyDone: true };
@@ -128,11 +132,11 @@ export async function completePaymentService(
   try {
     session = await (dodo as any).checkoutSessions.retrieve(sessionId);
   } catch (err) {
-    throw new Error(`Failed to verify payment with Dodo: ${err instanceof Error ? err.message : 'unknown'}`);
+    throw new BadRequestError(`Failed to verify payment with Dodo: ${err instanceof Error ? err.message : 'unknown'}`);
   }
 
   if (session.payment_status !== 'succeeded') {
-    throw new Error(`Payment not completed. Status: ${session.payment_status}`);
+    throw new BadRequestError(`Payment not completed. Status: ${session.payment_status}`);
   }
 
   // Mark payment as success
@@ -147,7 +151,7 @@ export async function completePaymentService(
     { new: true }
   );
 
-  if (!updatedUser) throw new Error('User not found after payment');
+  if (!updatedUser) throw new NotFoundError('User not found after payment');
 
   syncTokensToRedis(userId, updatedUser.chatTokensUsed).catch(() => {});
 

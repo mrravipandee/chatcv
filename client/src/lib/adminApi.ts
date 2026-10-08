@@ -34,8 +34,16 @@ async function fetchAdmin<T>(
       };
     }
 
-    const data = (await response.json()) as ApiResponse<T>;
-    return data;
+    const rawData = (await response.json()) as any;
+    if (!response.ok || rawData?.success === false) {
+      return {
+        success: false,
+        message: rawData?.message || rawData?.error?.message || `Admin request failed (${response.status})`,
+        code: rawData?.code || rawData?.error?.code || 'ADMIN_API_ERROR',
+        details: rawData?.details || rawData?.error?.details,
+      };
+    }
+    return rawData as ApiResponse<T>;
   } catch (error) {
     console.error('[Admin API Error]', error);
     return {

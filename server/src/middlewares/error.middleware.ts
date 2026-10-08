@@ -82,7 +82,14 @@ export const errorMiddleware = (
     message = "Authentication token expired";
     isOperational = true;
   }
-  // 7. Handle Custom AppError with Details
+  // 7. Handle CORS Policy Error
+  else if (typeof error.message === "string" && error.message.startsWith("CORS policy:")) {
+    statusCode = 403;
+    errorCode = "FORBIDDEN";
+    message = error.message;
+    isOperational = true;
+  }
+  // 8. Handle Custom AppError with Details
   else if (error instanceof AppError) {
     isOperational = error.isOperational;
     if (error instanceof ValidationError) {
@@ -97,15 +104,15 @@ export const errorMiddleware = (
   const browser = req.headers["user-agent"] || "unknown";
   const requestId = req.headers["x-request-id"] || `req-${Date.now()}-${Math.floor(Math.random() * 100000)}`;
 
-  // Log to database SystemError collection for active admin console analytics (required function persistence)
-  SystemError.findOneAndUpdate(
-    { error: message, path: req.path, status: 'active' },
-    { $inc: { count: 1 } },
-    { upsert: true, new: true }
-  ).catch((err) => console.error('[ERROR_LOG_FAIL]', err));
-
-  // Log to stdout/stderr if it is an unexpected/non-operational server exception
+  // Log non-operational errors to database SystemError collection for admin console analytics
   if (!isOperational) {
+    const cleanPath = req.baseUrl ? `${req.baseUrl}${req.path}` : req.path;
+    SystemError.findOneAndUpdate(
+      { error: message, path: cleanPath, status: 'active' },
+      { $inc: { count: 1 } },
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    ).catch((err) => console.error('[ERROR_LOG_FAIL]', err));
+
     console.error(
       `[CRITICAL_ERROR] [${timestamp}] [RequestId: ${requestId}] [User: ${userId}] ` +
       `[ClientIP: ${ipAddress}] [Browser: ${browser}] [Method: ${req.method}] [Path: ${req.path}]\n` +
@@ -120,6 +127,7 @@ export const errorMiddleware = (
   res.status(statusCode).json({
     success: false,
     statusCode,
+    message,
     error: {
       code: errorCode,
       message,

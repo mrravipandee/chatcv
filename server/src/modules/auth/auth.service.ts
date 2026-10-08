@@ -95,6 +95,11 @@ export const verifyOtpService = async (payload: VerifyOtpInput) => {
     ]);
   }
 
+  const adminEmails = process.env.ADMIN_EMAILS
+    ? process.env.ADMIN_EMAILS.split(",").map((e) => e.trim().toLowerCase())
+    : [];
+  const isAdmin = adminEmails.includes(pendingUser.email.toLowerCase());
+
   const newUser = await User.create({
     name: (pendingUser as any).name || "",
     email: pendingUser.email,
@@ -102,6 +107,7 @@ export const verifyOtpService = async (payload: VerifyOtpInput) => {
     provider: "email",
     isVerified: true,
     membership: "free",
+    role: isAdmin ? "admin" : "user",
     chatTokensUsed: 0,
     chatTokensLimit: 5,
   });

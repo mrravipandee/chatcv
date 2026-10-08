@@ -10,6 +10,9 @@ import {
   incrementChatTokens,
   getChatTokenCount,
 } from '../../config/redis.client';
+import { AppError } from '../../errors/AppError';
+import { NotFoundError } from '../../errors/NotFoundError';
+import { BadRequestError } from '../../errors/BadRequestError';
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -288,7 +291,7 @@ export const sendChatMessageService = async (
   resumeId?: string
 ) => {
   const user = await User.findById(userId);
-  if (!user) throw new Error('User not found');
+  if (!user) throw new NotFoundError('User not found');
 
   // ── Token limit check ──────────────────────────────────────────────────────
   let tokensUsed = user.chatTokensUsed;
@@ -301,7 +304,7 @@ export const sendChatMessageService = async (
   }
 
   if (user.membership !== 'premium' && tokensUsed >= tokensLimit) {
-    throw new Error(`CHAT_LIMIT_REACHED:${tokensLimit}`);
+    throw new AppError(403, 'FORBIDDEN', `CHAT_LIMIT_REACHED:${tokensLimit}`);
   }
 
   // ── Load existing resume (try Redis cache first) ───────────────────────────
@@ -309,7 +312,7 @@ export const sendChatMessageService = async (
 
   if (resumeId) {
     if (!mongoose.Types.ObjectId.isValid(resumeId)) {
-      throw new Error('Invalid resume id');
+      throw new BadRequestError('Invalid resume id');
     }
 
     // Try cache
@@ -324,7 +327,7 @@ export const sendChatMessageService = async (
       userId: new mongoose.Types.ObjectId(userId),
     });
 
-    if (!existingResume) throw new Error('Resume not found');
+    if (!existingResume) throw new NotFoundError('Resume not found');
   }
 
   const existingData = (existingResume?.data as IResumeData) ?? EMPTY_RESUME;
@@ -454,7 +457,7 @@ export const sendChatMessageService = async (
 
 export const getChatHistoryService = async (userId: string, resumeId: string) => {
   if (!mongoose.Types.ObjectId.isValid(resumeId)) {
-    throw new Error('Invalid resume id');
+    throw new BadRequestError('Invalid resume id');
   }
 
   // Verify resume belongs to user
@@ -463,7 +466,7 @@ export const getChatHistoryService = async (userId: string, resumeId: string) =>
     userId: new mongoose.Types.ObjectId(userId),
   }).lean();
 
-  if (!resume) throw new Error('Resume not found or access denied');
+  if (!resume) throw new NotFoundError('Resume not found or access denied');
 
   const messages = await ChatMessage.find({ resumeId })
     .sort({ createdAt: 1 })

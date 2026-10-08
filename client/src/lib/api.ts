@@ -150,8 +150,16 @@ async function fetchApi<T>(
         },
       });
 
-      const data = (await response.json()) as ApiResponse<T>;
-      return data;
+      const rawData = (await response.json()) as any;
+      if (!response.ok || rawData?.success === false) {
+        return {
+          success: false,
+          message: rawData?.message || rawData?.error?.message || `Request failed with status ${response.status}`,
+          code: rawData?.code || rawData?.error?.code || 'API_ERROR',
+          details: rawData?.details || rawData?.error?.details,
+        };
+      }
+      return rawData as ApiResponse<T>;
     } catch (error) {
       const isTimeout = error instanceof DOMException && error.name === 'TimeoutError';
 
@@ -197,7 +205,16 @@ async function fetchMultipart<T>(
       body: formData,
       signal: AbortSignal.timeout(60000),
     });
-    return (await response.json()) as ApiResponse<T>;
+    const rawData = (await response.json()) as any;
+    if (!response.ok || rawData?.success === false) {
+      return {
+        success: false,
+        message: rawData?.message || rawData?.error?.message || 'Upload failed',
+        code: rawData?.code || rawData?.error?.code || 'UPLOAD_ERROR',
+        details: rawData?.details || rawData?.error?.details,
+      };
+    }
+    return rawData as ApiResponse<T>;
   } catch (error) {
     return {
       success: false,

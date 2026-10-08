@@ -146,9 +146,10 @@ export const trackVisitorController = asyncHandler(async (req: Request, res: Res
   }
 
   // 6. Asynchronous Non-blocking DB write
+  const { _id, ...updatePayload } = sessionData;
   VisitorSession.findOneAndUpdate(
     { sessionId },
-    sessionData,
+    { $set: updatePayload },
     { upsert: true, new: true, setDefaultsOnInsert: true }
   ).catch((err) => {
     console.error('[DB Error] Non-blocking visitor session update failed:', err);
