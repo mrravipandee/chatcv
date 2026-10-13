@@ -8,7 +8,7 @@
 
 ## What is ChatCV?
 
-ChatCV is a full-stack AI-powered resume builder where you **chat with an AI assistant** to build your resume in real time. Tell it your name, your skills, your experience — and it automatically structures everything into a professional resume, live on screen.
+ChatCV is a full-stack 'AI Powered resume builder' where you **chat with an AI assistant** to build your resume in real time. Tell it your name, your skills, your experience — and it automatically structures everything into a professional resume, live on screen.
 
 When you're done, download it as a **LaTeX-compiled PDF** or copy the raw `.tex` source to edit in Overleaf.
 
